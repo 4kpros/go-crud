@@ -35,8 +35,8 @@ func APIError(statusCode int, message string) (code int, obj any) {
 		zap.String("statusText", statusText),
 	)
 	return statusCode, gin.H{
-		"statusCode": statusCode,
-		"statusText": statusText,
-		"message":    message,
+		"StatusCode": statusCode,
+		"StatusText": statusText,
+		"Message":    message,
 	}
 }
