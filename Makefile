@@ -1,5 +1,6 @@
 migrate:
-	@go run migrate/migrate.go
+	@go build migrate/migrate.go
+	@./migrate/migrate
 	
 migrate-watch:
 	@CompileDaemon -directory="./migrate/" -command="migrate/./migrate"
