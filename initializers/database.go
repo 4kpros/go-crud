@@ -21,16 +21,16 @@ func ConnectToDB() {
 	var timeZone = os.Getenv("DB_TIME_ZONE")
 
 	dsn := "host=" + host + " user=" + username + " password=" + userPassword + " dbname=" + dbName + " port=" + port + " sslmode=" + sslMode + " TimeZone=" + timeZone
-	DB, err := gorm.Open(
+	var err error
+	DB, err = gorm.Open(
 		postgres.New(postgres.Config{
-			DSN:                  dsn,
-			PreferSimpleProtocol: true, // disables implicit prepared statement usage. By default pgx automatically uses the extended protocol
+			DSN: dsn,
 		}),
 		&gorm.Config{},
 	)
 
 	if err != nil {
-		utils.Logger.Error(
+		utils.Logger.Warn(
 			"Failed to connect to database !",
 			zap.String("Error", err.Error()),
 		)

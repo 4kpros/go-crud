@@ -15,13 +15,13 @@ func init() {
 }
 
 func main() {
-	//Setup gin
+	// Setup gin for API
 	r := gin.Default()
 	r.Use(middleware.ErrorsHandler())
 
-	// Setup routes
+	// Setup endpoints
 	routes.PostRoutes(r)
 
-	// Listen
+	// Listen now
 	r.Run()
 }

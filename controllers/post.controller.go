@@ -20,14 +20,15 @@ func CreatePost(c *gin.Context) {
 	}
 	if initializers.DB == nil {
 		utils.Logger.Info(
-			"database instance is nil",
+			"Database instance is nil !",
 		)
-		c.AbortWithError(http.StatusInternalServerError, fmt.Errorf("no database found"))
+		c.AbortWithError(http.StatusInternalServerError, fmt.Errorf("No database found !"))
 		return
 	}
 	result := initializers.DB.Create(&post)
 	if result.Error != nil {
 		c.AbortWithError(http.StatusBadRequest, result.Error)
+		return
 	}
 
 	// Return it

@@ -1,3 +1,9 @@
+migrate:
+	@go run migrate/migrate.go
+	
+migrate-watch:
+	@CompileDaemon -directory="./migrate/" -command="migrate/./migrate"
+
 watch:
 	@CompileDaemon -command="./go-crud"
 
@@ -6,9 +12,6 @@ build:
 
 run:
 	@./bin/main
-
-migrate:
-	@go run migrate/migrate.go
 
 test:
 	@go test -v ./...
