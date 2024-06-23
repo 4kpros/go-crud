@@ -7,5 +7,8 @@ build:
 run:
 	@./bin/main
 
+migrate:
+	@go run migrate/migrate.go
+
 test:
 	@go test -v ./...

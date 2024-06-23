@@ -1,10 +1,10 @@
 package initializers
 
 import (
-	"fmt"
-	"log"
 	"os"
 
+	"github.com/4kpros/go-crud/utils"
+	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -30,7 +30,14 @@ func ConnectToDB() {
 	)
 
 	if err != nil {
-		log.Fatal("Failed to connect to database")
+		utils.Logger.Error(
+			"Failed to connect to database !",
+			zap.String("Error", err.Error()),
+		)
+		return
 	}
-	fmt.Println("Connected to database: ", DB.Name())
+	utils.Logger.Info(
+		"Connected to database: ",
+		zap.String("DB name", DB.Name()),
+	)
 }

@@ -1,14 +1,17 @@
 package initializers
 
 import (
-	"log"
-
+	"github.com/4kpros/go-crud/utils"
 	"github.com/joho/godotenv"
+	"go.uber.org/zap"
 )
 
 func LoadEnvVars() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		utils.Logger.Error(
+			"Failed to load ENV vars !",
+			zap.String("Error", err.Error()),
+		)
 	}
 }
