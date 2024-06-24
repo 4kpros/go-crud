@@ -1,7 +1,7 @@
 package types
 
 type Filter struct {
-	Search string
-	Filter string
-	Sort   string
+	Search  string
+	OrderBy string
+	Sort    string
 }

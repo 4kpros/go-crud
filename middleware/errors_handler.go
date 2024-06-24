@@ -11,16 +11,11 @@ import (
 func ErrorsHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Next()
-		for status, err := range c.Errors {
-			if status > 0 {
+		for _, err := range c.Errors {
+			if err.Err.Error() != "EOF" {
 				c.AbortWithStatusJSON(APIError(
-					status,
+					c.Writer.Status(),
 					err.Err.Error(),
-				))
-			} else {
-				c.AbortWithStatusJSON(APIError(
-					http.StatusInternalServerError,
-					"Something happens! Please try again later.",
 				))
 			}
 		}
