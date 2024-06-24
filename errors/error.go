@@ -1,4 +1,4 @@
-package middleware
+package errors
 
 import (
 	"net/http"
@@ -7,20 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
-
-func ErrorsHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Next()
-		for _, err := range c.Errors {
-			if err.Err.Error() != "EOF" {
-				c.AbortWithStatusJSON(APIError(
-					c.Writer.Status(),
-					err.Err.Error(),
-				))
-			}
-		}
-	}
-}
 
 func APIError(statusCode int, message string) (code int, obj any) {
 	statusText := http.StatusText(statusCode)

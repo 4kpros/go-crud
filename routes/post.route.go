@@ -8,9 +8,10 @@ import (
 func PostRoutes(r *gin.Engine) {
 	const path = "/posts"
 
-	r.GET(path+"/:id", controllers.GetPost)
-	r.GET(path+"", controllers.GetAllPosts)
-	r.POST(path+"", controllers.CreatePost)
-	r.PUT(path+"/:id", controllers.UpdatePost)
-	r.DELETE(path+"/:id", controllers.DeletePost)
+	GET(r, path+"/:id", controllers.GetPost, true)
+	GET(r, path+"", controllers.GetAllPosts, true)
+	POST(r, path+"", controllers.CreatePost, true)
+	PUT(r, path+"/:id", controllers.UpdatePost, true)
+	PATCH(r, path+"/:id", controllers.UpdatePost, true)
+	DELETE(r, path+"/:id", controllers.DeletePost, true)
 }

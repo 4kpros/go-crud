@@ -54,6 +54,7 @@ func DeletePost(c *gin.Context) {
 
 func GetPost(c *gin.Context) {
 	// Get params
+	// language := c.Request.Header.Get("Accept-Language")
 	id := c.Param("id")
 
 	// Get the post
