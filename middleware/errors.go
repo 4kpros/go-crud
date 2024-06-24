@@ -13,12 +13,6 @@ func ErrorsHandler() gin.HandlerFunc {
 				c.Writer.Status(),
 				err.Err.Error(),
 			))
-			// if err.Err.Error() != "EOF" {
-			// 	c.AbortWithStatusJSON(errors.APIError(
-			// 		c.Writer.Status(),
-			// 		err.Err.Error(),
-			// 	))
-			// }
 		}
 	}
 }

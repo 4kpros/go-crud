@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SecurityAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFunc {
+func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFunc {
 	var effectiveApiKey = os.Getenv("API_KEY")
 	return func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
@@ -19,7 +19,7 @@ func SecurityAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.Handl
 			)
 		} else {
 			if requiredAuth {
-				SecurityJWTHandler(c, handler)
+				SecureJWTHandler(c, handler)
 			} else {
 				handler(c)
 			}
@@ -27,7 +27,7 @@ func SecurityAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.Handl
 	}
 }
 
-func SecurityJWTHandler(c *gin.Context, handler gin.HandlerFunc) {
+func SecureJWTHandler(c *gin.Context, handler gin.HandlerFunc) {
 	bearerToken := c.GetHeader("Authorization")
 	if len(bearerToken) <= 0 {
 		c.AbortWithError(
