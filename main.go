@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/4kpros/go-crud/initializers"
-	"github.com/4kpros/go-crud/middleware"
-	"github.com/4kpros/go-crud/routes"
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/initializers"
+	"github.com/4kpros/go-crud/common/middlewares"
+	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/services/auth"
+	"github.com/4kpros/go-crud/services/post"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,13 +16,14 @@ func init() {
 }
 
 func main() {
-	// Setup gin for API
+	// Setup gin for HTTP requests
 	r := gin.Default()
-	r.Use(middleware.ErrorsHandler())
+	r.Use(middlewares.ErrorsHandler())
 
 	// Setup endpoints
-	routes.PostRoutes(r)
+	auth.SetupService(r)
+	post.SetupService(r)
 
-	// Listen now
+	// Run gin
 	r.Run()
 }

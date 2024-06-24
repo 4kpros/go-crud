@@ -3,7 +3,7 @@ package initializers
 import (
 	"os"
 
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/utils"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

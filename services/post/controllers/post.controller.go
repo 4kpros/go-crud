@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/4kpros/go-crud/initializers"
-	"github.com/4kpros/go-crud/models"
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/initializers"
+	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/services/post/models"
 	"github.com/gin-gonic/gin"
 )
 

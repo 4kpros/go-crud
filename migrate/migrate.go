@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/4kpros/go-crud/initializers"
-	"github.com/4kpros/go-crud/migrations"
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/initializers"
+	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/services/auth"
+	"github.com/4kpros/go-crud/services/post"
 )
 
 func init() {
@@ -13,5 +14,6 @@ func init() {
 }
 
 func main() {
-	migrations.PostMigrations()
+	post.SetupMigrations()
+	auth.SetupMigrations()
 }

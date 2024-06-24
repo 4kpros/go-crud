@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/4kpros/go-crud/types"
+	"github.com/4kpros/go-crud/common/types"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

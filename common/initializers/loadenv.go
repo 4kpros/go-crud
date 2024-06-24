@@ -1,7 +1,7 @@
 package initializers
 
 import (
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/utils"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )

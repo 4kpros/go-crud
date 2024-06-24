@@ -3,7 +3,7 @@ package errors
 import (
 	"net/http"
 
-	"github.com/4kpros/go-crud/utils"
+	"github.com/4kpros/go-crud/common/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
