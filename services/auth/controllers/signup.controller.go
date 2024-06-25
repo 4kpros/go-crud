@@ -12,20 +12,26 @@ import (
 
 func SignUpWithEmail(c *gin.Context) {
 	// Get data of req body
-	var dataReq models.NewUser
+	var dataReq struct {
+		Email    string
+		Password string
+	}
 	c.Bind(&dataReq)
 	isValidEmail := utils.IsEmailValid(dataReq.Email)
 	isValidPassword, missingPasswordChars := utils.IsPasswordValid(dataReq.Password)
 	if !isValidEmail && !isValidPassword {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid email and password ! Please enter valid email address and password. Password missing %s", missingPasswordChars))
+		message := "Invalid email and password! Please enter valid email address and password. Password missing " + missingPasswordChars
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isValidEmail {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid email ! Please enter valid email address."))
+		message := "Invalid email! Please enter valid email address."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isValidPassword {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid password ! Password missing %s", missingPasswordChars))
+		message := "Invalid password! Password missing " + missingPasswordChars
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 
@@ -33,7 +39,8 @@ func SignUpWithEmail(c *gin.Context) {
 	var existingNewUser models.NewUser
 	initializers.DB.Where("email = ?", dataReq.Email).Limit(1).Find(&existingNewUser)
 	if utils.IsEmailValid(existingNewUser.Email) {
-		c.AbortWithError(http.StatusFound, fmt.Errorf("User with same email already exists ! Please use another email address."))
+		message := "User with same email already exists ! Please use another email address."
+		c.AbortWithError(http.StatusFound, fmt.Errorf("%s", message))
 		return
 	}
 

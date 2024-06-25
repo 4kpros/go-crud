@@ -1,20 +1,20 @@
-migrate-build:
-	@go build migrate/migrate.go
-
-migrate-run:
-	@./migrate/migrate
-	
-migrate-watch:
-	@CompileDaemon -directory="./migrate/" -command="migrate/./migrate"
-
 build:
-	@go build -o bin/main.go
+	@go build -C cmd -o ../build/main
 
 run:
-	@./bin/main
+	@./build/main
 
 watch:
-	@CompileDaemon -command="./go-crud"
+	@CompileDaemon -build="make build" -command="make run"
+
+build-migrate:
+	@go build -C migrate -o ../build/migrate
+
+run-migrate:
+	@./build/migrate
+	
+watch-migrate:
+	@CompileDaemon -directory="services" -build="make -C ../ build-migrate" -command="make ../ run-migrate"
 
 test:
 	@go test -v ./...

@@ -13,10 +13,8 @@ func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.Handler
 	return func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
 		if apiKey != effectiveApiKey {
-			c.AbortWithError(
-				http.StatusForbidden,
-				fmt.Errorf("invalid API-KEY, Please enter valid API key and try again"),
-			)
+			message := "Invalid API key! Please enter valid API key and try again."
+			c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
 		} else {
 			if requiredAuth {
 				SecureJWTHandler(c, handler)
@@ -30,10 +28,8 @@ func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.Handler
 func SecureJWTHandler(c *gin.Context, handler gin.HandlerFunc) {
 	bearerToken := c.GetHeader("Authorization")
 	if len(bearerToken) <= 0 {
-		c.AbortWithError(
-			http.StatusUnauthorized,
-			fmt.Errorf("you need to login before to access this resource"),
-		)
+		message := "You need to login before accessing this resource!"
+		c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
 	} else {
 		handler(c)
 	}

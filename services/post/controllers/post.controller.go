@@ -18,18 +18,12 @@ func CreatePost(c *gin.Context) {
 	}
 	err := c.Bind(&body)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("All these fields are required: {Body: string, Title: string}"))
+		message := "All these fields are required: {Body: string, Title: string}"
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 
 	// Create a post
-	if initializers.DB == nil {
-		utils.Logger.Info(
-			"Database instance is nil !",
-		)
-		c.AbortWithError(http.StatusInternalServerError, fmt.Errorf("No database found !"))
-		return
-	}
 	post := models.Post{
 		Title: body.Title,
 		Body:  body.Body,
@@ -54,14 +48,14 @@ func DeletePost(c *gin.Context) {
 
 func GetPost(c *gin.Context) {
 	// Get params
-	// language := c.Request.Header.Get("Accept-Language")
 	id := c.Param("id")
 
 	// Get the post
 	var post models.Post
 	result := initializers.DB.First(&post, id)
 	if result.Error != nil {
-		c.AbortWithError(http.StatusNotFound, fmt.Errorf("Post with id %s not found !", id))
+		message := "Post with id " + id + " not found !"
+		c.AbortWithError(http.StatusNotFound, fmt.Errorf("%s", message))
 		return
 	}
 

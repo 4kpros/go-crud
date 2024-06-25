@@ -12,33 +12,42 @@ import (
 
 func SignInWithEmail(c *gin.Context) {
 	// Get data of req body
-	var dataReq models.NewUser
+	var dataReq struct {
+		Email    string
+		Password string
+	}
 	c.Bind(&dataReq)
 	isValidEmail := utils.IsEmailValid(dataReq.Email)
 	isValidPassword, missingPasswordChars := utils.IsPasswordValid(dataReq.Password)
 	if !isValidEmail && !isValidPassword {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid email and password ! Please enter valid email address and password. Password missing %s", missingPasswordChars))
+		message := "Invalid email and password! Please enter valid email address and password. Password missing " + missingPasswordChars
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isValidEmail {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid email ! Please enter valid email address."))
+		message := "Invalid email! Please enter valid email address."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isValidPassword {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid password ! Password missing %s", missingPasswordChars))
+		message := "Invalid password! Password missing " + missingPasswordChars
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 
 	// Check if user exists
 	var existingNewUser models.NewUser
-	initializers.DB.Where("email = ? AND password = ?", dataReq.Email, dataReq.Password).Limit(1).Find(&existingNewUser)
+	var encodedPassword = utils.EncryptPassword(dataReq.Password)
+	initializers.DB.Where("email = ? AND password = ?", dataReq.Email, encodedPassword).Limit(1).Find(&existingNewUser)
 	if !utils.IsEmailValid(existingNewUser.Email) {
-		c.AbortWithError(http.StatusNotFound, fmt.Errorf("Invalid email address or password ! Please enter valid information."))
+		message := "Invalid email address or password! Please enter valid information."
+		c.AbortWithError(http.StatusNotFound, fmt.Errorf("%s", message))
 		return
 	}
 
 	// Return resp
-	c.JSON(http.StatusOK, utils.ResponseData(dataReq))
+	existingNewUser.Password = ""
+	c.JSON(http.StatusOK, utils.ResponseData(existingNewUser))
 }
 
 func SignInWithPhoneNumber(c *gin.Context) {
