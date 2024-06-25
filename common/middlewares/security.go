@@ -12,7 +12,7 @@ import (
 func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
-		if apiKey != config.EnvConfig.ApiKey {
+		if apiKey != config.AppEnvConfig.ApiKey {
 			message := "Invalid API key! Please enter valid API key and try again."
 			c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
 		} else {

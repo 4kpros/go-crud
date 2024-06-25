@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Config struct {
+type AppConfig struct {
 	ServerPort string `mapstructure:"PORT"`
 
 	ApiKey string `mapstructure:"API_KEY"`
@@ -21,10 +21,18 @@ type Config struct {
 	JwtTokenMaxAge    string `mapstructure:"JWT_TOKEN_MAX_AGE_"`
 	JwtTokenExpiredIn string `mapstructure:"JWT_TOKEN_EXPIRED_IN"`
 }
+type CryptoConfig struct {
+	ArgonMemoryLeft  int `mapstructure:"ARGON_PARAM_MEMORY_L"`
+	ArgonMemoryRight int `mapstructure:"ARGON_PARAM_MEMORY_R"`
+	ArgonIterations  int `mapstructure:"ARGON_PARAM_ITERATIONS"`
+	ArgonSaltLength  int `mapstructure:"ARGON_PARAM_SALT_LENGTH"`
+	ArgonKeyLength   int `mapstructure:"ARGON_PARAM_KEY_LENGTH"`
+}
 
-var EnvConfig Config
+var AppEnvConfig AppConfig
+var CryptoEnvConfig CryptoConfig
 
-func LoadEnvironmentVariables(path string) (err error) {
+func LoadAppEnvConfig(path string) (err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
@@ -33,7 +41,21 @@ func LoadEnvironmentVariables(path string) (err error) {
 
 	err = viper.ReadInConfig()
 	if err == nil {
-		err = viper.Unmarshal(&EnvConfig)
+		err = viper.Unmarshal(&AppEnvConfig)
+	}
+	return
+}
+
+func LoadCryptoEnvConfig(path string) (err error) {
+	viper.AddConfigPath(path)
+	viper.SetConfigName("crypto")
+	viper.SetConfigType("env")
+
+	viper.AutomaticEnv()
+
+	err = viper.ReadInConfig()
+	if err == nil {
+		err = viper.Unmarshal(&CryptoEnvConfig)
 	}
 	return
 }

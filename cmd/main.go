@@ -15,23 +15,47 @@ func init() {
 	utils.InitializeLogger()
 
 	// Load env variables
-	errEnv := config.LoadEnvironmentVariables(".")
-	if errEnv != nil {
+	errAppEnv := config.LoadAppEnvConfig(".")
+	if errAppEnv != nil {
 		utils.Logger.Warn(
-			"Failed to load ENV vars !",
-			zap.String("Error", errEnv.Error()),
+			"Failed to load app ENV vars!",
+			zap.String("Error", errAppEnv.Error()),
 		)
 		return
 	}
 	utils.Logger.Warn(
-		"Env variables loaded !",
+		"App ENV variables loaded!",
+	)
+	errCryptoEnv := config.LoadCryptoEnvConfig(".")
+	if errCryptoEnv != nil {
+		utils.Logger.Warn(
+			"Failed to load crypto ENV vars!",
+			zap.String("Error", errCryptoEnv.Error()),
+		)
+		return
+	}
+	utils.Logger.Warn(
+		"Crypto ENV variables loaded!",
+	)
+
+	// Setup argon params for crypto
+	_, errArgonCryptoParamsUtils := utils.EncryptWithArgon2id("")
+	if errArgonCryptoParamsUtils != nil {
+		utils.Logger.Warn(
+			"Failed to setup argon2id params!",
+			zap.String("Error", errArgonCryptoParamsUtils.Error()),
+		)
+		return
+	}
+	utils.Logger.Warn(
+		"Crypto ENV variables loaded!",
 	)
 
 	// Connect to postgres database
 	errPostgresDB := config.ConnectToPostgresDB()
 	if errPostgresDB != nil {
 		utils.Logger.Warn(
-			"Failed to connect to Postgres database !",
+			"Failed to connect to Postgres database!",
 			zap.String("Error", errPostgresDB.Error()),
 		)
 		return
@@ -52,5 +76,5 @@ func main() {
 	post.SetupService(r) // Post service
 
 	// Run gin with custom port
-	r.Run(":" + config.EnvConfig.ServerPort)
+	r.Run(":" + config.AppEnvConfig.ServerPort)
 }

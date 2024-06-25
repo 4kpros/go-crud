@@ -1,9 +1,9 @@
 package models
 
-import "gorm.io/gorm"
+import "github.com/4kpros/go-crud/common/types"
 
 type Post struct {
-	gorm.Model
-	Title string
-	Body  string
+	types.BaseGormModel
+	Title string `json:"title"`
+	Body  string `json:"body"`
 }

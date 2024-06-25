@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/4kpros/go-crud/common/types"
 	"github.com/4kpros/go-crud/common/utils"
 	"github.com/4kpros/go-crud/config"
 	"github.com/4kpros/go-crud/services/post/models"
@@ -35,15 +36,21 @@ func CreatePost(c *gin.Context) {
 	}
 
 	// Return it
-	c.JSON(http.StatusOK, utils.ResponseData(post))
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: post,
+	})
 }
 
 func UpdatePost(c *gin.Context) {
-	c.JSON(http.StatusOK, utils.ResponseData(nil))
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: nil,
+	})
 }
 
 func DeletePost(c *gin.Context) {
-	c.JSON(http.StatusOK, utils.ResponseData(nil))
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: nil,
+	})
 }
 
 func GetPost(c *gin.Context) {
@@ -60,7 +67,9 @@ func GetPost(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, utils.ResponseData(post))
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: post,
+	})
 }
 
 func GetAllPosts(c *gin.Context) {
@@ -72,9 +81,9 @@ func GetAllPosts(c *gin.Context) {
 	config.DB.Scopes(utils.PaginateScope(posts, pagination, filters, config.DB)).Find(&posts)
 
 	// Return it
-	c.JSON(http.StatusOK, utils.ResponseDataWithPagination(
-		posts,
-		*pagination,
-		*filters,
-	))
+	c.JSON(http.StatusOK, types.WebSuccessPaginatedResponse{
+		Data:       posts,
+		Pagination: *pagination,
+		Filter:     *filters,
+	})
 }

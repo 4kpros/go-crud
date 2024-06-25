@@ -2,11 +2,12 @@ package utils
 
 import (
 	"fmt"
+	"runtime"
 	"time"
 
 	"github.com/4kpros/go-crud/config"
+	"github.com/alexedwards/argon2id"
 	"github.com/golang-jwt/jwt/v5"
-	"golang.org/x/crypto/sha3"
 )
 
 // Encrypt map value using JWT HS256
@@ -18,7 +19,7 @@ func EncryptJWTToken(value interface{}) string {
 		},
 	)
 
-	tokenStr, _ := token.SignedString(config.EnvConfig.JwtTokenSecret)
+	tokenStr, _ := token.SignedString(config.AppEnvConfig.JwtTokenSecret)
 
 	return tokenStr
 }
@@ -28,10 +29,11 @@ func DecryptJWTToken(tokenStr string) (interface{}, error) {
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
 		// Validate the alg
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+			message := fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])
+			return nil, fmt.Errorf("%s", message)
 		}
 
-		return []byte(config.EnvConfig.JwtTokenSecret), nil
+		return []byte(config.AppEnvConfig.JwtTokenSecret), nil
 	})
 	claims, ok := token.Claims.(jwt.MapClaims)
 
@@ -50,18 +52,21 @@ func VerifyJWTToken(tokenStr string) bool {
 	return decryptedToken != nil
 }
 
-// Encrypt value using SHA3-512
-func EncryptValue(value string) string {
-	h := sha3.New512()
-	h.Write([]byte(value))
-	sum := h.Sum(nil)
-	return string(sum)
+// Encrypt value using Argon2id
+func EncryptWithArgon2id(value string) (hash string, err error) {
+	params := &argon2id.Params{
+		Memory:      uint32(config.CryptoEnvConfig.ArgonMemoryLeft * config.CryptoEnvConfig.ArgonMemoryRight),
+		Iterations:  uint32(config.CryptoEnvConfig.ArgonIterations),
+		Parallelism: uint8(runtime.NumCPU()),
+		SaltLength:  uint32(config.CryptoEnvConfig.ArgonSaltLength),
+		KeyLength:   uint32(config.CryptoEnvConfig.ArgonKeyLength),
+	}
+	hash, err = argon2id.CreateHash(value, params)
+	return
 }
 
-// Decrypt SHA3-512 value
-func DecryptValue(value string) string {
-	h := sha3.New512()
-	h.Write([]byte(value))
-	sum := h.Sum(nil)
-	return string(sum)
+// Verify if Argon2id value matches string
+func CompareStringAndArgon2id(value string, encrypted string) (match bool, err error) {
+	match, err = argon2id.ComparePasswordAndHash(value, encrypted)
+	return
 }

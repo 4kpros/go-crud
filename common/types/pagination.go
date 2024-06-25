@@ -1,13 +1,13 @@
 package types
 
 type Pagination struct {
-	CurrentPage  int
-	NextPage     int
-	PreviousPage int
-	TotalPages   int64
-	Count        int64
-	Limit        int
-	Offset       int
+	CurrentPage  int   `json:"currentPage"`
+	NextPage     int   `json:"nextPage"`
+	PreviousPage int   `json:"previousPage"`
+	TotalPages   int64 `json:"totalPages"`
+	Count        int64 `json:"count"`
+	Limit        int   `json:"limit"`
+	Offset       int   `json:"offset"`
 }
 
 func (p *Pagination) UpdateFields(count *int64) {
