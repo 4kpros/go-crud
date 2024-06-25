@@ -1,8 +1,6 @@
-package initializers
+package config
 
 import (
-	"os"
-
 	"github.com/4kpros/go-crud/common/utils"
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
@@ -12,15 +10,7 @@ import (
 var DB *gorm.DB
 
 func ConnectToDB() {
-	var host = os.Getenv("DB_HOST")
-	var port = os.Getenv("DB_PORT")
-	var username = os.Getenv("DB_USERNAME")
-	var userPassword = os.Getenv("DB_USER_PASSWORD")
-	var dbName = os.Getenv("DB_NAME")
-	var sslMode = os.Getenv("DB_SSL_MODE")
-	var timeZone = os.Getenv("DB_TIME_ZONE")
-
-	dsn := "host=" + host + " user=" + username + " password=" + userPassword + " dbname=" + dbName + " port=" + port + " sslmode=" + sslMode + " TimeZone=" + timeZone
+	dsn := "host=" + EnvConfig.PostGresHost + " user=" + EnvConfig.PostGresUserName + " password=" + EnvConfig.PostGresPassword + " dbname=" + EnvConfig.PostGresDatabase + " port=" + EnvConfig.PostGresPort + " sslmode=" + EnvConfig.PostGresSslMode + " TimeZone=" + EnvConfig.PostGresTimeZone
 	var err error
 	DB, err = gorm.Open(
 		postgres.New(postgres.Config{

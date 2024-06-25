@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/4kpros/go-crud/common/initializers"
 	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/config"
 	"github.com/4kpros/go-crud/services/post/models"
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +28,7 @@ func CreatePost(c *gin.Context) {
 		Title: body.Title,
 		Body:  body.Body,
 	}
-	result := initializers.DB.Create(&post)
+	result := config.DB.Create(&post)
 	if result.Error != nil {
 		c.AbortWithError(http.StatusBadRequest, result.Error)
 		return
@@ -52,7 +52,7 @@ func GetPost(c *gin.Context) {
 
 	// Get the post
 	var post models.Post
-	result := initializers.DB.First(&post, id)
+	result := config.DB.First(&post, id)
 	if result.Error != nil {
 		message := "Post with id " + id + " not found !"
 		c.AbortWithError(http.StatusNotFound, fmt.Errorf("%s", message))
@@ -69,7 +69,7 @@ func GetAllPosts(c *gin.Context) {
 
 	// Get the posts from DB
 	var posts []models.Post
-	initializers.DB.Scopes(utils.PaginateScope(posts, pagination, filters, initializers.DB)).Find(&posts)
+	config.DB.Scopes(utils.PaginateScope(posts, pagination, filters, config.DB)).Find(&posts)
 
 	// Return it
 	c.JSON(http.StatusOK, utils.ResponseDataWithPagination(

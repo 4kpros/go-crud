@@ -1,17 +1,17 @@
 build:
-	@go build -C cmd -o ../build/main
+	@go build -C cmd -o ../bin/main
 
 run:
-	@./build/main
+	@./bin/main
 
 watch:
 	@CompileDaemon -build="make build" -command="make run"
 
 build-migrate:
-	@go build -C migrate -o ../build/migrate
+	@go build -C migrate -o ../bin/migrate
 
 run-migrate:
-	@./build/migrate
+	@./bin/migrate
 	
 watch-migrate:
 	@CompileDaemon -directory="services" -build="make -C ../ build-migrate" -command="make ../ run-migrate"

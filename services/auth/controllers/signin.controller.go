@@ -4,21 +4,18 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/4kpros/go-crud/common/initializers"
 	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/config"
 	"github.com/4kpros/go-crud/services/auth/models"
 	"github.com/gin-gonic/gin"
 )
 
 func SignInWithEmail(c *gin.Context) {
 	// Get data of req body
-	var dataReq struct {
-		Email    string
-		Password string
-	}
-	c.Bind(&dataReq)
-	isValidEmail := utils.IsEmailValid(dataReq.Email)
-	isValidPassword, missingPasswordChars := utils.IsPasswordValid(dataReq.Password)
+	var newUser models.NewUser
+	c.Bind(&newUser)
+	isValidEmail := utils.IsEmailValid(newUser.Email)
+	isValidPassword, missingPasswordChars := utils.IsPasswordValid(newUser.Password)
 	if !isValidEmail && !isValidPassword {
 		message := "Invalid email and password! Please enter valid email address and password. Password missing " + missingPasswordChars
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
@@ -37,8 +34,8 @@ func SignInWithEmail(c *gin.Context) {
 
 	// Check if user exists
 	var existingNewUser models.NewUser
-	var encodedPassword = utils.EncryptPassword(dataReq.Password)
-	initializers.DB.Where("email = ? AND password = ?", dataReq.Email, encodedPassword).Limit(1).Find(&existingNewUser)
+	var encodedPassword = utils.EncryptValue(newUser.Password)
+	config.DB.Where("email = ? AND password = ?", newUser.Email, encodedPassword).Limit(1).Find(&existingNewUser)
 	if !utils.IsEmailValid(existingNewUser.Email) {
 		message := "Invalid email address or password! Please enter valid information."
 		c.AbortWithError(http.StatusNotFound, fmt.Errorf("%s", message))
