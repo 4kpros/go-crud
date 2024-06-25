@@ -3,16 +3,16 @@ package middlewares
 import (
 	"fmt"
 	"net/http"
-	"os"
 
+	"github.com/4kpros/go-crud/common/utils"
+	"github.com/4kpros/go-crud/config"
 	"github.com/gin-gonic/gin"
 )
 
 func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFunc {
-	var effectiveApiKey = os.Getenv("API_KEY")
 	return func(c *gin.Context) {
 		apiKey := c.GetHeader("X-API-Key")
-		if apiKey != effectiveApiKey {
+		if apiKey != config.EnvConfig.ApiKey {
 			message := "Invalid API key! Please enter valid API key and try again."
 			c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
 		} else {
@@ -28,9 +28,14 @@ func SecureAPIKeyHandler(handler gin.HandlerFunc, requiredAuth bool) gin.Handler
 func SecureJWTHandler(c *gin.Context, handler gin.HandlerFunc) {
 	bearerToken := c.GetHeader("Authorization")
 	if len(bearerToken) <= 0 {
-		message := "You need to login before accessing this resource!"
-		c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
-	} else {
-		handler(c)
+		message := "Missing authorization header! Please enter authorization header and try again."
+		c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("%s", message))
+		return
 	}
+	if !utils.VerifyJWTToken(bearerToken) {
+		message := "Invalid authorization header! Please enter valid authorization header and try again."
+		c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("%s", message))
+		return
+	}
+	handler(c)
 }

@@ -7,12 +7,39 @@ import (
 	"github.com/4kpros/go-crud/services/auth"
 	"github.com/4kpros/go-crud/services/post"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func init() {
+	// Setup logger
 	utils.InitializeLogger()
-	config.LoadEnvironmentVariables(".")
-	config.ConnectToDB()
+
+	// Load env variables
+	errEnv := config.LoadEnvironmentVariables(".")
+	if errEnv != nil {
+		utils.Logger.Warn(
+			"Failed to load ENV vars !",
+			zap.String("Error", errEnv.Error()),
+		)
+		return
+	}
+	utils.Logger.Warn(
+		"Env variables loaded !",
+	)
+
+	// Connect to postgres database
+	errPostgresDB := config.ConnectToPostgresDB()
+	if errPostgresDB != nil {
+		utils.Logger.Warn(
+			"Failed to connect to Postgres database !",
+			zap.String("Error", errPostgresDB.Error()),
+		)
+		return
+	}
+	utils.Logger.Info(
+		"Connected to Postgres database: ",
+		zap.String("DB name", config.DB.Name()),
+	)
 }
 
 func main() {
@@ -20,10 +47,10 @@ func main() {
 	r := gin.Default()
 	r.Use(middlewares.ErrorsHandler())
 
-	// Setup endpoints
-	auth.SetupService(r)
-	post.SetupService(r)
+	// Setup services
+	auth.SetupService(r) // Auth service
+	post.SetupService(r) // Post service
 
-	// Run gin
+	// Run gin with custom port
 	r.Run(":" + config.EnvConfig.ServerPort)
 }

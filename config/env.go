@@ -1,9 +1,7 @@
 package config
 
 import (
-	"github.com/4kpros/go-crud/common/utils"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -19,32 +17,23 @@ type Config struct {
 	PostGresSslMode  string `mapstructure:"POSTGRES_SSL_MODE"`
 	PostGresTimeZone string `mapstructure:"POSTGRES_TIME_ZONE"`
 
-	JwtTokenKey       string `mapstructure:"JWT_TOKEN_SECRET_"`
+	JwtTokenSecret    string `mapstructure:"JWT_TOKEN_SECRET_"`
 	JwtTokenMaxAge    string `mapstructure:"JWT_TOKEN_MAX_AGE_"`
 	JwtTokenExpiredIn string `mapstructure:"JWT_TOKEN_EXPIRED_IN"`
 }
 
 var EnvConfig Config
 
-func LoadEnvironmentVariables(path string) {
+func LoadEnvironmentVariables(path string) (err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		utils.Logger.Warn(
-			"Failed to load ENV vars !",
-			zap.String("Error", err.Error()),
-		)
+	err = viper.ReadInConfig()
+	if err == nil {
+		err = viper.Unmarshal(&EnvConfig)
 	}
-	err = viper.Unmarshal(&EnvConfig)
-	if err != nil {
-		utils.Logger.Warn(
-			"Failed to load ENV vars !",
-			zap.String("Error", err.Error()),
-		)
-	}
+	return
 }
