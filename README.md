@@ -14,17 +14,33 @@ Scalable: The API can be easily scaled to accommodate increasing workloads.
 #To get started with the API, follow these steps:
 
 Clone the repository:
+
 `git clone https://github.com/your-username/go-api.git`
 
+
 Run migrations
+
 `make build-migrate`
+
 `make run-migrate`
 
+
 Run the API:
+
 `make build`
+
 `make run`
 
 Let's GOOOOOOO 🚀🚀🚀🚀
+
+
+# Next features
+
+- [x] Auth: Login(Email, Phone number, Provider['Google', 'Facebook']), Register(Email, Phone number), Activate account, Reset password.
+
+- [ ] Users
+
+- [ ] Payments
 
 #Contributing
 
