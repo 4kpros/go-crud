@@ -91,7 +91,7 @@ Let's GOOOOOOO 🚀🚀🚀🚀
 
 - [ ] Payments
 
-#Contributing
+# Contributing
 
 We welcome contributions to this project. If you have any ideas or improvements, please feel free to open an issue or pull request.
 
