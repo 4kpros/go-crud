@@ -98,9 +98,10 @@ func main() {
 	gin.SetMode(config.AppEnvConfig.GinMode)
 	gin.ForceConsoleColor()
 	engine := gin.Default()
+	engine.HandleMethodNotAllowed = true
+	engine.ForwardedByClientIP = true
+	engine.SetTrustedProxies([]string{"127.0.0.1"})
 	engine.Use(middleware.ErrorsHandler())
-	// engine.ForwardedByClientIP = true
-	// engine.SetTrustedProxies([]string{"127.0.0.1", "192.168.1.2", "10.0.0.0/8"})
 
 	apiGroup := engine.Group(config.AppEnvConfig.ApiGroup)
 
