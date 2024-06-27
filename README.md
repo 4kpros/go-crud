@@ -34,7 +34,8 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
   - `Postgres server`
 
-  - Others informations such configurations are on `app.env` and `crypto.env` file
+  Others informations such configurations are on `app.env` and `crypto.env` file
+
 
 
 2. Clone the repository
@@ -44,9 +45,11 @@ It provides a clean and consistent interface for accessing and managing data, ma
  - `cd go-api`
 
 
+
 3. Install dependencies
 
   - `go mod download`
+
 
 
 4. Run migrations
@@ -56,13 +59,14 @@ It provides a clean and consistent interface for accessing and managing data, ma
   - `make run-migrate`
 
 
+
 5. Run the API
 
   - `make build`
 
   - `make run`
 
-  - Let's GOOOOOOO 🚀🚀🚀🚀
+  Let's GOOOOOOO 🚀🚀🚀🚀
 
 
 # Next features
