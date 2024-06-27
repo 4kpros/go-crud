@@ -75,7 +75,8 @@ make run
 
 Let's GOOOOOOO 🚀🚀🚀🚀
 
-API docs(with swagger) is on ```go
+API docs(with swagger) is on 
+```go
 http://localhost:3000/api/v1/docs
 ```
 
