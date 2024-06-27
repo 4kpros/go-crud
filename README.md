@@ -45,10 +45,10 @@ Let's GOOOOOOO 🚀🚀🚀🚀
 
 # Next features
 
-- 🖋️ Auth:
-  - Login (Email, Phone number, Provider['Google', 'Facebook']),
+🖋️ Auth:
+  - Login (📩Email, 📲Phone number, ☁️Provider['Google', 'Facebook']),
   
-  - Register (Email, Phone number),
+  - Register (📩Email, 📲Phone number),
   
   - Activate account,
     
