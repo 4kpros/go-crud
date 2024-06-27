@@ -1,11 +1,13 @@
 package main
 
 import (
-	"github.com/4kpros/go-crud/common/middlewares"
-	"github.com/4kpros/go-crud/common/utils"
-	"github.com/4kpros/go-crud/config"
-	"github.com/4kpros/go-crud/services/auth"
-	"github.com/4kpros/go-crud/services/post"
+	"fmt"
+
+	"github.com/4kpros/go-api/common/middleware"
+	"github.com/4kpros/go-api/common/utils"
+	"github.com/4kpros/go-api/config"
+	"github.com/4kpros/go-api/di"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -48,7 +50,7 @@ func init() {
 		return
 	}
 	utils.Logger.Warn(
-		"Crypto ENV variables loaded!",
+		"Argon2id crypto set ok!",
 	)
 
 	// Connect to postgres database
@@ -61,20 +63,63 @@ func init() {
 		return
 	}
 	utils.Logger.Info(
-		"Connected to Postgres database: ",
-		zap.String("DB name", config.DB.Name()),
+		"Connected to Postgres!",
+	)
+
+	// Connect to memcache
+	errMemcache := config.ConnectToMemcache()
+	if errMemcache != nil {
+		utils.Logger.Warn(
+			"Failed to connect to Memcache!",
+			zap.String("Error", errMemcache.Error()),
+		)
+		return
+	}
+	utils.Logger.Info(
+		"Connected to Memcache!",
+	)
+
+	// Connect to redis
+	errRedis := config.ConnectToRedis()
+	if errRedis != nil {
+		utils.Logger.Warn(
+			"Failed to connect to Redis!",
+			zap.String("Error", errRedis.Error()),
+		)
+		return
+	}
+	utils.Logger.Info(
+		"Connected to Redis!",
 	)
 }
 
 func main() {
-	// Setup gin for HTTP requests
-	r := gin.Default()
-	r.Use(middlewares.ErrorsHandler())
+	// Setup gin for your API
+	gin.SetMode(config.AppEnvConfig.GinMode)
+	gin.ForceConsoleColor()
+	engine := gin.Default()
+	engine.Use(middleware.ErrorsHandler())
+	// engine.ForwardedByClientIP = true
+	// engine.SetTrustedProxies([]string{"127.0.0.1", "192.168.1.2", "10.0.0.0/8"})
 
-	// Setup services
-	auth.SetupService(r) // Auth service
-	post.SetupService(r) // Post service
+	apiGroup := engine.Group(config.AppEnvConfig.ApiGroup)
 
-	// Run gin with custom port
-	r.Run(":" + config.AppEnvConfig.ServerPort)
+	// Inject Dependencies
+	authRepo, userRepo :=
+		di.InitRepositories() // Repositories
+	authSer, userSer :=
+		di.InitServices(
+			authRepo, userRepo,
+		) // Services
+	authContr, userContr :=
+		di.InitControllers(
+			authSer, userSer,
+		) // Controllers
+	di.InitRouters(
+		apiGroup, authContr, userContr,
+	) // Routers
+
+	// Run gin
+	formattedPort := fmt.Sprintf(":%d", config.AppEnvConfig.ServerPort)
+	engine.Run(formattedPort)
 }

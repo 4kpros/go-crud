@@ -5,9 +5,12 @@ import (
 )
 
 type AppConfig struct {
-	ServerPort string `mapstructure:"PORT"`
+	ServerPort int `mapstructure:"PORT"`
 
-	ApiKey string `mapstructure:"API_KEY"`
+	ApiKey   string `mapstructure:"API_KEY"`
+	ApiGroup string `mapstructure:"API_GROUP"`
+
+	GinMode string `mapstructure:"GIN_MODE"` // debug, release
 
 	PostGresHost     string `mapstructure:"POSTGRES_HOST"`
 	PostGresPort     string `mapstructure:"POSTGRES_PORT"`
@@ -20,6 +23,16 @@ type AppConfig struct {
 	JwtTokenSecret    string `mapstructure:"JWT_TOKEN_SECRET_"`
 	JwtTokenMaxAge    string `mapstructure:"JWT_TOKEN_MAX_AGE_"`
 	JwtTokenExpiredIn string `mapstructure:"JWT_TOKEN_EXPIRED_IN"`
+
+	RedisHost     string `mapstructure:"REDIS_HOST"`
+	RedisPort     int    `mapstructure:"REDIS_PORT"`
+	RedisUserName string `mapstructure:"REDIS_USERNAME"`
+	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
+	RedisDatabase int    `mapstructure:"REDIS_DATABASE"`
+
+	MemcacheServersCount int    `mapstructure:"MEMCACHE_SERVERS_COUNT"`
+	MemcacheHostRange    string `mapstructure:"MEMCACHE_HOST_RANGE"`
+	MemcacheInitialPort  int    `mapstructure:"MEMCACHE_INITIAL_PORT"`
 }
 type CryptoConfig struct {
 	ArgonMemoryLeft  int `mapstructure:"ARGON_PARAM_MEMORY_L"`

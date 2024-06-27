@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/4kpros/go-crud/config"
+	"github.com/4kpros/go-api/config"
 	"github.com/alexedwards/argon2id"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -66,7 +66,8 @@ func EncryptWithArgon2id(value string) (hash string, err error) {
 }
 
 // Verify if Argon2id value matches string
-func CompareStringAndArgon2id(value string, encrypted string) (match bool, err error) {
+func CompareToArgon2id(value string, encrypted string) (match bool, err error) {
+	fmt.Printf("COMPARE ARGON2ID\n Value: %s \n Encrypted: %s", value, encrypted)
 	match, err = argon2id.ComparePasswordAndHash(value, encrypted)
 	return
 }

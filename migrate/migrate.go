@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/4kpros/go-crud/common/utils"
-	"github.com/4kpros/go-crud/config"
-	"github.com/4kpros/go-crud/services/auth"
-	"github.com/4kpros/go-crud/services/post"
+	"github.com/4kpros/go-api/common/utils"
+	"github.com/4kpros/go-api/config"
+	"github.com/4kpros/go-api/features/auth"
+	"github.com/4kpros/go-api/features/user"
 	"go.uber.org/zap"
 )
 
@@ -41,7 +41,6 @@ func init() {
 }
 
 func main() {
-	// Setup migrations
 	auth.SetupMigrations() // Auth migrations
-	post.SetupMigrations() // Post migrations
+	user.SetupMigrations() // User migrations
 }

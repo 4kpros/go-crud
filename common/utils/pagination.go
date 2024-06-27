@@ -4,12 +4,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/4kpros/go-crud/common/types"
+	"github.com/4kpros/go-api/common/types"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
-func PaginateScope(model interface{}, pagination *types.Pagination, filters *types.Filter, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
+func PaginationScope(model interface{}, pagination *types.Pagination, filters *types.Filter, db *gorm.DB) func(db *gorm.DB) *gorm.DB {
 	var count int64
 	db.Model(model).Count(&count)
 	pagination.UpdateFields(&count)

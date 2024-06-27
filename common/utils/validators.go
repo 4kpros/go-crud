@@ -6,6 +6,14 @@ import (
 	"unicode"
 )
 
+func IsProviderValid(provider string, token string) bool {
+	return true
+}
+
+func IsPhoneNumberValid(phoneNumber int) bool {
+	return phoneNumber > 100000
+}
+
 func IsEmailValid(email string) bool {
 	emailAddress, err := mail.ParseAddress(email)
 	return err == nil && emailAddress.Address == email

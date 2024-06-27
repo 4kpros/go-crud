@@ -1,26 +1,26 @@
 package router
 
 import (
-	"github.com/4kpros/go-crud/common/middlewares"
+	"github.com/4kpros/go-api/common/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-func GET(r *gin.Engine, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	r.GET(endpoint, middlewares.SecureAPIKeyHandler(handler, requiredAuth))
+func GET(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	router.GET(endpoint, middleware.SecureAPIKeyHandler(handler, requiredAuth))
 }
 
-func POST(r *gin.Engine, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	r.POST(endpoint, middlewares.SecureAPIKeyHandler(handler, requiredAuth))
+func POST(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	router.POST(endpoint, middleware.SecureAPIKeyHandler(handler, requiredAuth))
 }
 
-func PUT(r *gin.Engine, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	r.PUT(endpoint, middlewares.SecureAPIKeyHandler(handler, requiredAuth))
+func PUT(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	router.PUT(endpoint, middleware.SecureAPIKeyHandler(handler, requiredAuth))
 }
 
-func PATCH(r *gin.Engine, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	r.PATCH(endpoint, middlewares.SecureAPIKeyHandler(handler, requiredAuth))
+func PATCH(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	router.PATCH(endpoint, middleware.SecureAPIKeyHandler(handler, requiredAuth))
 }
 
-func DELETE(r *gin.Engine, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	r.DELETE(endpoint, middlewares.SecureAPIKeyHandler(handler, requiredAuth))
+func DELETE(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	router.DELETE(endpoint, middleware.SecureAPIKeyHandler(handler, requiredAuth))
 }
