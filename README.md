@@ -1,5 +1,8 @@
-A high-performance and well-structured API for multiple projects
-This repository contains a high-performance API written in Go, designed to be reusable and easily integrated into multiple projects. The API is built with a focus on performance, scalability, and maintainability. It provides a clean and consistent interface for accessing and managing data, making it an ideal choice for a variety of applications.
+# A high-performance and well-structured API for multiple projects
+
+This repository contains a high-performance API written in Go, designed to be reusable and easily integrated into multiple projects. The API is built with a focus on performance, scalability, and maintainability. 
+
+It provides a clean and consistent interface for accessing and managing data, making it an ideal choice for a variety of applications.
 
 
 # Key features
