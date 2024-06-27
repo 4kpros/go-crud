@@ -27,19 +27,25 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
 1. Requirements
 
-```Redis server```
+```go
+Redis server
+```
 
-```Memcache server```
+```go
+Memcache server```
 
-```Postgres server```
+```go
+Postgres server```
 
   Others informations such configurations are on```app.env``` and```crypto.env``` file
 
 2. Clone the repository
 
-```git clone https://github.com/your-username/go-api.git```
+```go
+git clone https://github.com/your-username/go-api.git```
 
-```cd go-api```
+```go
+cd go-api```
 
 3. Install dependencies
 
