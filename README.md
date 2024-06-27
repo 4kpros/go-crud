@@ -27,11 +27,11 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
 ### 1. Requirements
 
-```Redis server```
+```Install Redis and start the server```
 
-```Memcache server```
+```Install Memcache and start the server```
 
-```Postgres server```
+```Install Postgres, start the server and create a database ```
 
 Others informations such configurations are on```app.env``` and```crypto.env``` file
 
