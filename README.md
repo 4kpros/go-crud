@@ -94,7 +94,19 @@ http://localhost:3000/api/v1/docs
 - [ ] Users
   - Basic CRUD operations for roles `super_admin`   `admin`   `manager`   `manager_assistant`   `driver`   `driver_assistant`   `customer`   `customer_service`
 
+- [ ] Shops
+
+- [ ] Products
+
+- [ ] Cart
+
+- [ ] Delivery
+
+- [ ] Geo-reference
+
 - [ ] Payments
+
+- [ ] Adverting
 
 # Contributing
 
