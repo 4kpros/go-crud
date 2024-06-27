@@ -4,25 +4,25 @@ This repository contains a high-performance API written in Go, designed to be re
 
 # Key features
 
-- High performance: The API is designed to handle a high volume of requests with minimal latency.
+**- High performance:** The API is designed to handle a high volume of requests with minimal latency.
 
-- Scalable: The API can be easily scaled to accommodate increasing workloads.
+**- Scalable:** The API can be easily scaled to accommodate increasing workloads.
 
-- Well-structured: The API is well-documented and easy to use, with a consistent and intuitive interface.
+**- Well-structured:** The API is well-documented and easy to use, with a consistent and intuitive interface.
 
-- Reusable: The API can be easily integrated into multiple projects, reducing development time and effort.
+**- Reusable:** The API can be easily integrated into multiple projects, reducing development time and effort.
 
 
 # Use cases
 
-- Web applications: The API can be used to power web applications that need to access and manage data efficiently.
+**- Web applications:** The API can be used to power web applications that need to access and manage data efficiently.
 
-- Mobile applications: The API can be used to develop mobile applications that need to interact with a backend server.
+**- Mobile applications:** The API can be used to develop mobile applications that need to interact with a backend server.
 
 
 # To get started with the API, follow these steps:
 
-Clone the repository:
+Clone the repository
 
 `git clone https://github.com/your-username/go-api.git`
 
@@ -34,7 +34,7 @@ Run migrations
 `make run-migrate`
 
 
-Run the API:
+Run the API
 
 `make build`
 
