@@ -45,7 +45,7 @@ Let's GOOOOOOO 🚀🚀🚀🚀
 
 # Next features
 
-🖋️ Auth:
+- [ ] 🖋️ Auth:
   - Login (📩Email, 📲Phone number, ☁️Provider['Google', 'Facebook']),
   
   - Register (📩Email, 📲Phone number),
