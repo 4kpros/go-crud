@@ -25,7 +25,7 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
 # To get started with the API, follow these steps:
 
-Requirements
+1- Requirements
 
 `Redis server`
 
@@ -35,26 +35,27 @@ Requirements
 
 Others informations such configurations are on `app.env` and `crypto.env` file
 
-Clone the repository
+2- Clone the repository
 
 `git clone https://github.com/your-username/go-api.git`
 
-Install dependencies
+3- Install dependencies
 
 `go mod download`
 
-Run migrations
+4- Run migrations
 
 `make build-migrate`
 
 `make run-migrate`
 
 
-Run the API
+5- Run the API
 
 `make build`
 
 `make run`
+
 
 Let's GOOOOOOO 🚀🚀🚀🚀
 
