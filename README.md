@@ -45,6 +45,8 @@ git clone https://github.com/your-username/go-api.git
 cd go-api
 ```
 
+The entry point of the project is `cmd` folder. In this folder the is a `main.go` file.
+
 ### 3. Install dependencies
 
 ```go
