@@ -26,41 +26,41 @@ It provides a clean and consistent interface for accessing and managing data, ma
 # To get started with the API, follow these steps:
 
 
-> 1. Requirements
+1. Requirements
 
-`Redis server`
+  `Redis server`
 
-`Memcache server`
+  `Memcache server`
 
-`Postgres server`
+  `Postgres server`
 
-Others informations such configurations are on `app.env` and `crypto.env` file
-
-
-> 2. Clone the repository
-
-`git clone https://github.com/your-username/go-api.git`
-
-`cd go-api`
+  Others informations such configurations are on `app.env` and `crypto.env` file
 
 
-> 3. Install dependencies
+2. Clone the repository
 
-`go mod download`
+  `git clone https://github.com/your-username/go-api.git`
 
-
-> 4. Run migrations
-
-`make build-migrate`
-
-`make run-migrate`
+  `cd go-api`
 
 
-> 5. Run the API
+3. Install dependencies
 
-`make build`
+  `go mod download`
 
-`make run`
+
+4. Run migrations
+
+  `make build-migrate`
+
+  `make run-migrate`
+
+
+5. Run the API
+
+  `make build`
+
+  `make run`
 
 
 Let's GOOOOOOO 🚀🚀🚀🚀
