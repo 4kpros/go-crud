@@ -42,7 +42,7 @@ git clone https://github.com/your-username/go-api.git
 ```
 
 ```go
-cd go-api
+cd go-api/
 ```
 
 The entry point of the project is `cmd/` folder. In this folder the is a `main.go` file.
