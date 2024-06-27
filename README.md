@@ -25,7 +25,7 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
 # To get started with the API, follow these steps:
 
-1. Requirements
+### 1. Requirements
 
 ```Redis server```
 
