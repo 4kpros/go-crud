@@ -45,7 +45,7 @@ Let's GOOOOOOO 🚀🚀🚀🚀
 
 # Next features
 
-- [x] \(Optional) Auth: Login(Email, Phone number, Provider['Google', 'Facebook']), Register(Email, Phone number), Activate account, Reset password.
+- [ 🖋️] \(Pending) Auth: Login(Email, Phone number, Provider['Google', 'Facebook']), Register(Email, Phone number), Activate account, Reset password.
 
 - [ ] Users
 
