@@ -1,10 +1,10 @@
-package utils
+package helpers
 
 import "go.uber.org/zap"
 
 var Logger *zap.Logger
 
-func InitializeLogger() {
+func SetupLogger() {
 	Logger, _ = zap.NewProduction()
 	defer Logger.Sync()
 }

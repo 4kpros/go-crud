@@ -19,15 +19,15 @@ func NewOthersExpiresDate() *time.Time {
 
 func NewExpiresDate(stayConnected bool) (date *time.Time) {
 	if stayConnected {
-		tempDate := time.Now().Add(time.Hour * time.Duration(24*config.AppEnv.JwtExpiresOthers))
+		tempDate := time.Now().Add(time.Hour * time.Duration(24*config.AppEnv.JwtExpiresStayConnected))
 		return &tempDate
 	}
-	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpiresOthers))
+	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpires))
 	return &tempDate
 }
 
 // Encrypt JWT
-func EncryptJWTToken(value *types.JwtToken) (tokenStr string, err error) {
+func EncryptJWTToken(value *types.JwtToken, privateKey string) (tokenStr string, err error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodES512, jwt.MapClaims{
 		"iss":    "go-api",
 		"id":     value.UserId,
@@ -36,34 +36,29 @@ func EncryptJWTToken(value *types.JwtToken) (tokenStr string, err error) {
 		"exp":    value.Expires.Unix(),
 		"iat":    time.Now().Unix(),
 	})
-	fmt.Printf("\nUnsigned key ==> %s \n", config.AppPem.JwtPrivateKey)
 	var signedKey *ecdsa.PrivateKey
-	signedKey, err = jwt.ParseECPrivateKeyFromPEM([]byte(config.AppPem.JwtPrivateKey))
+	signedKey, err = jwt.ParseECPrivateKeyFromPEM([]byte(privateKey))
 	if err != nil {
-		fmt.Printf("\nEncrypt token error 1 ==> %s \n", err)
 		return
 	}
-	fmt.Printf("\nSigned key ==> %s \n", signedKey)
 	tokenStr, err = token.SignedString(signedKey)
 	if err != nil {
-		fmt.Printf("\nEncrypt token error 2 ==> %s \n", err)
 		return
 	}
-	fmt.Printf("\nEncrypt token success ==> %s \n", tokenStr)
 	return
 }
 
 // Decrypt JWT
-func DecryptJWTToken(tokenStr string) (*types.JwtToken, error) {
-	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error) {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (signedKey interface{}, err error) {
 		// Validate the alg
 		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
 			message := fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])
 			fmt.Printf("\nERROR ==> %s \n\n", message)
 			return nil, fmt.Errorf("%s", message)
 		}
-		publicKey, errParsing := jwt.ParseECPublicKeyFromPEM([]byte(config.AppPem.JwtPrivateKey))
-		return publicKey, errParsing
+		signedKey, err = jwt.ParseECPublicKeyFromPEM([]byte(publicKey))
+		return
 	})
 
 	if err != nil {
@@ -86,8 +81,8 @@ func DecryptJWTToken(tokenStr string) (*types.JwtToken, error) {
 }
 
 // Verify that JWT token is valid
-func VerifyJWTToken(tokenStr string) bool {
-	decryptedToken, err := DecryptJWTToken(tokenStr)
+func VerifyJWTToken(tokenStr string, publicKey string) bool {
+	decryptedToken, err := DecryptJWTToken(tokenStr, publicKey)
 	if err != nil {
 		fmt.Printf("\nDecryption of [%s] error ==> %s\n\n", tokenStr, err)
 		return false

@@ -1,8 +1,8 @@
 package config
 
 import (
-	"fmt"
-	"os"
+	"github.com/4kpros/go-api/common/helpers"
+	"go.uber.org/zap"
 )
 
 type Pem struct {
@@ -13,18 +13,33 @@ type Pem struct {
 var AppPem = &Pem{}
 
 func LoadPem() (err error) {
-	AppPem.JwtPrivateKey, err = ReadFileToString("jwt_private.pem")
-	AppPem.JwtPublicKey, err = ReadFileToString("jwt_public.pem")
-	return
-}
-
-func ReadFileToString(path string) (contentStr string, err error) {
-	content, errRead := os.ReadFile(path)
-	if errRead != nil {
-		fmt.Printf("\nERROR ReadFileToString ==> %s", err)
-		err = errRead
-		return
+	var err1, err2 error
+	// JWT private key
+	AppPem.JwtPrivateKey, err1 = helpers.ReadFileToString("jwt_private.pem")
+	if err1 != nil {
+		helpers.Logger.Warn(
+			"Failed to load jwt_private.pem",
+			zap.String("Error", err1.Error()),
+		)
+		err = err1
+	} else {
+		helpers.Logger.Warn(
+			"Pem jwt_private.pem loaded!",
+		)
 	}
-	contentStr = string(content)
+
+	// JWT public key
+	AppPem.JwtPublicKey, err2 = helpers.ReadFileToString("jwt_public.pem")
+	if err2 != nil {
+		helpers.Logger.Warn(
+			"Failed to load jwt_public.pem",
+			zap.String("Error", err2.Error()),
+		)
+		err = err2
+	} else {
+		helpers.Logger.Warn(
+			"Pem jwt_public.pem loaded!",
+		)
+	}
 	return
 }

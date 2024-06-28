@@ -22,5 +22,8 @@ build-all:
 	@make build
 	@make run
 
+swagger:
+	@swag init -g ./cmd/main.go -o ./docs
+
 test:
 	@go test -v ./...

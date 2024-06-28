@@ -7,6 +7,7 @@ import (
 
 	"github.com/4kpros/go-api/common/types"
 	"github.com/4kpros/go-api/common/utils"
+	"github.com/4kpros/go-api/config"
 	"github.com/4kpros/go-api/features/auth/data/request"
 	modelNewUser "github.com/4kpros/go-api/features/auth/model"
 	"github.com/4kpros/go-api/features/auth/repository"
@@ -38,11 +39,14 @@ func (service *AuthServiceImpl) SignInWithEmail(reqData *request.SignInWithEmail
 		errCode = http.StatusForbidden
 		err = fmt.Errorf("%s", message)
 		var expires = utils.NewOthersExpiresDate()
-		jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-			UserId:  newUserFound.ID,
-			Expires: *expires,
-			Device:  "NA",
-		})
+		jwt, errJwt := utils.EncryptJWTToken(
+			&types.JwtToken{
+				UserId:  newUserFound.ID,
+				Expires: *expires,
+				Device:  "NA",
+			},
+			config.AppPem.JwtPrivateKey,
+		)
 		if errJwt != nil {
 			errCode = http.StatusInternalServerError
 			err = errJwt
@@ -53,11 +57,14 @@ func (service *AuthServiceImpl) SignInWithEmail(reqData *request.SignInWithEmail
 
 	// Generate new token
 	var expires = utils.NewExpiresDate(reqData.StayConnected)
-	jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-		UserId:  newUserFound.ID,
-		Expires: *expires,
-		Device:  "NA",
-	})
+	jwt, errJwt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  newUserFound.ID,
+			Expires: *expires,
+			Device:  "NA",
+		},
+		config.AppPem.JwtPrivateKey,
+	)
 	if errJwt != nil {
 		errCode = http.StatusInternalServerError
 		err = errJwt
@@ -85,11 +92,14 @@ func (service *AuthServiceImpl) SignInWithPhoneNumber(reqData *request.SignInWit
 		errCode = http.StatusForbidden
 		err = fmt.Errorf("%s", message)
 		var expires = utils.NewOthersExpiresDate()
-		jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-			UserId:  newUserFound.ID,
-			Expires: *expires,
-			Device:  "NA",
-		})
+		jwt, errJwt := utils.EncryptJWTToken(
+			&types.JwtToken{
+				UserId:  newUserFound.ID,
+				Expires: *expires,
+				Device:  "NA",
+			},
+			config.AppPem.JwtPrivateKey,
+		)
 		if errJwt != nil {
 			errCode = http.StatusInternalServerError
 			err = errJwt
@@ -100,11 +110,13 @@ func (service *AuthServiceImpl) SignInWithPhoneNumber(reqData *request.SignInWit
 
 	// Generate new token
 	var expires = utils.NewExpiresDate(reqData.StayConnected)
-	jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-		UserId:  newUserFound.ID,
-		Expires: *expires,
-		Device:  "NA",
-	})
+	jwt, errJwt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  newUserFound.ID,
+			Expires: *expires,
+			Device:  "NA",
+		},
+		config.AppPem.JwtPrivateKey)
 	if errJwt != nil {
 		errCode = http.StatusInternalServerError
 		err = errJwt
@@ -146,11 +158,14 @@ func (service *AuthServiceImpl) SignInWithProvider(reqData *request.SignInWithPr
 
 	// Generate new token
 	var expires = utils.NewExpiresDate(true)
-	jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-		UserId:  newUserFound.ID,
-		Expires: *expires,
-		Device:  "NA",
-	})
+	jwt, errJwt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  newUserFound.ID,
+			Expires: *expires,
+			Device:  "NA",
+		},
+		config.AppPem.JwtPrivateKey,
+	)
 	if errJwt != nil {
 		errCode = http.StatusInternalServerError
 		err = errJwt
@@ -245,11 +260,14 @@ func (service *AuthServiceImpl) SignUpWithEmail(reqData *request.SignUpWithEmail
 
 	// Generate new token
 	var expires = utils.NewOthersExpiresDate()
-	jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-		UserId:  newUser.ID,
-		Expires: *expires,
-		Device:  "NA",
-	})
+	jwt, errJwt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  newUser.ID,
+			Expires: *expires,
+			Device:  "NA",
+		},
+		config.AppPem.JwtPrivateKey,
+	)
 	if errJwt != nil {
 		errCode = http.StatusInternalServerError
 		err = errJwt
@@ -285,11 +303,14 @@ func (service *AuthServiceImpl) SignUpWithPhoneNumber(reqData *request.SignUpWit
 
 	// Generate new token
 	var expires = utils.NewOthersExpiresDate()
-	jwt, errJwt := utils.EncryptJWTToken(&types.JwtToken{
-		UserId:  newUser.ID,
-		Expires: *expires,
-		Device:  "NA",
-	})
+	jwt, errJwt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  newUser.ID,
+			Expires: *expires,
+			Device:  "NA",
+		},
+		config.AppPem.JwtPrivateKey,
+	)
 	if errJwt != nil {
 		errCode = http.StatusInternalServerError
 		err = errJwt
@@ -301,7 +322,7 @@ func (service *AuthServiceImpl) SignUpWithPhoneNumber(reqData *request.SignUpWit
 
 func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccountRequest) (activatedAt *time.Time, errCode int, err error) {
 	// Check if the token is valid and extract userId
-	jwt, errJwt := utils.DecryptJWTToken(reqData.Token)
+	jwt, errJwt := utils.DecryptJWTToken(reqData.Token, config.AppPem.JwtPublicKey)
 	if errJwt != nil || jwt == nil {
 		message := "Invalid token! Please enter valid information."
 		errCode = http.StatusNotFound

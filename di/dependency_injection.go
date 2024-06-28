@@ -2,6 +2,7 @@ package di
 
 import (
 	"github.com/4kpros/go-api/config"
+	"github.com/4kpros/go-api/docs"
 	authController "github.com/4kpros/go-api/features/auth/controller"
 	authRepository "github.com/4kpros/go-api/features/auth/repository"
 	authRouter "github.com/4kpros/go-api/features/auth/router"
@@ -11,6 +12,8 @@ import (
 	userRouter "github.com/4kpros/go-api/features/user/router"
 	userService "github.com/4kpros/go-api/features/user/service"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func InitRepositories() (
@@ -57,6 +60,10 @@ func InitRouters(
 	authContr *authController.AuthController,
 	userContr *userController.UserController,
 ) {
+	// Add swagger
+	docs.SwaggerInfo.BasePath = config.AppEnv.ApiGroup
+	routerGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	authRouter.SetupAuthRouter(routerGroup, authContr)
 	userRouter.SetupUserRouter(routerGroup, userContr)
 }
