@@ -43,7 +43,7 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	}
 
 	// Generate token
-	validateAccountToken, accessToken, refreshToken, accessExpires, refreshExpires, errCode, err := controller.Service.SignInWithEmail(&requestData)
+	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignInWithEmail(&requestData)
 	if err != nil {
 		if errCode == http.StatusForbidden || len(validateAccountToken) > 0 {
 			c.JSON(http.StatusForbidden, types.WebSuccessResponse{
@@ -60,10 +60,8 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 
 	c.JSON(http.StatusOK, types.WebSuccessResponse{
 		Data: response.SignInResponse{
-			AccessToken:    accessToken,
-			RefreshToken:   refreshToken,
-			AccessExpires:  accessExpires,
-			RefreshExpires: refreshExpires,
+			AccessToken: accessToken,
+			Expires:     *accessExpires,
 		},
 	})
 }
@@ -91,7 +89,7 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Generate token
-	validateAccountToken, accessToken, refreshToken, accessExpires, refreshExpires, errCode, err := controller.Service.SignInWithPhoneNumber(&requestData)
+	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignInWithPhoneNumber(&requestData)
 	if err != nil {
 		if errCode == http.StatusForbidden || len(validateAccountToken) > 0 {
 			c.JSON(http.StatusForbidden, types.WebSuccessResponse{
@@ -108,10 +106,8 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 
 	c.JSON(http.StatusOK, types.WebSuccessResponse{
 		Data: response.SignInResponse{
-			AccessToken:    accessToken,
-			RefreshToken:   refreshToken,
-			AccessExpires:  accessExpires,
-			RefreshExpires: refreshExpires,
+			AccessToken: accessToken,
+			Expires:     *accessExpires,
 		},
 	})
 }
@@ -122,7 +118,7 @@ func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 	c.Bind(&requestData)
 
 	// Generate token
-	accessToken, refreshToken, accessExpires, refreshExpires, errCode, err := controller.Service.SignInWithProvider(&requestData)
+	accessToken, accessExpires, errCode, err := controller.Service.SignInWithProvider(&requestData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
@@ -130,10 +126,8 @@ func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 
 	c.JSON(http.StatusOK, types.WebSuccessResponse{
 		Data: response.SignInResponse{
-			AccessToken:    accessToken,
-			RefreshToken:   refreshToken,
-			AccessExpires:  accessExpires,
-			RefreshExpires: refreshExpires,
+			AccessToken: accessToken,
+			Expires:     *accessExpires,
 		},
 	})
 }
@@ -145,12 +139,12 @@ func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 	isEmailValid := utils.IsEmailValid(requestData.Email)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(requestData.Password)
 	if !isEmailValid && !isPasswordValid {
-		message := "Invalid email and password! Please enter valid email address and password. Password missing " + missingPasswordChars
+		message := "Invalid email and password! Please enter valid information. Password missing " + missingPasswordChars
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isEmailValid {
-		message := "Invalid email! Please enter valid email address."
+		message := "Invalid email! Please enter valid information."
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
@@ -183,12 +177,12 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 	isPhoneNumberValid := utils.IsPhoneNumberValid(requestData.PhoneNumber)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(requestData.Password)
 	if !isPhoneNumberValid && !isPasswordValid {
-		message := "Invalid phone number and password! Please enter valid phone number and password. Password missing " + missingPasswordChars
+		message := "Invalid phone number and password! Please enter valid information. Password missing " + missingPasswordChars
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
 	if !isPhoneNumberValid {
-		message := "Invalid email! Please enter valid phone number."
+		message := "Invalid phone number! Please enter valid information."
 		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
 		return
 	}
@@ -210,6 +204,84 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 		Data: response.SignUpResponse{
 			Token:   token,
 			Message: "Account created! Please activate your account to start using your services.",
+		},
+	})
+}
+
+func (controller *AuthController) AddNewUserWithEmail(c *gin.Context) {
+	// Get data of req body
+	var requestData request.AddNewUserWithEmailRequest
+	c.Bind(&requestData)
+	isEmailValid := utils.IsEmailValid(requestData.Email)
+	isRoleValid := utils.IsRoleValid(requestData.Role)
+	if !isEmailValid && !isRoleValid {
+		message := "Invalid email and role! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+	if !isEmailValid {
+		message := "Invalid email! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+	if !isRoleValid {
+		message := "Invalid email! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+
+	// Create new user with random password
+	password, errCode, err := controller.Service.AddNewUserWithEmail(&requestData)
+	if err != nil {
+		c.AbortWithError(errCode, err)
+		return
+	}
+
+	// Return resp
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: response.AddNewUserWithEmailResponse{
+			Email:    requestData.Email,
+			Password: password,
+			Role:     requestData.Role,
+		},
+	})
+}
+
+func (controller *AuthController) AddNewUserWithPhoneNumber(c *gin.Context) {
+	// Get data of req body
+	var requestData request.AddNewUserWithPhoneNumberRequest
+	c.Bind(&requestData)
+	isPhoneNumberValid := utils.IsPhoneNumberValid(requestData.PhoneNumber)
+	isRoleValid := utils.IsRoleValid(requestData.Role)
+	if !isPhoneNumberValid && !isRoleValid {
+		message := "Invalid phone number and role! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+	if !isPhoneNumberValid {
+		message := "Invalid phone number! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+	if !isRoleValid {
+		message := "Invalid phone role! Please enter valid information."
+		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("%s", message))
+		return
+	}
+
+	// Create new user with random password
+	password, errCode, err := controller.Service.AddNewUserWithPhoneNumber(&requestData)
+	if err != nil {
+		c.AbortWithError(errCode, err)
+		return
+	}
+
+	// Return resp
+	c.JSON(http.StatusOK, types.WebSuccessResponse{
+		Data: response.AddNewUserWithPhoneNumberResponse{
+			PhoneNumber: requestData.PhoneNumber,
+			Password:    password,
+			Role:        requestData.Role,
 		},
 	})
 }

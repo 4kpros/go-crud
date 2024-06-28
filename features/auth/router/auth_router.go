@@ -30,4 +30,8 @@ func SetupAuthRouter(
 	router.POST(group, "/reset-password/init", controller.ResetPasswordInit, requireAuth)
 	router.POST(group, "/reset-password/code", controller.ResetPasswordCode, requireAuth)
 	router.POST(group, "/reset-password/new-password", controller.ResetPasswordNewPassword, requireAuth)
+
+	// Reset password
+	router.POST(group, "/add-new-user-with-email", controller.AddNewUserWithEmail, requireAuth)
+	router.POST(group, "/add-new-user-with-phone", controller.AddNewUserWithPhoneNumber, requireAuth)
 }

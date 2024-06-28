@@ -6,6 +6,10 @@ import (
 	"unicode"
 )
 
+func IsRoleValid(role string) bool {
+	return true
+}
+
 func IsProviderValid(provider string, token string) bool {
 	return true
 }

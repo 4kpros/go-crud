@@ -11,7 +11,7 @@ type WebSuccessResponse struct {
 }
 
 type WebSuccessPaginatedResponse struct {
-	Data       any        `json:"data"`
 	Filter     Filter     `json:"filter"`
 	Pagination Pagination `json:"pagination"`
+	Data       any        `json:"data"`
 }

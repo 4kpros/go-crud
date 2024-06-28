@@ -16,5 +16,14 @@ run-migrate:
 watch-migrate:
 	@CompileDaemon -directory="services" -build="make -C ../ build-migrate" -command="make ../ run-migrate"
 
+build-all:
+	@make build-migrate
+	@make run-migrate
+	@make build
+	@make run
+
+swagger:
+	@swag init -g ./cmd/main.go -o ./docs
+
 test:
 	@go test -v ./...

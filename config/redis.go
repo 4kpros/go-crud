@@ -11,12 +11,12 @@ var RedisClient *redis.Client
 var ctx = context.Background()
 
 func ConnectToRedis() (err error) {
-	addr := fmt.Sprintf("%s:%d", AppEnvConfig.RedisHost, AppEnvConfig.RedisPort)
+	addr := fmt.Sprintf("%s:%d", AppEnv.RedisHost, AppEnv.RedisPort)
 	RedisClient = redis.NewClient(&redis.Options{
 		Addr:     addr,
-		Username: AppEnvConfig.RedisUserName,
-		Password: AppEnvConfig.RedisPassword,
-		DB:       AppEnvConfig.RedisDatabase,
+		Username: AppEnv.RedisUserName,
+		Password: AppEnv.RedisPassword,
+		DB:       AppEnv.RedisDatabase,
 	})
 
 	return

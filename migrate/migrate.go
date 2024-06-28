@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/4kpros/go-api/common/utils"
+	"github.com/4kpros/go-api/common/helpers"
 	"github.com/4kpros/go-api/config"
 	"github.com/4kpros/go-api/features/auth"
 	"github.com/4kpros/go-api/features/user"
@@ -10,33 +10,32 @@ import (
 
 func init() {
 	// Setup logger
-	utils.InitializeLogger()
+	helpers.SetupLogger()
 
 	// Load env variables
-	errAppEnv := config.LoadAppEnvConfig(".")
+	errAppEnv := config.LoadAppEnv(".")
 	if errAppEnv != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to load app ENV vars!",
 			zap.String("Error", errAppEnv.Error()),
 		)
 		return
 	}
-	utils.Logger.Warn(
+	helpers.Logger.Warn(
 		"App ENV variables loaded!",
 	)
 
 	// Connect to postgres database
 	errPostgresDB := config.ConnectToPostgresDB()
 	if errPostgresDB != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to connect to Postgres database!",
 			zap.String("Error", errPostgresDB.Error()),
 		)
 		return
 	}
-	utils.Logger.Info(
-		"Connected to Postgres database: ",
-		zap.String("DB name", config.DB.Name()),
+	helpers.Logger.Info(
+		"Connected to Postgres!",
 	)
 }
 

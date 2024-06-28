@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/4kpros/go-api/common/helpers"
 	"github.com/4kpros/go-api/common/middleware"
 	"github.com/4kpros/go-api/common/utils"
 	"github.com/4kpros/go-api/config"
@@ -14,88 +15,90 @@ import (
 
 func init() {
 	// Setup logger
-	utils.InitializeLogger()
+	helpers.SetupLogger()
 
 	// Load env variables
-	errAppEnv := config.LoadAppEnvConfig(".")
+	errAppEnv := config.LoadAppEnv(".")
 	if errAppEnv != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to load app ENV vars!",
 			zap.String("Error", errAppEnv.Error()),
 		)
 		return
 	}
-	utils.Logger.Warn(
+	helpers.Logger.Warn(
 		"App ENV variables loaded!",
-	)
-	errCryptoEnv := config.LoadCryptoEnvConfig(".")
-	if errCryptoEnv != nil {
-		utils.Logger.Warn(
-			"Failed to load crypto ENV vars!",
-			zap.String("Error", errCryptoEnv.Error()),
-		)
-		return
-	}
-	utils.Logger.Warn(
-		"Crypto ENV variables loaded!",
 	)
 
 	// Setup argon params for crypto
 	_, errArgonCryptoParamsUtils := utils.EncryptWithArgon2id("")
 	if errArgonCryptoParamsUtils != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to setup argon2id params!",
 			zap.String("Error", errArgonCryptoParamsUtils.Error()),
 		)
 		return
 	}
-	utils.Logger.Warn(
+	helpers.Logger.Warn(
 		"Argon2id crypto set ok!",
 	)
 
 	// Connect to postgres database
 	errPostgresDB := config.ConnectToPostgresDB()
 	if errPostgresDB != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to connect to Postgres database!",
 			zap.String("Error", errPostgresDB.Error()),
 		)
 		return
 	}
-	utils.Logger.Info(
+	helpers.Logger.Info(
 		"Connected to Postgres!",
 	)
 
 	// Connect to memcache
 	errMemcache := config.ConnectToMemcache()
 	if errMemcache != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to connect to Memcache!",
 			zap.String("Error", errMemcache.Error()),
 		)
 		return
 	}
-	utils.Logger.Info(
+	helpers.Logger.Info(
 		"Connected to Memcache!",
 	)
 
 	// Connect to redis
 	errRedis := config.ConnectToRedis()
 	if errRedis != nil {
-		utils.Logger.Warn(
+		helpers.Logger.Warn(
 			"Failed to connect to Redis!",
 			zap.String("Error", errRedis.Error()),
 		)
 		return
 	}
-	utils.Logger.Info(
+	helpers.Logger.Info(
 		"Connected to Redis!",
+	)
+
+	// Load pem
+	errPem := config.LoadPem()
+	if errPem != nil {
+		helpers.Logger.Warn(
+			"Failed to load all pem files!",
+			zap.String("Error", errRedis.Error()),
+		)
+		return
+	}
+	helpers.Logger.Info(
+		"All pem files loaded!",
 	)
 }
 
 func main() {
 	// Setup gin for your API
-	gin.SetMode(config.AppEnvConfig.GinMode)
+	gin.SetMode(config.AppEnv.GinMode)
 	gin.ForceConsoleColor()
 	engine := gin.Default()
 	engine.HandleMethodNotAllowed = true
@@ -103,7 +106,7 @@ func main() {
 	engine.SetTrustedProxies([]string{"127.0.0.1"})
 	engine.Use(middleware.ErrorsHandler())
 
-	apiGroup := engine.Group(config.AppEnvConfig.ApiGroup)
+	apiGroup := engine.Group(config.AppEnv.ApiGroup)
 
 	// Inject Dependencies
 	authRepo, userRepo :=
@@ -121,6 +124,6 @@ func main() {
 	) // Routers
 
 	// Run gin
-	formattedPort := fmt.Sprintf(":%d", config.AppEnvConfig.ServerPort)
+	formattedPort := fmt.Sprintf(":%d", config.AppEnv.ApiPort)
 	engine.Run(formattedPort)
 }

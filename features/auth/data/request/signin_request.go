@@ -1,13 +1,15 @@
 package request
 
 type SignInWithEmailRequest struct {
-	Email    string
-	Password string
+	Email         string
+	Password      string
+	StayConnected bool
 }
 
 type SignInWithPhoneNumberRequest struct {
-	PhoneNumber int
-	Password    string
+	PhoneNumber   int
+	Password      string
+	StayConnected bool
 }
 
 type SignInWithProviderRequest struct {
