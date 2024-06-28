@@ -13,7 +13,7 @@ func init() {
 	utils.InitializeLogger()
 
 	// Load env variables
-	errAppEnv := config.LoadAppEnvConfig(".")
+	errAppEnv := config.LoadAppEnv(".")
 	if errAppEnv != nil {
 		utils.Logger.Warn(
 			"Failed to load app ENV vars!",
@@ -35,8 +35,7 @@ func init() {
 		return
 	}
 	utils.Logger.Info(
-		"Connected to Postgres database: ",
-		zap.String("DB name", config.DB.Name()),
+		"Connected to Postgres!",
 	)
 }
 

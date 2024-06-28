@@ -17,7 +17,7 @@ func init() {
 	utils.InitializeLogger()
 
 	// Load env variables
-	errAppEnv := config.LoadAppEnvConfig(".")
+	errAppEnv := config.LoadAppEnv(".")
 	if errAppEnv != nil {
 		utils.Logger.Warn(
 			"Failed to load app ENV vars!",
@@ -27,17 +27,6 @@ func init() {
 	}
 	utils.Logger.Warn(
 		"App ENV variables loaded!",
-	)
-	errCryptoEnv := config.LoadCryptoEnvConfig(".")
-	if errCryptoEnv != nil {
-		utils.Logger.Warn(
-			"Failed to load crypto ENV vars!",
-			zap.String("Error", errCryptoEnv.Error()),
-		)
-		return
-	}
-	utils.Logger.Warn(
-		"Crypto ENV variables loaded!",
 	)
 
 	// Setup argon params for crypto
@@ -91,11 +80,24 @@ func init() {
 	utils.Logger.Info(
 		"Connected to Redis!",
 	)
+
+	// Load pem
+	errPem := config.LoadPem()
+	if errPem != nil {
+		utils.Logger.Warn(
+			"Failed to load pem files!",
+			zap.String("Error", errRedis.Error()),
+		)
+		return
+	}
+	utils.Logger.Info(
+		"All pem files loaded!",
+	)
 }
 
 func main() {
 	// Setup gin for your API
-	gin.SetMode(config.AppEnvConfig.GinMode)
+	gin.SetMode(config.AppEnv.GinMode)
 	gin.ForceConsoleColor()
 	engine := gin.Default()
 	engine.HandleMethodNotAllowed = true
@@ -103,7 +105,7 @@ func main() {
 	engine.SetTrustedProxies([]string{"127.0.0.1"})
 	engine.Use(middleware.ErrorsHandler())
 
-	apiGroup := engine.Group(config.AppEnvConfig.ApiGroup)
+	apiGroup := engine.Group(config.AppEnv.ApiGroup)
 
 	// Inject Dependencies
 	authRepo, userRepo :=
@@ -121,6 +123,6 @@ func main() {
 	) // Routers
 
 	// Run gin
-	formattedPort := fmt.Sprintf(":%d", config.AppEnvConfig.ServerPort)
+	formattedPort := fmt.Sprintf(":%d", config.AppEnv.ApiPort)
 	engine.Run(formattedPort)
 }

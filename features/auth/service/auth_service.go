@@ -7,9 +7,12 @@ import (
 )
 
 type AuthService interface {
-	SignInWithEmail(reqData *request.SignInWithEmailRequest) (validateAccountToken string, accessToken string, refreshToken string, accessExpires string, refreshExpires string, errCode int, err error)
-	SignInWithPhoneNumber(reqData *request.SignInWithPhoneNumberRequest) (validateAccountToken string, accessToken string, refreshToken string, accessExpires string, refreshExpires string, errCode int, err error)
-	SignInWithProvider(reqData *request.SignInWithProviderRequest) (accessToken string, refreshToken string, accessExpires string, refreshExpires string, errCode int, err error)
+	SignInWithEmail(reqData *request.SignInWithEmailRequest) (validateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error)
+	SignInWithPhoneNumber(reqData *request.SignInWithPhoneNumberRequest) (validateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error)
+	SignInWithProvider(reqData *request.SignInWithProviderRequest) (accessToken string, accessExpires *time.Time, errCode int, err error)
+
+	AddNewUserWithEmail(reqData *request.AddNewUserWithEmailRequest) (password string, errCode int, err error)
+	AddNewUserWithPhoneNumber(reqData *request.AddNewUserWithPhoneNumberRequest) (password string, errCode int, err error)
 
 	SignUpWithEmail(reqData *request.SignUpWithEmailRequest) (token string, errCode int, err error)
 	SignUpWithPhoneNumber(reqData *request.SignUpWithPhoneNumberRequest) (token string, errCode int, err error)

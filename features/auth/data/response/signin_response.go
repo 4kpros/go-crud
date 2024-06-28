@@ -1,13 +1,12 @@
 package response
 
+import "time"
+
 type SignInResponse struct {
-	AccessToken    string `json:"accessToken"`
-	RefreshToken   string `json:"refreshToken"`
-	AccessExpires  string `json:"accessExpires"`
-	RefreshExpires string `json:"refreshExpires"`
-	MaxAge         int    `json:"maxAge"`
+	AccessToken string    `json:"accessToken"`
+	Expires     time.Time `json:"expires"`
 }
 
 type SignInResponse2fa struct {
-	Token string `json:"accessToken"`
+	Token string `json:"token"`
 }

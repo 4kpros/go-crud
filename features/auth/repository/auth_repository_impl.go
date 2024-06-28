@@ -21,7 +21,7 @@ func (repository *AuthRepositoryImpl) Create(user *model.NewUser) error {
 	return result.Error
 }
 
-func (repository *AuthRepositoryImpl) CreateActivatedUser(user *userModel.User) error {
+func (repository *AuthRepositoryImpl) CreateUserAccountDetails(user *userModel.User) error {
 	result := repository.Db.Create(user)
 	return result.Error
 }

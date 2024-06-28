@@ -9,9 +9,9 @@ import (
 var Memcache *memcache.Client
 
 func ConnectToMemcache() (err error) {
-	servers := make([]string, AppEnvConfig.MemcacheServersCount)
-	for i := 0; i < AppEnvConfig.MemcacheServersCount; i++ {
-		servers[i] = fmt.Sprintf("%s%d:%d", AppEnvConfig.MemcacheHostRange, i+1, AppEnvConfig.MemcacheInitialPort+i)
+	servers := make([]string, AppEnv.MemcacheServersCount)
+	for i := 0; i < AppEnv.MemcacheServersCount; i++ {
+		servers[i] = fmt.Sprintf("%s%d:%d", AppEnv.MemcacheHostRange, i+1, AppEnv.MemcacheInitialPort+i)
 	}
 
 	Memcache = memcache.New(servers...)

@@ -4,37 +4,41 @@ import (
 	"github.com/spf13/viper"
 )
 
-type AppConfig struct {
-	ServerPort int `mapstructure:"PORT"`
+type Env struct {
+	// API config
+	ApiPort         int    `mapstructure:"API_PORT"`
+	ApiKey          string `mapstructure:"API_KEY"`
+	ApiGroup        string `mapstructure:"API_GROUP"`
+	GinMode         string `mapstructure:"GIN_MODE"`
+	AllowedHostsStr string `mapstructure:"ALLOWED_HOSTS"`
 
-	ApiKey   string `mapstructure:"API_KEY"`
-	ApiGroup string `mapstructure:"API_GROUP"`
-
-	GinMode string `mapstructure:"GIN_MODE"` // debug, release
-
+	// Postgres database
 	PostGresHost     string `mapstructure:"POSTGRES_HOST"`
-	PostGresPort     string `mapstructure:"POSTGRES_PORT"`
+	PostGresPort     int    `mapstructure:"POSTGRES_PORT"`
 	PostGresUserName string `mapstructure:"POSTGRES_USERNAME"`
 	PostGresPassword string `mapstructure:"POSTGRES_PASSWORD"`
 	PostGresDatabase string `mapstructure:"POSTGRES_DATABASE"`
 	PostGresSslMode  string `mapstructure:"POSTGRES_SSL_MODE"`
 	PostGresTimeZone string `mapstructure:"POSTGRES_TIME_ZONE"`
 
-	JwtTokenSecret    string `mapstructure:"JWT_TOKEN_SECRET_"`
-	JwtTokenMaxAge    string `mapstructure:"JWT_TOKEN_MAX_AGE_"`
-	JwtTokenExpiredIn string `mapstructure:"JWT_TOKEN_EXPIRED_IN"`
+	// JWT
+	JwtExpires              int `mapstructure:"JWT_EXPIRES"`
+	JwtExpiresStayConnected int `mapstructure:"JWT_EXPIRES_STAY_CONNECTED"`
+	JwtExpiresOthers        int `mapstructure:"JWT_EXPIRES_OTHERS"`
 
+	// Redis for fast key-value database
 	RedisHost     string `mapstructure:"REDIS_HOST"`
 	RedisPort     int    `mapstructure:"REDIS_PORT"`
 	RedisUserName string `mapstructure:"REDIS_USERNAME"`
 	RedisPassword string `mapstructure:"REDIS_PASSWORD"`
 	RedisDatabase int    `mapstructure:"REDIS_DATABASE"`
 
+	// Memcache for fast key-value database
 	MemcacheServersCount int    `mapstructure:"MEMCACHE_SERVERS_COUNT"`
 	MemcacheHostRange    string `mapstructure:"MEMCACHE_HOST_RANGE"`
 	MemcacheInitialPort  int    `mapstructure:"MEMCACHE_INITIAL_PORT"`
-}
-type CryptoConfig struct {
+
+	// Crypto Argon2id for passwords
 	ArgonMemoryLeft  int `mapstructure:"ARGON_PARAM_MEMORY_L"`
 	ArgonMemoryRight int `mapstructure:"ARGON_PARAM_MEMORY_R"`
 	ArgonIterations  int `mapstructure:"ARGON_PARAM_ITERATIONS"`
@@ -42,10 +46,9 @@ type CryptoConfig struct {
 	ArgonKeyLength   int `mapstructure:"ARGON_PARAM_KEY_LENGTH"`
 }
 
-var AppEnvConfig AppConfig
-var CryptoEnvConfig CryptoConfig
+var AppEnv = &Env{}
 
-func LoadAppEnvConfig(path string) (err error) {
+func LoadAppEnv(path string) (err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
@@ -54,21 +57,7 @@ func LoadAppEnvConfig(path string) (err error) {
 
 	err = viper.ReadInConfig()
 	if err == nil {
-		err = viper.Unmarshal(&AppEnvConfig)
-	}
-	return
-}
-
-func LoadCryptoEnvConfig(path string) (err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("crypto")
-	viper.SetConfigType("env")
-
-	viper.AutomaticEnv()
-
-	err = viper.ReadInConfig()
-	if err == nil {
-		err = viper.Unmarshal(&CryptoEnvConfig)
+		err = viper.Unmarshal(AppEnv)
 	}
 	return
 }
