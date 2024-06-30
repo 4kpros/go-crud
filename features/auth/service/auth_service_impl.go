@@ -58,19 +58,20 @@ func (service *AuthServiceImpl) SignIn(deviceName string, reqData *request.SignI
 		if errEncrypt != nil || newJwt == nil {
 			errCode = http.StatusInternalServerError
 			err = errEncrypt
+			return
 		}
 		activateAccountToken = tokenStr
+		errMessage = "Account found but not activated! Please activate your account before."
+		errCode = http.StatusForbidden
+		err = fmt.Errorf("%s", errMessage)
 
-		// Send code
+		// Send code to email or phone number
 		if len(reqData.Email) > 0 {
 			// TODO send code to email
 		} else {
 			// TODO send code to phone number
 		}
 
-		errMessage = "Account found but not activated! Please activate your account before."
-		errCode = http.StatusForbidden
-		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
@@ -119,6 +120,7 @@ func (service *AuthServiceImpl) SignInWithProvider(deviceName string, reqData *r
 			Provider:       reqData.Provider,
 			ProviderUserId: providerUserId,
 		}
+		user.Role = types.RoleCustomer
 		err = service.Repository.Create(user)
 		if err != nil {
 			errCode = http.StatusInternalServerError
@@ -175,6 +177,7 @@ func (service *AuthServiceImpl) SignUp(reqData *request.SignUpRequest) (token st
 	userFound.Email = reqData.Email
 	userFound.PhoneNumber = reqData.PhoneNumber
 	userFound.Password = reqData.Password
+	userFound.Role = types.RoleCustomer
 	err = service.Repository.Create(userFound)
 	if err != nil {
 		errCode = http.StatusInternalServerError
@@ -201,7 +204,7 @@ func (service *AuthServiceImpl) SignUp(reqData *request.SignUpRequest) (token st
 	}
 	token = tokenStr
 
-	// Send code to email
+	// Send code to email or phone number
 	if len(reqData.Email) > 0 {
 		// TODO send code to email
 	} else {
@@ -340,7 +343,7 @@ func (service *AuthServiceImpl) ResetPasswordInit(reqData *request.ResetPassword
 	}
 	token = tokenStr
 
-	// Send code to email
+	// Send code to email or phone number
 	if len(reqData.Email) > 0 {
 		// TODO send code to email
 	} else {

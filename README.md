@@ -92,7 +92,9 @@ http://localhost:3000/api/v1/docs
   - Reset password.
 
 - [ ] Users
-  - Basic CRUD operations for roles `super_admin`   `admin`   `manager`   `manager_assistant`   `driver`   `driver_assistant`   `customer`   `customer_service`
+  - Basic CRUD operations
+
+- [ ] Seller
 
 - [ ] Shops
 
@@ -100,11 +102,11 @@ http://localhost:3000/api/v1/docs
 
 - [ ] Cart
 
+- [ ] Payments
+
 - [ ] Delivery
 
 - [ ] Geo-reference
-
-- [ ] Payments
 
 - [ ] Support
 
