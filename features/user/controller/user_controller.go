@@ -24,11 +24,11 @@ func NewUserController(service service.UserService) *UserController {
 // @Summary Create new user with email - [super-admin]
 // @Accept  json
 // @Produce  json
-// @Param   email body string true "Enter your email"
-// @Param   role body string true "Select role" Enums(super-admin, admin, manager, manager-assist, deliver, customer, customer-service)
+// @Param   payload body request.CreateWithEmailRequest true "Enter your information"
 // @Success 200 {object} response.CreateWithEmailResponse "OK"
-// @Failure 400 {string} string "Invalid email or role!"
-// @Failure 302 {string} string "User with this email already exists!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid email or role!"
+// @Failure 302 {object} types.WebErrorResponse "User with this email already exists!"
+// @Security ApiKey && Bearer
 // @Router /users/email [post]
 func (controller *UserController) CreateWithEmail(c *gin.Context) {
 	// Get data of req body
@@ -46,12 +46,10 @@ func (controller *UserController) CreateWithEmail(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.CreateWithEmailResponse{
-			Email:    reqData.Email,
-			Role:     reqData.Role,
-			Password: password,
-		},
+	c.JSON(http.StatusOK, response.CreateWithEmailResponse{
+		Email:    reqData.Email,
+		Role:     reqData.Role,
+		Password: password,
 	})
 }
 
@@ -59,11 +57,11 @@ func (controller *UserController) CreateWithEmail(c *gin.Context) {
 // @Summary Create new user with phone number - [super-admin]
 // @Accept  json
 // @Produce  json
-// @Param   phoneNumber body int true "Enter your phone number"
-// @Param   role body string true "Select role" Enums(super-admin, admin, manager, manager-assist, deliver, customer, customer-service)
+// @Param   payload body request.CreateWithPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.CreateWithPhoneNumberResponse "OK"
-// @Failure 400 {string} string "Invalid phone number or role!"
-// @Failure 302 {string} string "User with this phone number already exists!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid phone number or role!"
+// @Failure 302 {object} types.WebErrorResponse "User with this phone number already exists!"
+// @Security ApiKey && Bearer
 // @Router /users/phone [post]
 func (controller *UserController) CreateWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
@@ -81,12 +79,10 @@ func (controller *UserController) CreateWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.CreateWithPhoneNumberResponse{
-			PhoneNumber: reqData.PhoneNumber,
-			Role:        reqData.Role,
-			Password:    password,
-		},
+	c.JSON(http.StatusOK, response.CreateWithPhoneNumberResponse{
+		PhoneNumber: reqData.PhoneNumber,
+		Role:        reqData.Role,
+		Password:    password,
 	})
 }
 
@@ -94,14 +90,13 @@ func (controller *UserController) CreateWithPhoneNumber(c *gin.Context) {
 // @Summary Update user
 // @Accept  json
 // @Produce  json
-// @Param   email body string true "Enter your email"
-// @Param   phoneNumber body int true "Enter your phone number"
-// @Param   role body string true "Select role" Enums(super-admin, admin, manager, manager-assist, deliver, customer, customer-service)
+// @Param   payload body model.User true "Enter your information"
 // @Success 200 {object} model.User "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 401 {string} string "Invalid user session!"
-// @Failure 403 {string} string "Not permitted!"
-// @Failure 404 {string} string "User not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey && Bearer
 // @Router /users/{id} [put]
 func (controller *UserController) UpdateUser(c *gin.Context) {
 	// Get data of req body
@@ -116,9 +111,7 @@ func (controller *UserController) UpdateUser(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: user,
-	})
+	c.JSON(http.StatusOK, user)
 }
 
 // @Tags Users
@@ -127,10 +120,11 @@ func (controller *UserController) UpdateUser(c *gin.Context) {
 // @Produce  json
 // @Param   payload body model.UserInfo false "User info model"
 // @Success 200 {object} model.UserInfo "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 401 {string} string "Invalid user session!"
-// @Failure 403 {string} string "Not permitted!"
-// @Failure 404 {string} string "User not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey && Bearer
 // @Router /users/info/{id} [put]
 func (controller *UserController) UpdateUserInfo(c *gin.Context) {
 	// Get data of req body
@@ -145,9 +139,7 @@ func (controller *UserController) UpdateUserInfo(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: userInfo,
-	})
+	c.JSON(http.StatusOK, userInfo)
 }
 
 // @Tags Users
@@ -155,11 +147,12 @@ func (controller *UserController) UpdateUserInfo(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param   id path string true "User id"
-// @Success 200 {string} string "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 401 {string} string "Invalid user session!"
-// @Failure 403 {string} string "Not permitted!"
-// @Failure 404 {string} string "User not found!"
+// @Success 200 {object} types.WebErrorResponse "OK"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey && Bearer
 // @Router /users/{id} [delete]
 func (controller *UserController) Delete(c *gin.Context) {
 	// Get data of req header
@@ -173,21 +166,20 @@ func (controller *UserController) Delete(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: user,
-	})
+	c.JSON(http.StatusOK, user)
 }
 
 // @Tags Users
-// @Summary Update user info
+// @Summary Get user info
 // @Accept  json
 // @Produce  json
 // @Param   id path string true "User id"
-// @Success 200 {string} string "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 401 {string} string "Invalid user session!"
-// @Failure 403 {string} string "Not permitted!"
-// @Failure 404 {string} string "User not found!"
+// @Success 200 {object} model.User "OK"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey && Bearer
 // @Router /users/{id} [get]
 func (controller *UserController) FindById(c *gin.Context) {
 	// Get data of req header
@@ -201,9 +193,7 @@ func (controller *UserController) FindById(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: user,
-	})
+	c.JSON(http.StatusOK, user)
 }
 
 // @Tags Users
@@ -215,9 +205,10 @@ func (controller *UserController) FindById(c *gin.Context) {
 // @Param limit query int false "Page limit"
 // @Param orderBy query string false "Filter order by"
 // @Param sort query string false "Sort asc, desc"
-// @Success 200 {object} string "OK"
-// @Failure 401 {string} string "Invalid user session!"
-// @Failure 403 {string} string "Not permitted!"
+// @Success 200 {object} types.WebSuccessPaginatedResponse "OK"
+// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Security ApiKey && Bearer
 // @Router /users/ [get]
 func (controller *UserController) FindAll(c *gin.Context) {
 	// Get data of req body

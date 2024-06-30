@@ -30,3 +30,8 @@ func SetMemcacheVal(key string, val string) (err error) {
 	err = Memcache.Set(&memcache.Item{Key: key, Value: []byte(val)})
 	return
 }
+
+func DeleteMemcacheVal(key string) (err error) {
+	err = Memcache.Delete(key)
+	return
+}

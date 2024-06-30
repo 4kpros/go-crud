@@ -9,10 +9,8 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "Prosper Abouar",
-            "url": "https://www.github.com/4kpros",
             "email": "prosper.abouar@gmail.com"
         },
         "license": {
@@ -26,6 +24,11 @@ const docTemplate = `{
     "paths": {
         "/auth/activate": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -38,21 +41,12 @@ const docTemplate = `{
                 "summary": "Activate new user account",
                 "parameters": [
                     {
-                        "description": "Enter your token from sign in or sign up",
-                        "name": "token",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Enter your received code",
-                        "name": "code",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest"
                         }
                     }
                 ],
@@ -66,19 +60,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "User account is already activated!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -86,6 +80,11 @@ const docTemplate = `{
         },
         "/auth/reset/code": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -98,21 +97,12 @@ const docTemplate = `{
                 "summary": "Reset password set code",
                 "parameters": [
                     {
-                        "description": "Enter your token",
-                        "name": "token",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Enter your received code",
-                        "name": "code",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest"
                         }
                     }
                 ],
@@ -126,13 +116,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -140,6 +130,11 @@ const docTemplate = `{
         },
         "/auth/reset/init-email": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -152,12 +147,12 @@ const docTemplate = `{
                 "summary": "Reset password  with email init",
                 "parameters": [
                     {
-                        "description": "Enter your email",
-                        "name": "email",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest"
                         }
                     }
                 ],
@@ -171,13 +166,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid email input!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User with email not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -185,6 +180,11 @@ const docTemplate = `{
         },
         "/auth/reset/init-phone": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -197,12 +197,12 @@ const docTemplate = `{
                 "summary": "Reset password with phone number init",
                 "parameters": [
                     {
-                        "description": "Enter your phone number",
-                        "name": "phoneNumber",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest"
                         }
                     }
                 ],
@@ -216,13 +216,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid phone number input!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User with phone number not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -230,6 +230,11 @@ const docTemplate = `{
         },
         "/auth/reset/new-password": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -242,21 +247,12 @@ const docTemplate = `{
                 "summary": "Reset password set new password",
                 "parameters": [
                     {
-                        "description": "Enter your token",
-                        "name": "token",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Enter your new password",
-                        "name": "newPassword",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest"
                         }
                     }
                 ],
@@ -270,13 +266,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token or password input!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -284,6 +280,11 @@ const docTemplate = `{
         },
         "/auth/signin-email": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -296,22 +297,12 @@ const docTemplate = `{
                 "summary": "Sign in user with email",
                 "parameters": [
                     {
-                        "description": "Enter your email",
-                        "name": "email",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "minLength": 8,
-                        "description": "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest"
                         }
                     }
                 ],
@@ -325,19 +316,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Account not activated!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid email or password!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -345,6 +336,11 @@ const docTemplate = `{
         },
         "/auth/signin-phone": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -357,22 +353,12 @@ const docTemplate = `{
                 "summary": "Sign in user with phone number",
                 "parameters": [
                     {
-                        "description": "Enter your phone number",
-                        "name": "phoneNumber",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "minLength": 8,
-                        "description": "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest"
                         }
                     }
                 ],
@@ -386,19 +372,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Account not activated!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid phone number or password!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -406,6 +392,11 @@ const docTemplate = `{
         },
         "/auth/signin-provider": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -418,27 +409,12 @@ const docTemplate = `{
                 "summary": "Sign in user with provider",
                 "parameters": [
                     {
-                        "description": "Enter your provider",
-                        "name": "provider",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string",
-                            "enum": [
-                                "google",
-                                "facebook",
-                                "instagram"
-                            ]
-                        }
-                    },
-                    {
-                        "minLength": 8,
-                        "description": "Enter your token",
-                        "name": "token",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest"
                         }
                     }
                 ],
@@ -452,13 +428,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid token!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -466,6 +442,11 @@ const docTemplate = `{
         },
         "/auth/signup-email": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -478,22 +459,12 @@ const docTemplate = `{
                 "summary": "Sign up user with email",
                 "parameters": [
                     {
-                        "description": "Enter your email",
-                        "name": "email",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "minLength": 8,
-                        "description": "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest"
                         }
                     }
                 ],
@@ -507,7 +478,7 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this email already exists!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -515,6 +486,11 @@ const docTemplate = `{
         },
         "/auth/signup-phone": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -527,22 +503,12 @@ const docTemplate = `{
                 "summary": "Sign up user with phone number",
                 "parameters": [
                     {
-                        "description": "Enter your phone number",
-                        "name": "phoneNumber",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "minLength": 8,
-                        "description": "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest"
                         }
                     }
                 ],
@@ -556,7 +522,7 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this phone number already exists!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -564,6 +530,11 @@ const docTemplate = `{
         },
         "/users/": {
             "get": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -610,19 +581,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -630,6 +601,11 @@ const docTemplate = `{
         },
         "/users/email": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -642,30 +618,12 @@ const docTemplate = `{
                 "summary": "Create new user with email - [super-admin]",
                 "parameters": [
                     {
-                        "description": "Enter your email",
-                        "name": "email",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Select role",
-                        "name": "role",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "super-admin",
-                                "admin",
-                                "manager",
-                                "manager-assist",
-                                "deliver",
-                                "customer",
-                                "customer-service"
-                            ]
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest"
                         }
                     }
                 ],
@@ -679,13 +637,13 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this email already exists!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid email or role!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -693,6 +651,11 @@ const docTemplate = `{
         },
         "/users/info/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -723,25 +686,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -749,6 +712,11 @@ const docTemplate = `{
         },
         "/users/phone": {
             "post": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -761,30 +729,12 @@ const docTemplate = `{
                 "summary": "Create new user with phone number - [super-admin]",
                 "parameters": [
                     {
-                        "description": "Enter your phone number",
-                        "name": "phoneNumber",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Select role",
-                        "name": "role",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "super-admin",
-                                "admin",
-                                "manager",
-                                "manager-assist",
-                                "deliver",
-                                "customer",
-                                "customer-service"
-                            ]
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest"
                         }
                     }
                 ],
@@ -798,13 +748,13 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this phone number already exists!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid phone number or role!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -812,6 +762,11 @@ const docTemplate = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -821,7 +776,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user info",
+                "summary": "Get user info",
                 "parameters": [
                     {
                         "type": "string",
@@ -835,36 +790,41 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
                         }
                     },
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -877,39 +837,12 @@ const docTemplate = `{
                 "summary": "Update user",
                 "parameters": [
                     {
-                        "description": "Enter your email",
-                        "name": "email",
+                        "description": "Enter your information",
+                        "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "Enter your phone number",
-                        "name": "phoneNumber",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "Select role",
-                        "name": "role",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "super-admin",
-                                "admin",
-                                "manager",
-                                "manager-assist",
-                                "deliver",
-                                "customer",
-                                "customer-service"
-                            ]
+                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
                         }
                     }
                 ],
@@ -923,30 +856,35 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKey \u0026\u0026 Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -970,31 +908,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
                         }
                     }
                 }
@@ -1002,6 +940,176 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github_com_4kpros_go-api_common_types.Filter": {
+            "type": "object",
+            "properties": {
+                "orderBy": {
+                    "type": "string"
+                },
+                "search": {
+                    "type": "string"
+                },
+                "sort": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_common_types.Pagination": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "currentPage": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "nextPage": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "previousPage": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_common_types.WebErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "filter": {
+                    "$ref": "#/definitions/github_com_4kpros_go-api_common_types.Filter"
+                },
+                "pagination": {
+                    "$ref": "#/definitions/github_com_4kpros_go-api_common_types.Pagination"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest": {
+            "type": "object",
+            "properties": {
+                "newPassword": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest": {
+            "type": "object",
+            "properties": {
+                "phoneNumber": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "stayConnected": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "integer"
+                },
+                "stayConnected": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest": {
+            "type": "object",
+            "properties": {
+                "provider": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse": {
             "type": "object",
             "properties": {
@@ -1044,6 +1152,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest": {
+            "type": "object",
+            "properties": {
+                "phoneNumber": {
+                    "type": "integer"
+                },
+                "role": {
                     "type": "string"
                 }
             }
@@ -1167,6 +1297,20 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Enter Bearer with space and your token",
+            "type": "apiKey",
+            "name": "Bearer",
+            "in": "header"
+        },
+        "X-API-Key": {
+            "description": "Enter the API key to have access",
+            "type": "apiKey",
+            "name": "ApiKey",
+            "in": "header"
+        }
     }
 }`
 
@@ -1176,8 +1320,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "SAGO - API Documentation",
-	Description:      "This is the documentation of SAGO API",
+	Title:            "API Documentation",
+	Description:      "This is the API documentation",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

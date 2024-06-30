@@ -13,30 +13,61 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var JwtIss string = "go-api-jwt-iss-0011aazz=="
+var JwtIssuerSession = "session"
+var JwtIssuerActivate = "activate"
+var JwtIssuerResetCode = "resetCode"
+var JwtIssuerResetNewPassword = "resetNewPassword"
 
-func NewOthersExpiresDate() *time.Time {
-	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpiresOthers))
+func NewExpiresDateDefault() *time.Time {
+	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpiresDefault))
 	return &tempDate
 }
 
-func NewExpiresDate(stayConnected bool) (date *time.Time) {
+func NewExpiresDateSignIn(stayConnected bool) (date *time.Time) {
 	if stayConnected {
-		tempDate := time.Now().Add(time.Hour * time.Duration(24*config.AppEnv.JwtExpiresStayConnected))
+		tempDate := time.Now().Add(time.Hour * time.Duration(24*config.AppEnv.JwtExpiresSignInStayConnected))
 		return &tempDate
 	}
-	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpires))
+	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpiresSignIn))
 	return &tempDate
+}
+
+func GetCachedKey(jwtToken *types.JwtToken) string {
+	return fmt.Sprintf("%d%s%s", jwtToken.UserId, jwtToken.Issuer, jwtToken.Device)
+}
+
+func SameCachedKey(jwtToken1 *types.JwtToken, jwtToken2 *types.JwtToken) bool {
+	if jwtToken1 == nil || jwtToken2 == nil {
+		return false
+	}
+	if GetCachedKey(jwtToken1) != GetCachedKey(jwtToken2) {
+		return false
+	}
+
+	return true
 }
 
 // Encrypt JWT
-func EncryptJWTToken(value *types.JwtToken, privateKey string) (tokenStr string, err error) {
+func EncryptJWTToken(jwtToken *types.JwtToken, privateKey string, loadCached bool) (newJwt *types.JwtToken, tokenStr string, err error) {
+	// Check if there is some cached token
+	if loadCached {
+		tokenStr, err = config.GetMemcacheVal(GetCachedKey(jwtToken))
+		if err == nil && len(tokenStr) > 0 {
+			jwtDecrypted, errDecrypted := DecryptJWTToken(tokenStr, config.AppPem.JwtPublicKey)
+			if errDecrypted == nil && SameCachedKey(jwtToken, jwtDecrypted) {
+				newJwt = jwtDecrypted
+				return
+			}
+		}
+	}
+
+	// Otherwise generate new one
 	token := jwt.NewWithClaims(jwt.SigningMethodES512, jwt.MapClaims{
-		"iss":    JwtIss,
-		"userId": fmt.Sprintf("%d", value.UserId),
-		"role":   value.Role,
-		"device": value.Device,
-		"exp":    jwt.NewNumericDate(value.Expires),
+		"iss":    jwtToken.Issuer,
+		"userId": fmt.Sprintf("%d", jwtToken.UserId),
+		"role":   jwtToken.Role,
+		"device": jwtToken.Device,
+		"exp":    jwt.NewNumericDate(jwtToken.Expires),
 		"iat":    jwt.NewNumericDate(time.Now()),
 	})
 	var signedKey *ecdsa.PrivateKey
@@ -48,6 +79,10 @@ func EncryptJWTToken(value *types.JwtToken, privateKey string) (tokenStr string,
 	if err != nil {
 		return
 	}
+
+	// Cache new token
+	config.SetMemcacheVal(GetCachedKey(jwtToken), tokenStr)
+	newJwt = jwtToken
 	return
 }
 
@@ -74,32 +109,38 @@ func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error)
 		return nil, fmt.Errorf("%s", message)
 	}
 	iss := fmt.Sprintf("%s", claims["iss"])
-	if iss != JwtIss {
-		message := "Invalid token issuer! Please enter valid information."
-		return nil, fmt.Errorf("%s", message)
-	}
 	userId, _ := strconv.Atoi(fmt.Sprintf("%s", claims["userId"]))
 	role := fmt.Sprintf("%s", claims["role"])
+	codeStr := fmt.Sprintf("%s", claims["code"])
+	code, _ := strconv.Atoi(codeStr)
 	device := fmt.Sprintf("%s", claims["device"])
 	return &types.JwtToken{
 		UserId: uint(userId),
 		Role:   role,
+		Code:   code,
 		Device: device,
+		Issuer: iss,
 	}, nil
 }
 
 // Verify that JWT token is valid
 func VerifyJWTToken(tokenStr string, publicKey string) bool {
-	decryptedToken, err := DecryptJWTToken(tokenStr, publicKey)
-	if err != nil {
-		fmt.Printf("\nDecryption of [%s] error ==> %s\n\n", tokenStr, err)
+	jwtDecrypted, errDecrypted := DecryptJWTToken(tokenStr, publicKey)
+	if errDecrypted != nil || jwtDecrypted == nil {
 		return false
 	}
-	return decryptedToken != nil
+	tokenStrCached, errCached := config.GetMemcacheVal(GetCachedKey(jwtDecrypted))
+	if errCached != nil || len(tokenStrCached) <= 0 {
+		return false
+	}
+	if tokenStr != tokenStrCached {
+		return false
+	}
+	return true
 }
 
-// Encrypt value using Argon2id
-func EncryptWithArgon2id(value string) (hash string, err error) {
+// Encrypt jwtToken using Argon2id
+func EncryptWithArgon2id(jwtToken string) (hash string, err error) {
 	params := &argon2id.Params{
 		Memory:      uint32(config.AppEnv.ArgonMemoryLeft * config.AppEnv.ArgonMemoryRight),
 		Iterations:  uint32(config.AppEnv.ArgonIterations),
@@ -107,13 +148,13 @@ func EncryptWithArgon2id(value string) (hash string, err error) {
 		SaltLength:  uint32(config.AppEnv.ArgonSaltLength),
 		KeyLength:   uint32(config.AppEnv.ArgonKeyLength),
 	}
-	hash, err = argon2id.CreateHash(value, params)
+	hash, err = argon2id.CreateHash(jwtToken, params)
 	return
 }
 
-// Verify if Argon2id value matches string
-func CompareToArgon2id(value string, encrypted string) (match bool, err error) {
-	fmt.Printf("COMPARE ARGON2ID\n Value: %s \n Encrypted: %s", value, encrypted)
-	match, err = argon2id.ComparePasswordAndHash(value, encrypted)
+// Verify if Argon2id jwtToken matches string
+func CompareToArgon2id(jwtToken string, encrypted string) (match bool, err error) {
+	fmt.Printf("COMPARE ARGON2ID\n Value: %s \n Encrypted: %s", jwtToken, encrypted)
+	match, err = argon2id.ComparePasswordAndHash(jwtToken, encrypted)
 	return
 }

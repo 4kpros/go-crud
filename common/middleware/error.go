@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"github.com/4kpros/go-api/common/types"
 	"github.com/gin-gonic/gin"
 )
 
@@ -9,8 +10,8 @@ func ErrorsHandler() gin.HandlerFunc {
 		c.Next()
 		for _, err := range c.Errors {
 			if err.Err.Error() != "EOF" {
-				c.AbortWithStatusJSON(c.Writer.Status(), gin.H{
-					"message": err.Err.Error(),
+				c.AbortWithStatusJSON(c.Writer.Status(), types.WebErrorResponse{
+					Message: err.Err.Error(),
 				})
 			}
 		}

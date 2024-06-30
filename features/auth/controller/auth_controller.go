@@ -17,6 +17,10 @@ type AuthController struct {
 }
 
 func NewAuthController(service service.AuthService) *AuthController {
+	// --- VERY IMPORTANT ---
+	var _ = &types.WebErrorResponse{} // Don't remove this line. It very important for swagger docs generation.
+	// --- VERY IMPORTANT ---
+
 	return &AuthController{Service: service}
 }
 
@@ -24,16 +28,17 @@ func NewAuthController(service service.AuthService) *AuthController {
 // @Summary Sign in user with email
 // @Accept  json
 // @Produce  json
-// @Param   email body string true "Enter your email"
-// @Param   password body string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Param   payload body request.SignInEmailRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 403 {string} string "Account not activated!"
-// @Failure 404 {string} string "Invalid email or password!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 403 {object} types.WebErrorResponse "Account not activated!"
+// @Failure 404 {object} types.WebErrorResponse "Invalid email or password!"
+// @Security ApiKey
 // @Router /auth/signin-email [post]
 func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.SignInWithEmailRequest{}
+	var reqData = &request.SignInRequest{}
+	var deviceName string
 	c.Bind(reqData)
 	isEmailValid := utils.IsEmailValid(reqData.Email)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(reqData.Password)
@@ -54,14 +59,12 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	}
 
 	// Execute the service
-	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignInWithEmail(reqData)
+	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignIn(deviceName, reqData)
 	if err != nil {
 		if errCode == http.StatusForbidden || len(validateAccountToken) > 0 {
-			c.JSON(http.StatusForbidden, types.WebSuccessResponse{
-				Data: response.SignUpResponse{
-					Token:   validateAccountToken,
-					Message: "Account not activated! Please activate your account to start using your services.",
-				},
+			c.JSON(http.StatusForbidden, response.SignUpResponse{
+				Token:   validateAccountToken,
+				Message: "Account not activated! Please activate your account to start using your services.",
 			})
 			return
 		}
@@ -75,11 +78,9 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	}
 
 	// Return response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.SignInResponse{
-			AccessToken: accessToken,
-			Expires:     *accessExpires,
-		},
+	c.JSON(http.StatusOK, response.SignInResponse{
+		AccessToken: accessToken,
+		Expires:     *accessExpires,
 	})
 }
 
@@ -87,16 +88,17 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 // @Summary Sign in user with phone number
 // @Accept  json
 // @Produce  json
-// @Param   phoneNumber body int true "Enter your phone number"
-// @Param   password body string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Param   payload body request.SignInPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 403 {string} string "Account not activated!"
-// @Failure 404 {string} string "Invalid phone number or password!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 403 {object} types.WebErrorResponse "Account not activated!"
+// @Failure 404 {object} types.WebErrorResponse "Invalid phone number or password!"
+// @Security ApiKey
 // @Router /auth/signin-phone [post]
 func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.SignInWithPhoneNumberRequest{}
+	var reqData = &request.SignInRequest{}
+	var deviceName string
 	c.Bind(reqData)
 	isPhoneNumberValid := utils.IsPhoneNumberValid(reqData.PhoneNumber)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(reqData.Password)
@@ -117,14 +119,12 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Execute the service
-	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignInWithPhoneNumber(reqData)
+	validateAccountToken, accessToken, accessExpires, errCode, err := controller.Service.SignIn(deviceName, reqData)
 	if err != nil {
 		if errCode == http.StatusForbidden || len(validateAccountToken) > 0 {
-			c.JSON(http.StatusForbidden, types.WebSuccessResponse{
-				Data: response.SignUpResponse{
-					Token:   validateAccountToken,
-					Message: "Account not activated! Please activate your account to start using your services.",
-				},
+			c.JSON(http.StatusForbidden, response.SignUpResponse{
+				Token:   validateAccountToken,
+				Message: "Account not activated! Please activate your account to start using your services.",
 			})
 			return
 		}
@@ -138,11 +138,9 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.SignInResponse{
-			AccessToken: accessToken,
-			Expires:     *accessExpires,
-		},
+	c.JSON(http.StatusOK, response.SignInResponse{
+		AccessToken: accessToken,
+		Expires:     *accessExpires,
 	})
 }
 
@@ -150,30 +148,29 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 // @Summary Sign in user with provider
 // @Accept  json
 // @Produce  json
-// @Param   provider body string true "Enter your provider" Enums(google, facebook, instagram)
-// @Param   token body string true "Enter your token" minlength(8)
+// @Param   payload body request.SignInWithProviderRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {string} string "Invalid inputs!"
-// @Failure 404 {string} string "Invalid token!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
+// @Failure 404 {object} types.WebErrorResponse "Invalid token!"
+// @Security ApiKey
 // @Router /auth/signin-provider [post]
 func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 	// Get data of req body
 	var reqData = &request.SignInWithProviderRequest{}
+	var deviceName string
 	c.Bind(reqData)
 
 	// Execute the service
-	accessToken, accessExpires, errCode, err := controller.Service.SignInWithProvider(reqData)
+	accessToken, accessExpires, errCode, err := controller.Service.SignInWithProvider(deviceName, reqData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.SignInResponse{
-			AccessToken: accessToken,
-			Expires:     *accessExpires,
-		},
+	c.JSON(http.StatusOK, response.SignInResponse{
+		AccessToken: accessToken,
+		Expires:     *accessExpires,
 	})
 }
 
@@ -181,14 +178,14 @@ func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 // @Summary Sign up user with email
 // @Accept  json
 // @Produce  json
-// @Param   email body string true "Enter your email"
-// @Param   password body string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Param   payload body request.SignUpEmailRequest true "Enter your information"
 // @Success 200 {object} response.SignUpResponse "OK"
-// @Failure 302 {string} string "User with this email already exists!"
+// @Failure 302 {object} types.WebErrorResponse "User with this email already exists!"
+// @Security ApiKey
 // @Router /auth/signup-email [post]
 func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.SignUpWithEmailRequest{}
+	var reqData = &request.SignUpRequest{}
 	c.Bind(reqData)
 	isEmailValid := utils.IsEmailValid(reqData.Email)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(reqData.Password)
@@ -209,18 +206,16 @@ func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 	}
 
 	// Execute the service
-	token, errCode, err := controller.Service.SignUpWithEmail(reqData)
+	token, errCode, err := controller.Service.SignUp(reqData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.SignUpResponse{
-			Token:   token,
-			Message: "Account created! Please activate your account to start using your services.",
-		},
+	c.JSON(http.StatusOK, response.SignUpResponse{
+		Token:   token,
+		Message: "Account created! Please activate your account to start using your services.",
 	})
 }
 
@@ -228,14 +223,14 @@ func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 // @Summary Sign up user with phone number
 // @Accept  json
 // @Produce  json
-// @Param   phoneNumber body int true "Enter your phone number"
-// @Param   password body string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Param   payload body request.SignUpPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.SignUpResponse "OK"
-// @Failure 302 {string} string "User with this phone number already exists!"
+// @Failure 302 {object} types.WebErrorResponse "User with this phone number already exists!"
+// @Security ApiKey
 // @Router /auth/signup-phone [post]
 func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.SignUpWithPhoneNumberRequest{}
+	var reqData = &request.SignUpRequest{}
 	c.Bind(reqData)
 	isPhoneNumberValid := utils.IsPhoneNumberValid(reqData.PhoneNumber)
 	isPasswordValid, missingPasswordChars := utils.IsPasswordValid(reqData.Password)
@@ -256,18 +251,16 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Execute the service
-	token, errCode, err := controller.Service.SignUpWithPhoneNumber(reqData)
+	token, errCode, err := controller.Service.SignUp(reqData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.SignUpResponse{
-			Token:   token,
-			Message: "Account created! Please activate your account to start using your services.",
-		},
+	c.JSON(http.StatusOK, response.SignUpResponse{
+		Token:   token,
+		Message: "Account created! Please activate your account to start using your services.",
 	})
 }
 
@@ -275,12 +268,12 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 // @Summary Activate new user account
 // @Accept  json
 // @Produce  json
-// @Param   token body string true "Enter your token from sign in or sign up"
-// @Param   code body int true "Enter your received code"
+// @Param   payload body request.ActivateAccountRequest true "Enter your information"
 // @Success 200 {object} response.ActivateAccountResponse "OK"
-// @Failure 400 {string} string "Invalid token!"
-// @Failure 403 {string} string "User account is already activated!"
-// @Failure 404 {string} string "User not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid token!"
+// @Failure 403 {object} types.WebErrorResponse "User account is already activated!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey
 // @Router /auth/activate [post]
 func (controller *AuthController) ActivateAccount(c *gin.Context) {
 	// Get data of req body
@@ -295,10 +288,8 @@ func (controller *AuthController) ActivateAccount(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.ActivateAccountResponse{
-			ActivatedAt: *activatedAt,
-		},
+	c.JSON(http.StatusOK, response.ActivateAccountResponse{
+		ActivatedAt: *activatedAt,
 	})
 }
 
@@ -306,14 +297,15 @@ func (controller *AuthController) ActivateAccount(c *gin.Context) {
 // @Summary Reset password  with email init
 // @Accept  json
 // @Produce  json
-// @Param   email body string true "Enter your email"
+// @Param   payload body request.ResetPasswordEmailInitRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {string} string "Invalid email input!"
-// @Failure 404 {string} string "User with email not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid email input!"
+// @Failure 404 {object} types.WebErrorResponse "User with email not found!"
+// @Security ApiKey
 // @Router /auth/reset/init-email [post]
 func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.ResetPasswordEmailInitRequest{}
+	var reqData = &request.ResetPasswordInitRequest{}
 	c.Bind(reqData)
 	isEmailValid := utils.IsEmailValid(reqData.Email)
 	if !isEmailValid {
@@ -323,7 +315,7 @@ func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
 	}
 
 	// Execute the service
-	token, errCode, err := controller.Service.ResetPasswordEmailInit(reqData)
+	token, errCode, err := controller.Service.ResetPasswordInit(reqData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
@@ -336,10 +328,8 @@ func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.ResetPasswordInitResponse{
-			Token: token,
-		},
+	c.JSON(http.StatusOK, response.ResetPasswordInitResponse{
+		Token: token,
 	})
 }
 
@@ -347,14 +337,15 @@ func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
 // @Summary Reset password with phone number init
 // @Accept  json
 // @Produce  json
-// @Param   phoneNumber body int true "Enter your phone number"
+// @Param   payload body request.ResetPasswordPhoneNumberInitRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {string} string "Invalid phone number input!"
-// @Failure 404 {string} string "User with phone number not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid phone number input!"
+// @Failure 404 {object} types.WebErrorResponse "User with phone number not found!"
+// @Security ApiKey
 // @Router /auth/reset/init-phone [post]
 func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
 	// Get data of req body
-	var reqData = &request.ResetPasswordPhoneNumberInitRequest{}
+	var reqData = &request.ResetPasswordInitRequest{}
 	c.Bind(reqData)
 	isPhoneNumberValid := utils.IsPhoneNumberValid(reqData.PhoneNumber)
 	if !isPhoneNumberValid {
@@ -364,7 +355,7 @@ func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
 	}
 
 	// Execute the service
-	token, errCode, err := controller.Service.ResetPasswordPhoneNumberInit(reqData)
+	token, errCode, err := controller.Service.ResetPasswordInit(reqData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
@@ -377,10 +368,8 @@ func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.ResetPasswordInitResponse{
-			Token: token,
-		},
+	c.JSON(http.StatusOK, response.ResetPasswordInitResponse{
+		Token: token,
 	})
 }
 
@@ -388,11 +377,11 @@ func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
 // @Summary Reset password set code
 // @Accept  json
 // @Produce  json
-// @Param   token body string true "Enter your token"
-// @Param   code body int true "Enter your received code"
+// @Param   payload body request.ResetPasswordCodeRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {string} string "Invalid token!"
-// @Failure 404 {string} string "User not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid token!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey
 // @Router /auth/reset/code [post]
 func (controller *AuthController) ResetPasswordCode(c *gin.Context) {
 	// Get data of req body
@@ -407,10 +396,8 @@ func (controller *AuthController) ResetPasswordCode(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.ResetPasswordCodeResponse{
-			Token: token,
-		},
+	c.JSON(http.StatusOK, response.ResetPasswordCodeResponse{
+		Token: token,
 	})
 }
 
@@ -418,11 +405,11 @@ func (controller *AuthController) ResetPasswordCode(c *gin.Context) {
 // @Summary Reset password set new password
 // @Accept  json
 // @Produce  json
-// @Param   token body string true "Enter your token"
-// @Param   newPassword body string true "Enter your new password"
+// @Param   payload body request.ResetPasswordNewPasswordRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordNewPasswordResponse "OK"
-// @Failure 400 {string} string "Invalid token or password input!"
-// @Failure 404 {string} string "User not found!"
+// @Failure 400 {object} types.WebErrorResponse "Invalid token or password input!"
+// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Security ApiKey
 // @Router /auth/reset/new-password [post]
 func (controller *AuthController) ResetPasswordNewPassword(c *gin.Context) {
 	// Get data of req body
@@ -437,9 +424,7 @@ func (controller *AuthController) ResetPasswordNewPassword(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.ResetPasswordNewPasswordResponse{
-			Message: "Password successful changed! Please sign in to start using our services.",
-		},
+	c.JSON(http.StatusOK, response.ResetPasswordNewPasswordResponse{
+		Message: "Password successful changed! Please sign in to start using our services.",
 	})
 }

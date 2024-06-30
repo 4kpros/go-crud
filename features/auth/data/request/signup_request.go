@@ -1,16 +1,17 @@
 package request
 
-type SignUpWithEmailRequest struct {
+type SignUpEmailRequest struct {
 	Email    string
 	Password string
 }
 
-type SignUpWithPhoneNumberRequest struct {
+type SignUpPhoneNumberRequest struct {
 	PhoneNumber int
 	Password    string
 }
 
-type SignUpWithProviderRequest struct {
-	Provider string
-	Token    string
+type SignUpRequest struct {
+	Email       string
+	PhoneNumber int
+	Password    string
 }

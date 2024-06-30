@@ -22,7 +22,12 @@ type User struct {
 	UserInfoId     uint       `json:"_" gorm:"default:null"`
 }
 
-func (u *User) BeforeCreate(db *gorm.DB) (err error) {
-	u.Password, err = utils.EncryptWithArgon2id(u.Password)
+func (user *User) BeforeCreate(db *gorm.DB) (err error) {
+	user.Password, err = utils.EncryptWithArgon2id(user.Password)
+	return
+}
+
+func (user *User) BeforeUpdate(db *gorm.DB) (err error) {
+	user.Password, err = utils.EncryptWithArgon2id(user.Password)
 	return
 }

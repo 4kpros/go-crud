@@ -21,128 +21,99 @@ func NewAuthServiceImpl(repository repository.AuthRepository) AuthService {
 	return &AuthServiceImpl{Repository: repository}
 }
 
-func (service *AuthServiceImpl) SignInWithEmail(reqData *request.SignInWithEmailRequest) (activateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error) {
+func (service *AuthServiceImpl) SignIn(deviceName string, reqData *request.SignInRequest) (activateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error) {
 	// Check if user exists
-	newUserFound, errFound := service.Repository.FindByEmail(reqData.Email)
-	isPasswordMatches, errCompare := utils.CompareToArgon2id(reqData.Password, newUserFound.Password)
-	if errFound != nil || errCompare != nil || newUserFound == nil || newUserFound.Email != reqData.Email || !isPasswordMatches {
-		message := "Invalid email address or password! Please enter valid information."
+	var userFound *model.User
+	var errFound error
+	var errMessage string
+	if len(reqData.Email) > 0 {
+		userFound, errFound = service.Repository.FindByEmail(reqData.Email)
+		errMessage = "Invalid phone number or password! Please enter valid information."
+	} else {
+		errMessage = "Invalid email address or password! Please enter valid information."
+		userFound, errFound = service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
+	}
+	isPasswordMatches, errCompare := utils.CompareToArgon2id(reqData.Password, userFound.Password)
+	if errFound != nil || errCompare != nil || userFound == nil || userFound.Email != reqData.Email || !isPasswordMatches {
 		errCode = http.StatusNotFound
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
 	// Check if account is activated
-	if !newUserFound.IsActivated {
-		message := "Account found but not activated! Please activate your account before."
-		errCode = http.StatusForbidden
-		err = fmt.Errorf("%s", message)
-		var expires = utils.NewOthersExpiresDate()
-		jwt, errJwt := utils.EncryptJWTToken(
-			&types.JwtToken{
-				UserId:  newUserFound.ID,
-				Expires: *expires,
-				Device:  "NA",
-			},
-			config.AppPem.JwtPrivateKey,
-		)
-		if errJwt != nil {
-			errCode = http.StatusInternalServerError
-			err = errJwt
+	if !userFound.IsActivated {
+		var expires = utils.NewExpiresDateDefault()
+		var jwt = &types.JwtToken{
+			UserId:  userFound.ID,
+			Expires: *expires,
+			Issuer:  utils.JwtIssuerActivate,
 		}
-		activateAccountToken = jwt
+		var randomCode, _ = utils.GenerateRandomCode(utils.GetCachedKey(jwt), 5)
+		jwt.Code = randomCode
+		newJwt, tokenStr, errEncrypt := utils.EncryptJWTToken(
+			jwt,
+			config.AppPem.JwtPrivateKey,
+			true,
+		)
+		if errEncrypt != nil || newJwt == nil {
+			errCode = http.StatusInternalServerError
+			err = errEncrypt
+		}
+		activateAccountToken = tokenStr
+
+		// Send code
+		if len(reqData.Email) > 0 {
+			// TODO send code to email
+		} else {
+			// TODO send code to phone number
+		}
+
+		errMessage = "Account found but not activated! Please activate your account before."
+		errCode = http.StatusForbidden
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
 	// Generate new token
-	var expires = utils.NewExpiresDate(reqData.StayConnected)
-	jwt, errJwt := utils.EncryptJWTToken(
+	var expires = utils.NewExpiresDateSignIn(reqData.StayConnected)
+	_, tokenStr, errEncrypt := utils.EncryptJWTToken(
 		&types.JwtToken{
-			UserId:  newUserFound.ID,
+			UserId:  userFound.ID,
 			Expires: *expires,
-			Device:  "NA",
+			Device:  deviceName,
+			Issuer:  utils.JwtIssuerSession,
 		},
 		config.AppPem.JwtPrivateKey,
+		false,
 	)
-	if errJwt != nil {
+	if errEncrypt != nil {
 		errCode = http.StatusInternalServerError
-		err = errJwt
+		err = errEncrypt
 	}
-	accessToken = jwt
+	accessToken = tokenStr
 	accessExpires = expires
 
 	return
 }
 
-func (service *AuthServiceImpl) SignInWithPhoneNumber(reqData *request.SignInWithPhoneNumberRequest) (activateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error) {
-	// Check if user exists
-	newUserFound, errFound := service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
-	isPasswordMatches, errCompare := utils.CompareToArgon2id(reqData.Password, newUserFound.Password)
-	if errFound != nil || errCompare != nil || newUserFound == nil || newUserFound.PhoneNumber != reqData.PhoneNumber || !isPasswordMatches {
-		message := "Invalid phone number or password! Please enter valid information."
-		errCode = http.StatusNotFound
-		err = fmt.Errorf("%s", message)
-		return
-	}
-
-	// Check if account is activated
-	if !newUserFound.IsActivated {
-		message := "Account found but not activated! Please activate your account before."
-		errCode = http.StatusForbidden
-		err = fmt.Errorf("%s", message)
-		var expires = utils.NewOthersExpiresDate()
-		jwt, errJwt := utils.EncryptJWTToken(
-			&types.JwtToken{
-				UserId:  newUserFound.ID,
-				Expires: *expires,
-				Device:  "NA",
-			},
-			config.AppPem.JwtPrivateKey,
-		)
-		if errJwt != nil {
-			errCode = http.StatusInternalServerError
-			err = errJwt
-		}
-		activateAccountToken = jwt
-		return
-	}
-
-	// Generate new token
-	var expires = utils.NewExpiresDate(reqData.StayConnected)
-	jwt, errJwt := utils.EncryptJWTToken(
-		&types.JwtToken{
-			UserId:  newUserFound.ID,
-			Expires: *expires,
-			Device:  "NA",
-		},
-		config.AppPem.JwtPrivateKey)
-	if errJwt != nil {
-		errCode = http.StatusInternalServerError
-		err = errJwt
-	}
-	accessToken = jwt
-	accessExpires = expires
-
-	return
-}
-
-func (service *AuthServiceImpl) SignInWithProvider(reqData *request.SignInWithProviderRequest) (accessToken string, accessExpires *time.Time, errCode int, err error) {
+func (service *AuthServiceImpl) SignInWithProvider(deviceName string, reqData *request.SignInWithProviderRequest) (accessToken string, accessExpires *time.Time, errCode int, err error) {
 	// Validate provider token and update user
+	var errMessage string
 	if !types.AuthProviders[reqData.Provider] {
-		message := "Invalid provider! Please enter valid information."
+		errMessage = "Invalid provider! Please enter valid information."
 		errCode = http.StatusBadRequest
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 	var providerUserId = "Test"
 	if len(providerUserId) <= 0 {
-		message := "Invalid provider or token! Please enter valid information."
+		errMessage = "Invalid provider or token! Please enter valid information."
 		errCode = http.StatusNotFound
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
-	newUserFound, errFound := service.Repository.FindByProvider(reqData.Provider, providerUserId)
-	if errFound != nil || newUserFound == nil || newUserFound.Provider != reqData.Provider {
+	userFound, errFound := service.Repository.FindByProvider(reqData.Provider, providerUserId)
+	if errFound != nil || userFound == nil || userFound.Provider != reqData.Provider {
 		// Save new user
 		user := &model.User{
 			Provider:       reqData.Provider,
@@ -156,123 +127,111 @@ func (service *AuthServiceImpl) SignInWithProvider(reqData *request.SignInWithPr
 	}
 
 	// Generate new token
-	var expires = utils.NewExpiresDate(true)
-	jwt, errJwt := utils.EncryptJWTToken(
+	var expires = utils.NewExpiresDateSignIn(true)
+	_, tokenStr, errEncrypt := utils.EncryptJWTToken(
 		&types.JwtToken{
-			UserId:  newUserFound.ID,
+			UserId:  userFound.ID,
 			Expires: *expires,
-			Device:  "NA",
+			Device:  deviceName,
+			Issuer:  utils.JwtIssuerSession,
 		},
 		config.AppPem.JwtPrivateKey,
+		false,
 	)
-	if errJwt != nil {
+	if errEncrypt != nil {
 		errCode = http.StatusInternalServerError
-		err = errJwt
+		err = errEncrypt
 	}
-	accessToken = jwt
+	accessToken = tokenStr
 	accessExpires = expires
 
 	return
 }
 
-func (service *AuthServiceImpl) SignUpWithEmail(reqData *request.SignUpWithEmailRequest) (token string, errCode int, err error) {
+func (service *AuthServiceImpl) SignUp(reqData *request.SignUpRequest) (token string, errCode int, err error) {
 	// Check if user exists
-	user, errFound := service.Repository.FindByEmail(reqData.Email)
+	var userFound *model.User
+	var errFound error
+	var errMessage string
+	if len(reqData.Email) > 0 {
+		userFound, errFound = service.Repository.FindByEmail(reqData.Email)
+		errMessage = "User with this email already exists! Please enter valid information."
+	} else {
+		errMessage = "User with this phone number already exists! Please enter valid information."
+		userFound, errFound = service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
+	}
 	if errFound != nil {
 		errCode = http.StatusInternalServerError
 		err = errFound
 		return
 	}
-	if user != nil && user.Email == reqData.Email {
-		message := "User with this email already exists! Please use another email."
+	if userFound != nil && userFound.Email == reqData.Email {
 		errCode = http.StatusFound
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
 	// Create new user
-	user.Email = reqData.Email
-	user.Password = reqData.Password
-	err = service.Repository.Create(user)
+	userFound.Email = reqData.Email
+	userFound.PhoneNumber = reqData.PhoneNumber
+	userFound.Password = reqData.Password
+	err = service.Repository.Create(userFound)
 	if err != nil {
 		errCode = http.StatusInternalServerError
 		return
 	}
 
 	// Generate new token
-	var expires = utils.NewOthersExpiresDate()
-	jwt, errJwt := utils.EncryptJWTToken(
-		&types.JwtToken{
-			UserId:  user.ID,
-			Expires: *expires,
-			Device:  "NA",
-		},
+	var expires = utils.NewExpiresDateDefault()
+	var jwt = &types.JwtToken{
+		UserId:  userFound.ID,
+		Expires: *expires,
+		Issuer:  utils.JwtIssuerActivate,
+	}
+	var randomCode, _ = utils.GenerateRandomCode(utils.GetCachedKey(jwt), 5)
+	jwt.Code = randomCode
+	newJwt, tokenStr, errEncrypt := utils.EncryptJWTToken(
+		jwt,
 		config.AppPem.JwtPrivateKey,
+		true,
 	)
-	if errJwt != nil {
+	if errEncrypt != nil || newJwt == nil {
 		errCode = http.StatusInternalServerError
-		err = errJwt
+		err = errEncrypt
 	}
-	token = jwt
+	token = tokenStr
 
-	return
-}
-
-func (service *AuthServiceImpl) SignUpWithPhoneNumber(reqData *request.SignUpWithPhoneNumberRequest) (token string, errCode int, err error) {
-	// Check if user exists
-	user, errFound := service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
-	if errFound != nil {
-		errCode = http.StatusInternalServerError
-		err = errFound
-		return
+	// Send code to email
+	if len(reqData.Email) > 0 {
+		// TODO send code to email
+	} else {
+		// TODO send code to phone number
 	}
-	if user != nil && user.PhoneNumber == reqData.PhoneNumber {
-		message := "User with this phone number already exists! Please use another phone number."
-		errCode = http.StatusFound
-		err = fmt.Errorf("%s", message)
-		return
-	}
-
-	// Create new user
-	user.PhoneNumber = reqData.PhoneNumber
-	user.Password = reqData.Password
-	err = service.Repository.Create(user)
-	if err != nil {
-		errCode = http.StatusInternalServerError
-		return
-	}
-
-	// Generate new token
-	var expires = utils.NewOthersExpiresDate()
-	jwt, errJwt := utils.EncryptJWTToken(
-		&types.JwtToken{
-			UserId:  user.ID,
-			Expires: *expires,
-			Device:  "NA",
-		},
-		config.AppPem.JwtPrivateKey,
-	)
-	if errJwt != nil {
-		errCode = http.StatusInternalServerError
-		err = errJwt
-	}
-	token = jwt
 
 	return
 }
 
 func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccountRequest) (activatedAt *time.Time, errCode int, err error) {
 	// Extract token information
-	jwt, errJwt := utils.DecryptJWTToken(reqData.Token, config.AppPem.JwtPublicKey)
-	if errJwt != nil {
+	var errMessage string
+	jwt, errDecrypt := utils.DecryptJWTToken(reqData.Token, config.AppPem.JwtPublicKey)
+	if errDecrypt != nil {
 		errCode = http.StatusNotFound
-		err = errJwt
+		err = errDecrypt
 		return
 	}
-	if jwt == nil || jwt.UserId <= 0 {
-		message := "Invalid token or expired! Please enter valid information."
-		errCode = http.StatusNotFound
-		err = fmt.Errorf("%s", message)
+	if jwt == nil || jwt.UserId <= 0 || jwt.Issuer != utils.JwtIssuerActivate {
+		errMessage = "Invalid or expired token! Please enter valid information."
+		errCode = http.StatusPreconditionFailed
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Check if code is valid
+	if jwt.Code != reqData.Code {
+		errMessage = "Invalid code! Please enter valid information."
+		errCode = http.StatusPreconditionFailed
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
@@ -280,21 +239,21 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 	var userId = fmt.Sprintf("%d", jwt.UserId)
 	user, errFound := service.Repository.FindById(userId)
 	if errFound != nil || user == nil {
-		message := "Invalid token! Please enter valid information."
+		errMessage = "User not found! Please enter valid information."
 		errCode = http.StatusNotFound
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
 	// Check if account is activated
 	if user.IsActivated {
-		message := "User account is already activated! Please sign in and start using our services."
+		errMessage = "User account is already activated! Please sign in and start using our services."
 		errCode = http.StatusForbidden
-		err = fmt.Errorf("%s", message)
+		err = fmt.Errorf("%s", errMessage)
 		return
 	}
 
-	// Update account validation status
+	// Update account
 	tmpActivatedAt := time.Now()
 	user.ActivatedAt = &tmpActivatedAt
 	user.IsActivated = true
@@ -303,6 +262,7 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 		errCode = http.StatusInternalServerError
 		return
 	}
+
 	// Create user info
 	var userInfo = &model.UserInfo{}
 	err = service.Repository.CreateUserInfo(userInfo)
@@ -310,6 +270,7 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 		errCode = http.StatusInternalServerError
 		return
 	}
+
 	// Update user with user info id
 	user.UserInfoId = userInfo.ID
 	err = service.Repository.Update(user)
@@ -319,25 +280,169 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 	}
 	activatedAt = user.ActivatedAt
 
+	// Invalidate token
+	config.DeleteMemcacheVal(utils.GetCachedKey(jwt))
+
+	// Send welcome message
+	// TODO
+
 	return
 }
 
-func (service *AuthServiceImpl) ResetPasswordEmailInit(reqData *request.ResetPasswordEmailInitRequest) (token string, errCode int, err error) {
+func (service *AuthServiceImpl) ResetPasswordInit(reqData *request.ResetPasswordInitRequest) (token string, errCode int, err error) {
+	// Check if user exists
+	var userFound *model.User
+	var errFound error
+	var errMessage string
+	if len(reqData.Email) > 0 {
+		userFound, errFound = service.Repository.FindByEmail(reqData.Email)
+		errMessage = "User not found! Please enter valid information."
+	} else {
+		errMessage = "User not found! Please enter valid information."
+		userFound, errFound = service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
+	}
+	if errFound != nil {
+		errCode = http.StatusInternalServerError
+		err = errFound
+		return
+	}
+	if userFound == nil || userFound.ID <= 0 {
+		errCode = http.StatusNotFound
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
 
-	return
-}
+	// Generate new random code
+	cacheKey := utils.GetCachedKey(&types.JwtToken{
+		UserId: userFound.ID,
+		Issuer: utils.JwtIssuerResetCode,
+	})
+	randomCode, errRandomCode := utils.GenerateRandomCode(cacheKey, 5)
+	if errRandomCode != nil {
+		errCode = http.StatusInternalServerError
+		err = errRandomCode
+	}
+	var expires = utils.NewExpiresDateDefault()
+	var newJwt, tokenStr, errEncrypt = utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  userFound.ID,
+			Expires: *expires,
+			Code:    randomCode,
+			Issuer:  utils.JwtIssuerResetCode,
+		},
+		config.AppPem.JwtPrivateKey,
+		true,
+	)
+	if errEncrypt != nil || newJwt == nil {
+		errCode = http.StatusInternalServerError
+		err = errEncrypt
+		return
+	}
+	token = tokenStr
 
-func (service *AuthServiceImpl) ResetPasswordPhoneNumberInit(reqData *request.ResetPasswordPhoneNumberInitRequest) (token string, errCode int, err error) {
+	// Send code to email
+	if len(reqData.Email) > 0 {
+		// TODO send code to email
+	} else {
+		// TODO send code to phone number
+	}
 
 	return
 }
 
 func (service *AuthServiceImpl) ResetPasswordCode(reqData *request.ResetPasswordCodeRequest) (token string, errCode int, err error) {
+	// Extract token information
+	var errMessage string
+	jwt, errDecrypt := utils.DecryptJWTToken(reqData.Token, config.AppPem.JwtPublicKey)
+	if errDecrypt != nil {
+		errCode = http.StatusNotFound
+		err = errDecrypt
+		return
+	}
+	if jwt == nil || jwt.UserId <= 0 || jwt.Issuer != utils.JwtIssuerResetCode {
+		errMessage = "Invalid or expired token! Please enter valid information."
+		errCode = http.StatusPreconditionFailed
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Check if code is valid
+	if jwt.Code != reqData.Code {
+		errMessage = "Invalid code! Please enter valid information."
+		errCode = http.StatusPreconditionFailed
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Check if user exists
+	var userId = fmt.Sprintf("%d", jwt.UserId)
+	userFound, errFound := service.Repository.FindById(userId)
+	if errFound != nil || userFound == nil {
+		errMessage = "User not found! Please enter valid information."
+		errCode = http.StatusNotFound
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Invalidate token
+	config.DeleteMemcacheVal(utils.GetCachedKey(jwt))
+
+	// Generate new token
+	var expires = utils.NewExpiresDateDefault()
+	newJwt, tokenStr, errEncrypt := utils.EncryptJWTToken(
+		&types.JwtToken{
+			UserId:  userFound.ID,
+			Expires: *expires,
+			Issuer:  utils.JwtIssuerResetNewPassword,
+		},
+		config.AppPem.JwtPrivateKey,
+		true,
+	)
+	if errEncrypt != nil || newJwt == nil {
+		errCode = http.StatusInternalServerError
+		err = errEncrypt
+	}
+	token = tokenStr
 
 	return
 }
 
 func (service *AuthServiceImpl) ResetPasswordNewPassword(reqData *request.ResetPasswordNewPasswordRequest) (errCode int, err error) {
+	// Extract token information
+	var errMessage string
+	jwt, errDecrypt := utils.DecryptJWTToken(reqData.Token, config.AppPem.JwtPublicKey)
+	if errDecrypt != nil {
+		errCode = http.StatusNotFound
+		err = errDecrypt
+		return
+	}
+	if jwt == nil || jwt.UserId <= 0 || jwt.Issuer != utils.JwtIssuerResetNewPassword {
+		errMessage = "Invalid or expired token! Please enter valid information."
+		errCode = http.StatusPreconditionFailed
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Check if user exists
+	var userId = fmt.Sprintf("%d", jwt.UserId)
+	userFound, errFound := service.Repository.FindById(userId)
+	if errFound != nil || userFound == nil {
+		errMessage = "User not found! Please enter valid information."
+		errCode = http.StatusNotFound
+		err = fmt.Errorf("%s", errMessage)
+		return
+	}
+
+	// Update user password
+	userUpdated, errUpdate := service.Repository.UpdatePasswordById(userId, reqData.NewPassword)
+	if errUpdate != nil || userUpdated == nil {
+		errCode = http.StatusInternalServerError
+		err = errUpdate
+		return
+	}
+
+	// Invalidate token
+	config.DeleteMemcacheVal(utils.GetCachedKey(jwt))
 
 	return
 }
