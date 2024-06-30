@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupUserRouter(routerGroup *gin.RouterGroup, controller *controller.UserController) {
+func SetupUserEndpoints(routerGroup *gin.RouterGroup, controller *controller.UserController) {
 
 	group := routerGroup.Group("/users")
 	const requireAuth = true

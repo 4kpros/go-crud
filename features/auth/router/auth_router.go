@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupAuthRouter(
+func SetupAuthEndpoints(
 	routerGroup *gin.RouterGroup,
 	controller *controller.AuthController,
 ) {
@@ -32,6 +32,6 @@ func SetupAuthRouter(
 	router.POST(group, "/reset-password/new-password", controller.ResetPasswordNewPassword, requireAuth)
 
 	// Reset password
-	router.POST(group, "/add-new-user-with-email", controller.AddNewUserWithEmail, requireAuth)
-	router.POST(group, "/add-new-user-with-phone", controller.AddNewUserWithPhoneNumber, requireAuth)
+	router.POST(group, "/new-user-email", controller.NewUserWithEmail, requireAuth)
+	router.POST(group, "/new-user-phone", controller.NewUserWithPhoneNumber, requireAuth)
 }

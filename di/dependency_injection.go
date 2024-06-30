@@ -64,6 +64,6 @@ func InitRouters(
 	docs.SwaggerInfo.BasePath = config.AppEnv.ApiGroup
 	routerGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	authRouter.SetupAuthRouter(routerGroup, authContr)
-	userRouter.SetupUserRouter(routerGroup, userContr)
+	authRouter.SetupAuthEndpoints(routerGroup, authContr)
+	userRouter.SetupUserEndpoints(routerGroup, userContr)
 }

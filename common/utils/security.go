@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 	"runtime"
+	"strconv"
 	"time"
 
 	"github.com/4kpros/go-api/common/types"
@@ -11,6 +12,8 @@ import (
 	"github.com/alexedwards/argon2id"
 	"github.com/golang-jwt/jwt/v5"
 )
+
+var JwtIss string = "go-api-jwt-iss-0011aazz=="
 
 func NewOthersExpiresDate() *time.Time {
 	tempDate := time.Now().Add(time.Minute * time.Duration(config.AppEnv.JwtExpiresOthers))
@@ -29,12 +32,12 @@ func NewExpiresDate(stayConnected bool) (date *time.Time) {
 // Encrypt JWT
 func EncryptJWTToken(value *types.JwtToken, privateKey string) (tokenStr string, err error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodES512, jwt.MapClaims{
-		"iss":    "go-api",
-		"id":     value.UserId,
+		"iss":    JwtIss,
+		"userId": fmt.Sprintf("%d", value.UserId),
 		"role":   value.Role,
 		"device": value.Device,
-		"exp":    value.Expires.Unix(),
-		"iat":    time.Now().Unix(),
+		"exp":    jwt.NewNumericDate(value.Expires),
+		"iat":    jwt.NewNumericDate(time.Now()),
 	})
 	var signedKey *ecdsa.PrivateKey
 	signedKey, err = jwt.ParseECPrivateKeyFromPEM([]byte(privateKey))
@@ -54,7 +57,6 @@ func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error)
 		// Validate the alg
 		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
 			message := fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])
-			fmt.Printf("\nERROR ==> %s \n\n", message)
 			return nil, fmt.Errorf("%s", message)
 		}
 		signedKey, err = jwt.ParseECPublicKeyFromPEM([]byte(publicKey))
@@ -62,22 +64,28 @@ func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error)
 	})
 
 	if err != nil {
-		fmt.Printf("\nERROR ==> %s \n\n", err)
 		return nil, err
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 
 	if !ok || !token.Valid {
-		message := "Invalid token claim!"
+		message := "Invalid token or expired! Please enter valid information."
 		return nil, fmt.Errorf("%s", message)
 	}
-	fmt.Printf("\nJWT claim ==> %s \n\n", claims["exp"])
-	fmt.Printf("\nJWT claim ==> %s \n\n", claims["id"])
-	fmt.Printf("\nJWT claim ==> %s \n\n", claims["device"])
-	fmt.Printf("\nJWT claim ==> %s \n\n", claims["sub"])
-	fmt.Printf("\nJWT claim ==> %s \n\n", claims)
-	return nil, nil
+	iss := fmt.Sprintf("%s", claims["iss"])
+	if iss != JwtIss {
+		message := "Invalid token issuer! Please enter valid information."
+		return nil, fmt.Errorf("%s", message)
+	}
+	userId, _ := strconv.Atoi(fmt.Sprintf("%s", claims["userId"]))
+	role := fmt.Sprintf("%s", claims["role"])
+	device := fmt.Sprintf("%s", claims["device"])
+	return &types.JwtToken{
+		UserId: uint(userId),
+		Role:   role,
+		Device: device,
+	}, nil
 }
 
 // Verify that JWT token is valid
@@ -87,7 +95,6 @@ func VerifyJWTToken(tokenStr string, publicKey string) bool {
 		fmt.Printf("\nDecryption of [%s] error ==> %s\n\n", tokenStr, err)
 		return false
 	}
-	fmt.Printf("\nDecrypted token ==> %s\n\n", decryptedToken)
 	return decryptedToken != nil
 }
 

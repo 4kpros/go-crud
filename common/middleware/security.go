@@ -10,9 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CheckIfWeCanTrustOrigin(c *gin.Context) (trust bool) {
-	host := c.Request.Host
-	fmt.Printf("\nHTTP request from host ==> %s\n", c.Request.Host)
+func IsOriginKnown(host string) (trust bool) {
 	if strings.EqualFold(host, "localhost:3100") || strings.EqualFold(host, "127.0.0.1:3100") {
 		trust = true
 		return
@@ -23,12 +21,7 @@ func CheckIfWeCanTrustOrigin(c *gin.Context) (trust bool) {
 
 func SecureAPIHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		canTrust := CheckIfWeCanTrustOrigin(c)
-		if !canTrust {
-			message := "Our system detected your request as malicious! Please fix that before."
-			c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
-			return
-		}
+		c.Header("Content-Type", "application/json")
 		c.Header("X-Frame-Options", "DENY")
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("X-Xss-Protection", "1; mode=block")
@@ -37,8 +30,9 @@ func SecureAPIHandler(handler gin.HandlerFunc, requiredAuth bool) gin.HandlerFun
 		c.Header("X-Download-Options", "noopen")
 		c.Header("Strict-Transport-Security", fmt.Sprintf("max-age=%d; %s", 31536000, "includeSubDomains"))
 		c.Next()
-		if 1 == 1 {
-			handler(c)
+		if !IsOriginKnown(c.Request.Host) {
+			message := "Our system detected your request as malicious! Please fix that before."
+			c.AbortWithError(http.StatusForbidden, fmt.Errorf("%s", message))
 			return
 		}
 		apiKey := c.GetHeader("X-API-Key")
