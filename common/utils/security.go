@@ -36,7 +36,7 @@ func GetCachedKey(jwtToken *types.JwtToken) string {
 	return fmt.Sprintf("%d%s%s", jwtToken.UserId, jwtToken.Issuer, jwtToken.Device)
 }
 
-func SameCachedKey(jwtToken1 *types.JwtToken, jwtToken2 *types.JwtToken) bool {
+func IsSameCachedKey(jwtToken1 *types.JwtToken, jwtToken2 *types.JwtToken) bool {
 	if jwtToken1 == nil || jwtToken2 == nil {
 		return false
 	}
@@ -54,7 +54,7 @@ func EncryptJWTToken(jwtToken *types.JwtToken, privateKey string, loadCached boo
 		tokenStr, err = config.GetMemcacheVal(GetCachedKey(jwtToken))
 		if err == nil && len(tokenStr) > 0 {
 			jwtDecrypted, errDecrypted := DecryptJWTToken(tokenStr, config.AppPem.JwtPublicKey)
-			if errDecrypted == nil && SameCachedKey(jwtToken, jwtDecrypted) {
+			if errDecrypted == nil && IsSameCachedKey(jwtToken, jwtDecrypted) {
 				newJwt = jwtDecrypted
 				return
 			}
@@ -88,6 +88,7 @@ func EncryptJWTToken(jwtToken *types.JwtToken, privateKey string, loadCached boo
 
 // Decrypt JWT
 func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error) {
+	// Parse the token and get claims
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (signedKey interface{}, err error) {
 		// Validate the alg
 		if _, ok := token.Method.(*jwt.SigningMethodECDSA); !ok {
@@ -97,23 +98,26 @@ func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error)
 		signedKey, err = jwt.ParseECPublicKeyFromPEM([]byte(publicKey))
 		return
 	})
-
 	if err != nil {
 		return nil, err
 	}
-
 	claims, ok := token.Claims.(jwt.MapClaims)
 
+	// Check if the token is valid
 	if !ok || !token.Valid {
 		message := "Invalid token or expired! Please enter valid information."
 		return nil, fmt.Errorf("%s", message)
 	}
+
+	// Extract information
 	iss := fmt.Sprintf("%s", claims["iss"])
 	userId, _ := strconv.Atoi(fmt.Sprintf("%s", claims["userId"]))
 	role := fmt.Sprintf("%s", claims["role"])
 	codeStr := fmt.Sprintf("%s", claims["code"])
 	code, _ := strconv.Atoi(codeStr)
 	device := fmt.Sprintf("%s", claims["device"])
+
+	// Return it
 	return &types.JwtToken{
 		UserId: uint(userId),
 		Role:   role,
@@ -123,12 +127,15 @@ func DecryptJWTToken(tokenStr string, publicKey string) (*types.JwtToken, error)
 	}, nil
 }
 
-// Verify that JWT token is valid
+// Verify JWT
 func VerifyJWTToken(tokenStr string, publicKey string) bool {
+	// Decrypt the token
 	jwtDecrypted, errDecrypted := DecryptJWTToken(tokenStr, publicKey)
 	if errDecrypted != nil || jwtDecrypted == nil {
 		return false
 	}
+
+	// Check if the token is cached
 	tokenStrCached, errCached := config.GetMemcacheVal(GetCachedKey(jwtDecrypted))
 	if errCached != nil || len(tokenStrCached) <= 0 {
 		return false

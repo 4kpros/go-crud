@@ -18,7 +18,7 @@ type AuthController struct {
 
 func NewAuthController(service service.AuthService) *AuthController {
 	// --- VERY IMPORTANT ---
-	var _ = &types.WebErrorResponse{} // Don't remove this line. It very important for swagger docs generation.
+	var _ = &types.ErrorResponse{} // Don't remove this line. It very important for swagger docs generation.
 	// --- VERY IMPORTANT ---
 
 	return &AuthController{Service: service}
@@ -30,9 +30,9 @@ func NewAuthController(service service.AuthService) *AuthController {
 // @Produce  json
 // @Param   payload body request.SignInEmailRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 403 {object} types.WebErrorResponse "Account not activated!"
-// @Failure 404 {object} types.WebErrorResponse "Invalid email or password!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 403 {object} types.ErrorResponse "Account not activated!"
+// @Failure 404 {object} types.ErrorResponse "Invalid email or password!"
 // @Security ApiKey
 // @Router /auth/signin-email [post]
 func (controller *AuthController) SignInWithEmail(c *gin.Context) {
@@ -90,9 +90,9 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.SignInPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 403 {object} types.WebErrorResponse "Account not activated!"
-// @Failure 404 {object} types.WebErrorResponse "Invalid phone number or password!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 403 {object} types.ErrorResponse "Account not activated!"
+// @Failure 404 {object} types.ErrorResponse "Invalid phone number or password!"
 // @Security ApiKey
 // @Router /auth/signin-phone [post]
 func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
@@ -150,8 +150,8 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.SignInWithProviderRequest true "Enter your information"
 // @Success 200 {object} response.SignInResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 404 {object} types.WebErrorResponse "Invalid token!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 404 {object} types.ErrorResponse "Invalid token!"
 // @Security ApiKey
 // @Router /auth/signin-provider [post]
 func (controller *AuthController) SignInWithProvider(c *gin.Context) {
@@ -180,7 +180,7 @@ func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.SignUpEmailRequest true "Enter your information"
 // @Success 200 {object} response.SignUpResponse "OK"
-// @Failure 302 {object} types.WebErrorResponse "User with this email already exists!"
+// @Failure 302 {object} types.ErrorResponse "User with this email already exists!"
 // @Security ApiKey
 // @Router /auth/signup-email [post]
 func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
@@ -225,7 +225,7 @@ func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.SignUpPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.SignUpResponse "OK"
-// @Failure 302 {object} types.WebErrorResponse "User with this phone number already exists!"
+// @Failure 302 {object} types.ErrorResponse "User with this phone number already exists!"
 // @Security ApiKey
 // @Router /auth/signup-phone [post]
 func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
@@ -270,9 +270,9 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.ActivateAccountRequest true "Enter your information"
 // @Success 200 {object} response.ActivateAccountResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid token!"
-// @Failure 403 {object} types.WebErrorResponse "User account is already activated!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid token!"
+// @Failure 403 {object} types.ErrorResponse "User account is already activated!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey
 // @Router /auth/activate [post]
 func (controller *AuthController) ActivateAccount(c *gin.Context) {
@@ -299,8 +299,8 @@ func (controller *AuthController) ActivateAccount(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.ResetPasswordEmailInitRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid email input!"
-// @Failure 404 {object} types.WebErrorResponse "User with email not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid email input!"
+// @Failure 404 {object} types.ErrorResponse "User with email not found!"
 // @Security ApiKey
 // @Router /auth/reset/init-email [post]
 func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
@@ -339,8 +339,8 @@ func (controller *AuthController) ResetPasswordEmailInit(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.ResetPasswordPhoneNumberInitRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid phone number input!"
-// @Failure 404 {object} types.WebErrorResponse "User with phone number not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid phone number input!"
+// @Failure 404 {object} types.ErrorResponse "User with phone number not found!"
 // @Security ApiKey
 // @Router /auth/reset/init-phone [post]
 func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
@@ -379,8 +379,8 @@ func (controller *AuthController) ResetPasswordPhoneNumberInit(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.ResetPasswordCodeRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordInitResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid token!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid token!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey
 // @Router /auth/reset/code [post]
 func (controller *AuthController) ResetPasswordCode(c *gin.Context) {
@@ -407,8 +407,8 @@ func (controller *AuthController) ResetPasswordCode(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.ResetPasswordNewPasswordRequest true "Enter your information"
 // @Success 200 {object} response.ResetPasswordNewPasswordResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid token or password input!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid token or password input!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey
 // @Router /auth/reset/new-password [post]
 func (controller *AuthController) ResetPasswordNewPassword(c *gin.Context) {

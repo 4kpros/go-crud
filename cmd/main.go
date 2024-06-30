@@ -30,7 +30,7 @@ func init() {
 		)
 	}
 
-	// Setup argon params for crypto
+	// Setup argon2id params for crypto
 	_, errArgonCryptoParamsUtils := utils.EncryptWithArgon2id("")
 	if errArgonCryptoParamsUtils != nil {
 		helpers.Logger.Warn(
@@ -52,7 +52,7 @@ func init() {
 		)
 	} else {
 		helpers.Logger.Info(
-			"Connected to Postgres!",
+			"Connected to Postgres database!",
 		)
 	}
 
@@ -124,7 +124,6 @@ func main() {
 	engine.ForwardedByClientIP = true
 	engine.SetTrustedProxies([]string{"127.0.0.1"})
 	engine.Use(middleware.ErrorsHandler())
-
 	apiGroup := engine.Group(config.AppEnv.ApiGroup)
 
 	// Inject Dependencies

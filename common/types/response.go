@@ -1,10 +1,10 @@
 package types
 
-type WebErrorResponse struct {
+type ErrorResponse struct {
 	Message string `json:"message"`
 }
 
-type WebSuccessPaginatedResponse struct {
+type SuccessPaginatedResponse struct {
 	Filter     *Filter     `json:"filter"`
 	Pagination *Pagination `json:"pagination"`
 	Data       any         `json:"data"`

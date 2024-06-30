@@ -28,9 +28,9 @@ func (service *AuthServiceImpl) SignIn(deviceName string, reqData *request.SignI
 	var errMessage string
 	if len(reqData.Email) > 0 {
 		userFound, errFound = service.Repository.FindByEmail(reqData.Email)
-		errMessage = "Invalid phone number or password! Please enter valid information."
+		errMessage = "Invalid email or password! Please enter valid information."
 	} else {
-		errMessage = "Invalid email address or password! Please enter valid information."
+		errMessage = "Invalid phone number or password! Please enter valid information."
 		userFound, errFound = service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
 	}
 	isPasswordMatches, errCompare := utils.CompareToArgon2id(reqData.Password, userFound.Password)
@@ -240,8 +240,8 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 
 	// Check if user exists
 	var userId = fmt.Sprintf("%d", jwt.UserId)
-	user, errFound := service.Repository.FindById(userId)
-	if errFound != nil || user == nil {
+	userFound, errFound := service.Repository.FindById(userId)
+	if errFound != nil || userFound == nil {
 		errMessage = "User not found! Please enter valid information."
 		errCode = http.StatusNotFound
 		err = fmt.Errorf("%s", errMessage)
@@ -249,7 +249,7 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 	}
 
 	// Check if account is activated
-	if user.IsActivated {
+	if userFound.IsActivated {
 		errMessage = "User account is already activated! Please sign in and start using our services."
 		errCode = http.StatusForbidden
 		err = fmt.Errorf("%s", errMessage)
@@ -258,9 +258,9 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 
 	// Update account
 	tmpActivatedAt := time.Now()
-	user.ActivatedAt = &tmpActivatedAt
-	user.IsActivated = true
-	err = service.Repository.Update(user)
+	userFound.ActivatedAt = &tmpActivatedAt
+	userFound.IsActivated = true
+	err = service.Repository.Update(userFound)
 	if err != nil {
 		errCode = http.StatusInternalServerError
 		return
@@ -275,13 +275,13 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 	}
 
 	// Update user with user info id
-	user.UserInfoId = userInfo.ID
-	err = service.Repository.Update(user)
+	userFound.UserInfoId = userInfo.ID
+	err = service.Repository.Update(userFound)
 	if err != nil {
 		errCode = http.StatusInternalServerError
 		return
 	}
-	activatedAt = user.ActivatedAt
+	activatedAt = userFound.ActivatedAt
 
 	// Invalidate token
 	config.DeleteMemcacheVal(utils.GetCachedKey(jwt))

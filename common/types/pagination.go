@@ -38,8 +38,9 @@ func (p *Pagination) UpdateFields(count *int64) {
 	}
 }
 
-func DivUp(n *int64, d *int, r *int64) {
-	*r = 1 + (*n-1)/int64(*d)
+// This function round up(ceil) A/B but extremely faster
+func DivUp(numerator *int64, denominator *int, result *int64) {
+	*result = 1 + (*numerator-1)/int64(*denominator)
 }
 
 func NextPage(page *int, totalPages *int64) {

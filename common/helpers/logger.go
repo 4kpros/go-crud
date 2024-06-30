@@ -1,6 +1,10 @@
 package helpers
 
-import "go.uber.org/zap"
+import (
+	"fmt"
+
+	"go.uber.org/zap"
+)
 
 var Logger *zap.Logger
 
@@ -10,14 +14,17 @@ func SetupLogger() {
 }
 
 func PrintMigrationLogs(err error, modelName string) {
+	var message string
 	if err != nil {
+		message = fmt.Sprintf("Failed to migrate << %s >> table !", modelName)
 		Logger.Warn(
-			"Failed to create << "+modelName+" >> table !",
+			message,
 			zap.String("Error", err.Error()),
 		)
 		return
 	}
+	message = fmt.Sprintf("Migration for table << %s >> Done !", modelName)
 	Logger.Info(
-		"Migration for << " + modelName + " >> Done !",
+		message,
 	)
 }

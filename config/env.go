@@ -6,11 +6,11 @@ import (
 
 type Env struct {
 	// API config
-	ApiPort         int    `mapstructure:"API_PORT"`
-	ApiKey          string `mapstructure:"API_KEY"`
-	ApiGroup        string `mapstructure:"API_GROUP"`
-	GinMode         string `mapstructure:"GIN_MODE"`
-	AllowedHostsStr string `mapstructure:"ALLOWED_HOSTS"`
+	ApiPort      int    `mapstructure:"API_PORT"`
+	ApiKey       string `mapstructure:"API_KEY"`
+	ApiGroup     string `mapstructure:"API_GROUP"`
+	GinMode      string `mapstructure:"GIN_MODE"`
+	AllowedHosts string `mapstructure:"ALLOWED_HOSTS"`
 
 	// Postgres database
 	PostGresHost     string `mapstructure:"POSTGRES_HOST"`

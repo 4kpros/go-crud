@@ -10,7 +10,7 @@ func ErrorsHandler() gin.HandlerFunc {
 		c.Next()
 		for _, err := range c.Errors {
 			if err.Err.Error() != "EOF" {
-				c.AbortWithStatusJSON(c.Writer.Status(), types.WebErrorResponse{
+				c.AbortWithStatusJSON(c.Writer.Status(), types.ErrorResponse{
 					Message: err.Err.Error(),
 				})
 			}

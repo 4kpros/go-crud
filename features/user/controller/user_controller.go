@@ -26,8 +26,8 @@ func NewUserController(service service.UserService) *UserController {
 // @Produce  json
 // @Param   payload body request.CreateWithEmailRequest true "Enter your information"
 // @Success 200 {object} response.CreateWithEmailResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid email or role!"
-// @Failure 302 {object} types.WebErrorResponse "User with this email already exists!"
+// @Failure 400 {object} types.ErrorResponse "Invalid email or role!"
+// @Failure 302 {object} types.ErrorResponse "User with this email already exists!"
 // @Security ApiKey && Bearer
 // @Router /users/email [post]
 func (controller *UserController) CreateWithEmail(c *gin.Context) {
@@ -59,8 +59,8 @@ func (controller *UserController) CreateWithEmail(c *gin.Context) {
 // @Produce  json
 // @Param   payload body request.CreateWithPhoneNumberRequest true "Enter your information"
 // @Success 200 {object} response.CreateWithPhoneNumberResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid phone number or role!"
-// @Failure 302 {object} types.WebErrorResponse "User with this phone number already exists!"
+// @Failure 400 {object} types.ErrorResponse "Invalid phone number or role!"
+// @Failure 302 {object} types.ErrorResponse "User with this phone number already exists!"
 // @Security ApiKey && Bearer
 // @Router /users/phone [post]
 func (controller *UserController) CreateWithPhoneNumber(c *gin.Context) {
@@ -92,10 +92,10 @@ func (controller *UserController) CreateWithPhoneNumber(c *gin.Context) {
 // @Produce  json
 // @Param   payload body model.User true "Enter your information"
 // @Success 200 {object} model.User "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
-// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.ErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.ErrorResponse "Not permitted!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey && Bearer
 // @Router /users/{id} [put]
 func (controller *UserController) UpdateUser(c *gin.Context) {
@@ -120,10 +120,10 @@ func (controller *UserController) UpdateUser(c *gin.Context) {
 // @Produce  json
 // @Param   payload body model.UserInfo false "User info model"
 // @Success 200 {object} model.UserInfo "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
-// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.ErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.ErrorResponse "Not permitted!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey && Bearer
 // @Router /users/info/{id} [put]
 func (controller *UserController) UpdateUserInfo(c *gin.Context) {
@@ -147,11 +147,11 @@ func (controller *UserController) UpdateUserInfo(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param   id path string true "User id"
-// @Success 200 {object} types.WebErrorResponse "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
-// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Success 200 {object} types.ErrorResponse "OK"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.ErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.ErrorResponse "Not permitted!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey && Bearer
 // @Router /users/{id} [delete]
 func (controller *UserController) Delete(c *gin.Context) {
@@ -175,10 +175,10 @@ func (controller *UserController) Delete(c *gin.Context) {
 // @Produce  json
 // @Param   id path string true "User id"
 // @Success 200 {object} model.User "OK"
-// @Failure 400 {object} types.WebErrorResponse "Invalid inputs!"
-// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
-// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
-// @Failure 404 {object} types.WebErrorResponse "User not found!"
+// @Failure 400 {object} types.ErrorResponse "Invalid inputs!"
+// @Failure 401 {object} types.ErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.ErrorResponse "Not permitted!"
+// @Failure 404 {object} types.ErrorResponse "User not found!"
 // @Security ApiKey && Bearer
 // @Router /users/{id} [get]
 func (controller *UserController) FindById(c *gin.Context) {
@@ -205,9 +205,9 @@ func (controller *UserController) FindById(c *gin.Context) {
 // @Param limit query int false "Page limit"
 // @Param orderBy query string false "Filter order by"
 // @Param sort query string false "Sort asc, desc"
-// @Success 200 {object} types.WebSuccessPaginatedResponse "OK"
-// @Failure 401 {object} types.WebErrorResponse "Invalid user session!"
-// @Failure 403 {object} types.WebErrorResponse "Not permitted!"
+// @Success 200 {object} types.SuccessPaginatedResponse "OK"
+// @Failure 401 {object} types.ErrorResponse "Invalid user session!"
+// @Failure 403 {object} types.ErrorResponse "Not permitted!"
 // @Security ApiKey && Bearer
 // @Router /users/ [get]
 func (controller *UserController) FindAll(c *gin.Context) {
@@ -222,7 +222,7 @@ func (controller *UserController) FindAll(c *gin.Context) {
 	}
 
 	// Return the response
-	c.JSON(http.StatusOK, types.WebSuccessPaginatedResponse{
+	c.JSON(http.StatusOK, types.SuccessPaginatedResponse{
 		Data:       users,
 		Filter:     filter,
 		Pagination: pagination,

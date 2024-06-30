@@ -10,7 +10,6 @@ func SetupAuthEndpoints(
 	routerGroup *gin.RouterGroup,
 	controller *controller.AuthController,
 ) {
-
 	group := routerGroup.Group("/auth")
 	const requireAuth = false
 
