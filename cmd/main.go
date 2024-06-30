@@ -24,10 +24,11 @@ func init() {
 			"Failed to load app ENV vars!",
 			zap.String("Error", errAppEnv.Error()),
 		)
+	} else {
+		helpers.Logger.Warn(
+			"App ENV variables loaded!",
+		)
 	}
-	helpers.Logger.Warn(
-		"App ENV variables loaded!",
-	)
 
 	// Setup argon params for crypto
 	_, errArgonCryptoParamsUtils := utils.EncryptWithArgon2id("")
@@ -95,7 +96,7 @@ func init() {
 	}
 }
 
-// @title SAGO - API Documentation
+// @title API Documentation
 // @version 1.0
 // @description This is the documentation of SAGO API
 // @termsOfService http://swagger.io/terms/
