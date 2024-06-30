@@ -36,10 +36,11 @@ func init() {
 			"Failed to setup argon2id params!",
 			zap.String("Error", errArgonCryptoParamsUtils.Error()),
 		)
+	} else {
+		helpers.Logger.Warn(
+			"Argon2id crypto set ok!",
+		)
 	}
-	helpers.Logger.Warn(
-		"Argon2id crypto set ok!",
-	)
 
 	// Connect to postgres database
 	errPostgresDB := config.ConnectToPostgresDB()
@@ -48,10 +49,11 @@ func init() {
 			"Failed to connect to Postgres database!",
 			zap.String("Error", errPostgresDB.Error()),
 		)
+	} else {
+		helpers.Logger.Info(
+			"Connected to Postgres!",
+		)
 	}
-	helpers.Logger.Info(
-		"Connected to Postgres!",
-	)
 
 	// Connect to memcache
 	errMemcache := config.ConnectToMemcache()
@@ -60,10 +62,11 @@ func init() {
 			"Failed to connect to Memcache!",
 			zap.String("Error", errMemcache.Error()),
 		)
+	} else {
+		helpers.Logger.Info(
+			"Connected to Memcache!",
+		)
 	}
-	helpers.Logger.Info(
-		"Connected to Memcache!",
-	)
 
 	// Connect to redis
 	errRedis := config.ConnectToRedis()
@@ -72,10 +75,11 @@ func init() {
 			"Failed to connect to Redis!",
 			zap.String("Error", errRedis.Error()),
 		)
+	} else {
+		helpers.Logger.Info(
+			"Connected to Redis!",
+		)
 	}
-	helpers.Logger.Info(
-		"Connected to Redis!",
-	)
 
 	// Load pem
 	errPem := config.LoadPem()
@@ -84,10 +88,11 @@ func init() {
 			"Failed to load all pem files!",
 			zap.String("Error", errRedis.Error()),
 		)
+	} else {
+		helpers.Logger.Info(
+			"All pem files loaded!",
+		)
 	}
-	helpers.Logger.Info(
-		"All pem files loaded!",
-	)
 }
 
 // @title SAGO - API Documentation
