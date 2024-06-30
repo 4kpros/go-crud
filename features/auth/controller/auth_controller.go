@@ -20,6 +20,17 @@ func NewAuthController(service service.AuthService) *AuthController {
 	return &AuthController{Service: service}
 }
 
+// @Tags Sign in
+// @Summary Sign in user with email
+// @Accept  json
+// @Produce  json
+// @Param   email path string true "Enter your email"
+// @Param   password path string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Success 200 {object} response.SignInResponse "OK"
+// @Failure 400 {string} string "Invalid inputs!"
+// @Failure 403 {string} string "Account not activated!"
+// @Failure 404 {string} string "Invalid email or password!"
+// @Router /signin-email [post]
 func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	// Get data of req body
 	var requestData request.SignInWithEmailRequest
@@ -54,6 +65,11 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 			})
 			return
 		}
+		if errCode == http.StatusNotFound {
+			tmpMessage := "User account not found! Please check your information."
+			c.AbortWithError(errCode, fmt.Errorf("%s", tmpMessage))
+			return
+		}
 		c.AbortWithError(errCode, err)
 		return
 	}
@@ -66,6 +82,17 @@ func (controller *AuthController) SignInWithEmail(c *gin.Context) {
 	})
 }
 
+// @Tags Sign in
+// @Summary Sign in user with phone number
+// @Accept  json
+// @Produce  json
+// @Param   phoneNumber path string true "Enter your phone number"
+// @Param   password path string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Success 200 {object} response.SignInResponse "OK"
+// @Failure 400 {string} string "Invalid inputs!"
+// @Failure 403 {string} string "Account not activated!"
+// @Failure 404 {string} string "Invalid phone number or password!"
+// @Router /signin-phone [post]
 func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
 	var requestData request.SignInWithPhoneNumberRequest
@@ -100,6 +127,11 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 			})
 			return
 		}
+		if errCode == http.StatusNotFound {
+			tmpMessage := "User account not found! Please check your information."
+			c.AbortWithError(errCode, fmt.Errorf("%s", tmpMessage))
+			return
+		}
 		c.AbortWithError(errCode, err)
 		return
 	}
@@ -112,6 +144,16 @@ func (controller *AuthController) SignInWithPhoneNumber(c *gin.Context) {
 	})
 }
 
+// @Tags Sign in
+// @Summary Sign in user with provider
+// @Accept  json
+// @Produce  json
+// @Param   provider path string true "Enter your provider" Enums(google, facebook, instagram)
+// @Param   token path string true "Enter your token" minlength(8)
+// @Success 200 {object} response.SignInResponse "OK"
+// @Failure 400 {string} string "Invalid inputs!"
+// @Failure 404 {string} string "Invalid token!"
+// @Router /signin-provider [post]
 func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 	// Get data of req body
 	var requestData request.SignInWithProviderRequest
@@ -132,6 +174,15 @@ func (controller *AuthController) SignInWithProvider(c *gin.Context) {
 	})
 }
 
+// @Tags Sign up
+// @Summary Sign up user with email
+// @Accept  json
+// @Produce  json
+// @Param   email path string true "Enter your email"
+// @Param   password path string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Success 200 {object} response.SignUpResponse "OK"
+// @Failure 302 {string} string "User with this email already exists!"
+// @Router /signup-email [post]
 func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 	// Get data of req body
 	var requestData request.SignUpWithEmailRequest
@@ -170,6 +221,15 @@ func (controller *AuthController) SignUpWithEmail(c *gin.Context) {
 	})
 }
 
+// @Tags Sign up
+// @Summary Sign up user with phone number
+// @Accept  json
+// @Produce  json
+// @Param   phoneNumber path string true "Enter your phone number"
+// @Param   password path string true "Must be at least 8 characters with 1 upper case, 1 lower case, 1 special character and 1 number" minlength(8)
+// @Success 200 {object} response.SignUpResponse "OK"
+// @Failure 302 {string} string "User with this phone number already exists!"
+// @Router /signup-phone [post]
 func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
 	var requestData request.SignUpWithPhoneNumberRequest
@@ -208,9 +268,19 @@ func (controller *AuthController) SignUpWithPhoneNumber(c *gin.Context) {
 	})
 }
 
-func (controller *AuthController) AddNewUserWithEmail(c *gin.Context) {
+// @Tags Add new user - [super-admin]
+// @Summary Add new user with email
+// @Accept  json
+// @Produce  json
+// @Param   email path string true "Enter your email"
+// @Param   role path string true "Select role" Enums(super-admin, admin, manager, manager-assist, deliver, customer, customer-service)
+// @Success 200 {object} response.NewUserWithEmailResponse "OK"
+// @Failure 400 {string} string "Invalid email or role!"
+// @Failure 302 {string} string "User with this email already exists!"
+// @Router /add-new-user-with-email [post]
+func (controller *AuthController) NewUserWithEmail(c *gin.Context) {
 	// Get data of req body
-	var requestData request.AddNewUserWithEmailRequest
+	var requestData request.NewUserWithEmailRequest
 	c.Bind(&requestData)
 	isEmailValid := utils.IsEmailValid(requestData.Email)
 	isRoleValid := utils.IsRoleValid(requestData.Role)
@@ -231,7 +301,7 @@ func (controller *AuthController) AddNewUserWithEmail(c *gin.Context) {
 	}
 
 	// Create new user with random password
-	password, errCode, err := controller.Service.AddNewUserWithEmail(&requestData)
+	password, errCode, err := controller.Service.NewUserWithEmail(&requestData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
@@ -239,7 +309,7 @@ func (controller *AuthController) AddNewUserWithEmail(c *gin.Context) {
 
 	// Return resp
 	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.AddNewUserWithEmailResponse{
+		Data: response.NewUserWithEmailResponse{
 			Email:    requestData.Email,
 			Password: password,
 			Role:     requestData.Role,
@@ -247,9 +317,19 @@ func (controller *AuthController) AddNewUserWithEmail(c *gin.Context) {
 	})
 }
 
-func (controller *AuthController) AddNewUserWithPhoneNumber(c *gin.Context) {
+// @Tags Add new user - [super-admin]
+// @Summary Add new user with phone number
+// @Accept  json
+// @Produce  json
+// @Param   email path string true "Enter your phone number"
+// @Param   role path string true "Select role" Enums(super-admin, admin, manager, manager-assist, deliver, customer, customer-service)
+// @Success 200 {object} response.NewUserWithEmailResponse "OK"
+// @Failure 400 {string} string "Invalid phone number or role!"
+// @Failure 302 {string} string "User with this phone number already exists!"
+// @Router /add-new-user-with-phone [post]
+func (controller *AuthController) NewUserWithPhoneNumber(c *gin.Context) {
 	// Get data of req body
-	var requestData request.AddNewUserWithPhoneNumberRequest
+	var requestData request.NewUserWithPhoneNumberRequest
 	c.Bind(&requestData)
 	isPhoneNumberValid := utils.IsPhoneNumberValid(requestData.PhoneNumber)
 	isRoleValid := utils.IsRoleValid(requestData.Role)
@@ -270,7 +350,7 @@ func (controller *AuthController) AddNewUserWithPhoneNumber(c *gin.Context) {
 	}
 
 	// Create new user with random password
-	password, errCode, err := controller.Service.AddNewUserWithPhoneNumber(&requestData)
+	password, errCode, err := controller.Service.NewUserWithPhoneNumber(&requestData)
 	if err != nil {
 		c.AbortWithError(errCode, err)
 		return
@@ -278,7 +358,7 @@ func (controller *AuthController) AddNewUserWithPhoneNumber(c *gin.Context) {
 
 	// Return resp
 	c.JSON(http.StatusOK, types.WebSuccessResponse{
-		Data: response.AddNewUserWithPhoneNumberResponse{
+		Data: response.NewUserWithPhoneNumberResponse{
 			PhoneNumber: requestData.PhoneNumber,
 			Password:    password,
 			Role:        requestData.Role,

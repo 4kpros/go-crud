@@ -17,14 +17,12 @@ func NewUserRepositoryImpl(db *gorm.DB) UserRepository {
 
 // Create implements UserRepository.
 func (repository *UserRepositoryImpl) Create(user *model.User) error {
-	result := repository.Db.Create(user)
-	return result.Error
+	return repository.Db.Create(user).Error
 }
 
 // Update implements UserRepository.
 func (repository *UserRepositoryImpl) Update(user *model.User) error {
-	result := repository.Db.Model(user).Updates(user)
-	return result.Error
+	return repository.Db.Model(user).Updates(user).Error
 }
 
 // Delete implements UserRepository.

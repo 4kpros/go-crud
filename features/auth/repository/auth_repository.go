@@ -2,19 +2,18 @@ package repository
 
 import (
 	"github.com/4kpros/go-api/common/types"
-	"github.com/4kpros/go-api/features/auth/model"
-	modelUser "github.com/4kpros/go-api/features/user/model"
+	"github.com/4kpros/go-api/features/user/model"
 )
 
 type AuthRepository interface {
-	Create(user *model.NewUser) error
-	CreateUserAccountDetails(user *modelUser.User) error
-	Update(user *model.NewUser) error
-	UpdatePasswordById(id string, password string) (*model.NewUser, error)
+	Create(user *model.User) error
+	CreateUserInfo(userInfo *model.UserInfo) error
+	Update(user *model.User) error
+	UpdatePasswordById(id string, password string) (*model.User, error)
 	Delete(id string) (int64, error)
-	FindById(id string) (*model.NewUser, error)
-	FindByEmail(email string) (*model.NewUser, error)
-	FindByPhoneNumber(phoneNumber int) (*model.NewUser, error)
-	FindByProvider(provider string, providerUserId string) (*model.NewUser, error)
-	FindAll(filter *types.Filter, pagination *types.Pagination) ([]model.NewUser, error)
+	FindById(id string) (*model.User, error)
+	FindByEmail(email string) (*model.User, error)
+	FindByPhoneNumber(phoneNumber int) (*model.User, error)
+	FindByProvider(provider string, providerUserId string) (*model.User, error)
+	FindAll(filter *types.Filter, pagination *types.Pagination) ([]model.User, error)
 }

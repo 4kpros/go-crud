@@ -1,29 +1,26 @@
+.PHONY: migrate migrate-run swagger build run watch test
+
+migrate:
+	@go build -C migrate -o ../bin/migrate
+	@./bin/migrate
+
+swagger:
+	@swag init -g ./cmd/main.go -o ./docs
+
 build:
 	@go build -C cmd -o ../bin/main
 
 run:
 	@./bin/main
 
-watch:
-	@CompileDaemon -build="make build" -command="make run"
-
-build-migrate:
-	@go build -C migrate -o ../bin/migrate
-
-run-migrate:
-	@./bin/migrate
-	
-watch-migrate:
-	@CompileDaemon -directory="services" -build="make -C ../ build-migrate" -command="make ../ run-migrate"
-
-build-all:
-	@make build-migrate
-	@make run-migrate
+serve:
+	@make migrate
+	@make docs
 	@make build
 	@make run
 
-swagger:
-	@swag init -g ./cmd/main.go -o ./docs
+watch:
+	@CompileDaemon -build="make build" -command="make run"
 
 test:
 	@go test -v ./...

@@ -24,7 +24,6 @@ func init() {
 			"Failed to load app ENV vars!",
 			zap.String("Error", errAppEnv.Error()),
 		)
-		return
 	}
 	helpers.Logger.Warn(
 		"App ENV variables loaded!",
@@ -37,7 +36,6 @@ func init() {
 			"Failed to setup argon2id params!",
 			zap.String("Error", errArgonCryptoParamsUtils.Error()),
 		)
-		return
 	}
 	helpers.Logger.Warn(
 		"Argon2id crypto set ok!",
@@ -50,7 +48,6 @@ func init() {
 			"Failed to connect to Postgres database!",
 			zap.String("Error", errPostgresDB.Error()),
 		)
-		return
 	}
 	helpers.Logger.Info(
 		"Connected to Postgres!",
@@ -63,7 +60,6 @@ func init() {
 			"Failed to connect to Memcache!",
 			zap.String("Error", errMemcache.Error()),
 		)
-		return
 	}
 	helpers.Logger.Info(
 		"Connected to Memcache!",
@@ -76,7 +72,6 @@ func init() {
 			"Failed to connect to Redis!",
 			zap.String("Error", errRedis.Error()),
 		)
-		return
 	}
 	helpers.Logger.Info(
 		"Connected to Redis!",
@@ -89,13 +84,23 @@ func init() {
 			"Failed to load all pem files!",
 			zap.String("Error", errRedis.Error()),
 		)
-		return
 	}
 	helpers.Logger.Info(
 		"All pem files loaded!",
 	)
 }
 
+// @title SAGO - API Documentation
+// @version 1.0
+// @description This is the documentation of SAGO API
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Prosper Abouar
+// @contact.url https://www.github.com/4kpros
+// @contact.email prosper.abouar@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	// Setup gin for your API
 	gin.SetMode(config.AppEnv.GinMode)
