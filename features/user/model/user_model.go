@@ -16,6 +16,7 @@ type User struct {
 	ProviderUserId string     `json:"providerUserId"`
 	IsActivated    bool       `json:"isActivated"`
 	ActivatedAt    *time.Time `json:"activatedAt"`
+	Role           string     `json:"role"`
 	Password       string     `json:"password"`
 	UserInfo       UserInfo   `json:"userInfo,omitempty" gorm:"foreignKey:UserInfoId;references:ID;constraint:onDelete:SET NULL,onUpdate:CASCADE;"`
 	UserInfoId     uint       `json:"_" gorm:"default:null"`

@@ -1,5 +1,34 @@
 definitions:
-  response.AddNewUserWithEmailResponse:
+  github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse:
+    properties:
+      activatedAt:
+        type: string
+    type: object
+  github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_4kpros_go-api_features_auth_data_response.SignInResponse:
+    properties:
+      accessToken:
+        type: string
+      expires:
+        type: string
+    type: object
+  github_com_4kpros_go-api_features_auth_data_response.SignUpResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse:
     properties:
       email:
         type: string
@@ -8,19 +37,74 @@ definitions:
       role:
         type: string
     type: object
-  response.SignInResponse:
+  github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse:
     properties:
-      accessToken:
+      password:
         type: string
-      expires:
+      phoneNumber:
+        type: integer
+      role:
         type: string
     type: object
-  response.SignUpResponse:
+  github_com_4kpros_go-api_features_user_model.User:
     properties:
-      message:
+      _:
+        type: integer
+      activatedAt:
         type: string
-      token:
+      createdAt:
         type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      isActivated:
+        type: boolean
+      password:
+        type: string
+      phoneNumber:
+        type: integer
+      provider:
+        type: string
+      providerUserId:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+      userInfo:
+        $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+    type: object
+  github_com_4kpros_go-api_features_user_model.UserInfo:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      firstName:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      lastName:
+        type: string
+      updatedAt:
+        type: string
+      userName:
+        type: string
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
     type: object
 info:
   contact:
@@ -35,112 +119,199 @@ info:
   title: SAGO - API Documentation
   version: "1.0"
 paths:
-  /add-new-user-with-email:
+  /auth/activate:
     post:
       consumes:
       - application/json
       parameters:
-      - description: Enter your email
-        in: path
-        name: email
+      - description: Enter your token from sign in or sign up
+        in: body
+        name: token
         required: true
-        type: string
-      - description: Select role
-        enum:
-        - super-admin
-        - admin
-        - manager
-        - manager-assist
-        - deliver
-        - customer
-        - customer-service
-        in: path
-        name: role
+        schema:
+          type: string
+      - description: Enter your received code
+        in: body
+        name: code
         required: true
-        type: string
+        schema:
+          type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.AddNewUserWithEmailResponse'
-        "302":
-          description: User with this email already exists!
-          schema:
-            type: string
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse'
         "400":
-          description: Invalid email or role!
+          description: Invalid token!
           schema:
             type: string
-      summary: Add new user with email
+        "403":
+          description: User account is already activated!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Activate new user account
       tags:
-      - Add new user - [super-admin]
-  /add-new-user-with-phone:
+      - Activate account
+  /auth/reset/code:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your token
+        in: body
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: Enter your received code
+        in: body
+        name: code
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
+        "400":
+          description: Invalid token!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Reset password set code
+      tags:
+      - Reset password
+  /auth/reset/init-email:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
+        "400":
+          description: Invalid email input!
+          schema:
+            type: string
+        "404":
+          description: User with email not found!
+          schema:
+            type: string
+      summary: Reset password  with email init
+      tags:
+      - Reset password
+  /auth/reset/init-phone:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your phone number
-        in: path
-        name: email
+        in: body
+        name: phoneNumber
         required: true
-        type: string
-      - description: Select role
-        enum:
-        - super-admin
-        - admin
-        - manager
-        - manager-assist
-        - deliver
-        - customer
-        - customer-service
-        in: path
-        name: role
-        required: true
-        type: string
+        schema:
+          type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.AddNewUserWithEmailResponse'
-        "302":
-          description: User with this phone number already exists!
-          schema:
-            type: string
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
         "400":
-          description: Invalid phone number or role!
+          description: Invalid phone number input!
           schema:
             type: string
-      summary: Add new user with phone number
+        "404":
+          description: User with phone number not found!
+          schema:
+            type: string
+      summary: Reset password with phone number init
       tags:
-      - Add new user - [super-admin]
-  /signin-email:
+      - Reset password
+  /auth/reset/new-password:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your token
+        in: body
+        name: token
+        required: true
+        schema:
+          type: string
+      - description: Enter your new password
+        in: body
+        name: newPassword
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse'
+        "400":
+          description: Invalid token or password input!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Reset password set new password
+      tags:
+      - Reset password
+  /auth/signin-email:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your email
-        in: path
+        in: body
         name: email
         required: true
-        type: string
+        schema:
+          type: string
       - description: Must be at least 8 characters with 1 upper case, 1 lower case,
           1 special character and 1 number
-        in: path
+        in: body
         minLength: 8
         name: password
         required: true
-        type: string
+        schema:
+          type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -156,30 +327,32 @@ paths:
       summary: Sign in user with email
       tags:
       - Sign in
-  /signin-phone:
+  /auth/signin-phone:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your phone number
-        in: path
+        in: body
         name: phoneNumber
         required: true
-        type: string
+        schema:
+          type: integer
       - description: Must be at least 8 characters with 1 upper case, 1 lower case,
           1 special character and 1 number
-        in: path
+        in: body
         minLength: 8
         name: password
         required: true
-        type: string
+        schema:
+          type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -195,33 +368,35 @@ paths:
       summary: Sign in user with phone number
       tags:
       - Sign in
-  /signin-provider:
+  /auth/signin-provider:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your provider
-        enum:
-        - google
-        - facebook
-        - instagram
-        in: path
+        in: body
         name: provider
         required: true
-        type: string
+        schema:
+          enum:
+          - google
+          - facebook
+          - instagram
+          type: string
       - description: Enter your token
-        in: path
+        in: body
         minLength: 8
         name: token
         required: true
-        type: string
+        schema:
+          type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -233,30 +408,32 @@ paths:
       summary: Sign in user with provider
       tags:
       - Sign in
-  /signup-email:
+  /auth/signup-email:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your email
-        in: path
+        in: body
         name: email
         required: true
-        type: string
+        schema:
+          type: string
       - description: Must be at least 8 characters with 1 upper case, 1 lower case,
           1 special character and 1 number
-        in: path
+        in: body
         minLength: 8
         name: password
         required: true
-        type: string
+        schema:
+          type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.SignUpResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse'
         "302":
           description: User with this email already exists!
           schema:
@@ -264,21 +441,90 @@ paths:
       summary: Sign up user with email
       tags:
       - Sign up
-  /signup-phone:
+  /auth/signup-phone:
     post:
       consumes:
       - application/json
       parameters:
       - description: Enter your phone number
-        in: path
+        in: body
         name: phoneNumber
         required: true
-        type: string
+        schema:
+          type: integer
       - description: Must be at least 8 characters with 1 upper case, 1 lower case,
           1 special character and 1 number
-        in: path
+        in: body
         minLength: 8
         name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse'
+        "302":
+          description: User with this phone number already exists!
+          schema:
+            type: string
+      summary: Sign up user with phone number
+      tags:
+      - Sign up
+  /users/:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Search keyword
+        in: query
+        name: search
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Page limit
+        in: query
+        name: limit
+        type: integer
+      - description: Filter order by
+        in: query
+        name: orderBy
+        type: string
+      - description: Sort asc, desc
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Invalid user session!
+          schema:
+            type: string
+        "403":
+          description: Not permitted!
+          schema:
+            type: string
+      summary: Get all users
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User id
+        in: path
+        name: id
         required: true
         type: string
       produces:
@@ -287,12 +533,237 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.SignUpResponse'
+            type: string
+        "400":
+          description: Invalid inputs!
+          schema:
+            type: string
+        "401":
+          description: Invalid user session!
+          schema:
+            type: string
+        "403":
+          description: Not permitted!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Update user info
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Invalid inputs!
+          schema:
+            type: string
+        "401":
+          description: Invalid user session!
+          schema:
+            type: string
+        "403":
+          description: Not permitted!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Update user info
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Enter your phone number
+        in: body
+        name: phoneNumber
+        required: true
+        schema:
+          type: integer
+      - description: Select role
+        in: body
+        name: role
+        required: true
+        schema:
+          enum:
+          - super-admin
+          - admin
+          - manager
+          - manager-assist
+          - deliver
+          - customer
+          - customer-service
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.User'
+        "400":
+          description: Invalid inputs!
+          schema:
+            type: string
+        "401":
+          description: Invalid user session!
+          schema:
+            type: string
+        "403":
+          description: Not permitted!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Update user
+      tags:
+      - Users
+  /users/email:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: Select role
+        in: body
+        name: role
+        required: true
+        schema:
+          enum:
+          - super-admin
+          - admin
+          - manager
+          - manager-assist
+          - deliver
+          - customer
+          - customer-service
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse'
+        "302":
+          description: User with this email already exists!
+          schema:
+            type: string
+        "400":
+          description: Invalid email or role!
+          schema:
+            type: string
+      summary: Create new user with email - [super-admin]
+      tags:
+      - Users
+  /users/info/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User info model
+        in: body
+        name: payload
+        schema:
+          $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+        "400":
+          description: Invalid inputs!
+          schema:
+            type: string
+        "401":
+          description: Invalid user session!
+          schema:
+            type: string
+        "403":
+          description: Not permitted!
+          schema:
+            type: string
+        "404":
+          description: User not found!
+          schema:
+            type: string
+      summary: Update user info
+      tags:
+      - Users
+  /users/phone:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Enter your phone number
+        in: body
+        name: phoneNumber
+        required: true
+        schema:
+          type: integer
+      - description: Select role
+        in: body
+        name: role
+        required: true
+        schema:
+          enum:
+          - super-admin
+          - admin
+          - manager
+          - manager-assist
+          - deliver
+          - customer
+          - customer-service
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse'
         "302":
           description: User with this phone number already exists!
           schema:
             type: string
-      summary: Sign up user with phone number
+        "400":
+          description: Invalid phone number or role!
+          schema:
+            type: string
+      summary: Create new user with phone number - [super-admin]
       tags:
-      - Sign up
+      - Users
 swagger: "2.0"

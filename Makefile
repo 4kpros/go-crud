@@ -5,7 +5,7 @@ migrate:
 	@./bin/migrate
 
 swagger:
-	@swag init -g ./cmd/main.go -o ./docs
+	@swag init --parseDependency -g ./cmd/main.go -o ./docs
 
 build:
 	@go build -C cmd -o ../bin/main
@@ -15,7 +15,7 @@ run:
 
 serve:
 	@make migrate
-	@make docs
+	@make swagger
 	@make build
 	@make run
 

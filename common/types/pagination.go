@@ -1,5 +1,13 @@
 package types
 
+type PaginationRequest struct {
+	Search  string `json:"search"`
+	Page    int    `json:"page"`
+	Limit   int    `json:"limit"`
+	OrderBy string `json:"orderBy"`
+	Sort    string `json:"sort"`
+}
+
 type Pagination struct {
 	CurrentPage  int   `json:"currentPage"`
 	NextPage     int   `json:"nextPage"`

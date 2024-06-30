@@ -7,8 +7,12 @@ import (
 
 type UserRepository interface {
 	Create(user *model.User) error
-	Update(user *model.User) error
+	UpdateUser(user *model.User) error
+	UpdateUserInfo(userInfo *model.UserInfo) error
 	Delete(id string) (int64, error)
 	FindById(id string) (*model.User, error)
+	FindByEmail(email string) (*model.User, error)
+	FindByPhoneNumber(phoneNumber int) (*model.User, error)
+	FindByProvider(provider string, providerUserId string) (*model.User, error)
 	FindAll(filter *types.Filter, pagination *types.Pagination) ([]model.User, error)
 }

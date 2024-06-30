@@ -11,9 +11,11 @@ func SetupUserEndpoints(routerGroup *gin.RouterGroup, controller *controller.Use
 	group := routerGroup.Group("/users")
 	const requireAuth = true
 
-	router.POST(group, "", controller.Create, requireAuth)       // Create
-	router.PUT(group, "/:id", controller.Update, requireAuth)    // Update
-	router.DELETE(group, "/:id", controller.Delete, requireAuth) // Delete
-	router.GET(group, "/:id", controller.FindById, requireAuth)  // Find by id
-	router.GET(group, "", controller.FindAll, requireAuth)       // Find all
+	router.POST(group, "/email", controller.CreateWithEmail, requireAuth)
+	router.POST(group, "/phone", controller.CreateWithPhoneNumber, requireAuth)
+	router.PUT(group, "/:id", controller.UpdateUser, requireAuth)
+	router.PUT(group, "/info/:id", controller.UpdateUserInfo, requireAuth)
+	router.DELETE(group, "/:id", controller.Delete, requireAuth)
+	router.GET(group, "/:id", controller.FindById, requireAuth)
+	router.GET(group, "", controller.FindAll, requireAuth)
 }

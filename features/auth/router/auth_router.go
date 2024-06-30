@@ -27,11 +27,8 @@ func SetupAuthEndpoints(
 	router.POST(group, "/activate", controller.ActivateAccount, requireAuth)
 
 	// Reset password
-	router.POST(group, "/reset-password/init", controller.ResetPasswordInit, requireAuth)
-	router.POST(group, "/reset-password/code", controller.ResetPasswordCode, requireAuth)
-	router.POST(group, "/reset-password/new-password", controller.ResetPasswordNewPassword, requireAuth)
-
-	// Reset password
-	router.POST(group, "/new-user-email", controller.NewUserWithEmail, requireAuth)
-	router.POST(group, "/new-user-phone", controller.NewUserWithPhoneNumber, requireAuth)
+	router.POST(group, "/reset/init-email", controller.ResetPasswordEmailInit, requireAuth)
+	router.POST(group, "/reset/init-phone", controller.ResetPasswordPhoneNumberInit, requireAuth)
+	router.POST(group, "/reset/code", controller.ResetPasswordCode, requireAuth)
+	router.POST(group, "/reset/new-password", controller.ResetPasswordNewPassword, requireAuth)
 }

@@ -1,11 +1,11 @@
 package request
 
-type NewUserWithEmailRequest struct {
+type CreateWithEmailRequest struct {
 	Email string
 	Role  string
 }
 
-type NewUserWithPhoneNumberRequest struct {
+type CreateWithPhoneNumberRequest struct {
 	PhoneNumber int
 	Role        string
 }

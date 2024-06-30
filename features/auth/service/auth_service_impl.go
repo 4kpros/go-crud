@@ -175,64 +175,6 @@ func (service *AuthServiceImpl) SignInWithProvider(reqData *request.SignInWithPr
 	return
 }
 
-func (service *AuthServiceImpl) NewUserWithEmail(reqData *request.NewUserWithEmailRequest) (password string, errCode int, err error) {
-	// Check if user exists
-	user, errFound := service.Repository.FindByEmail(reqData.Email)
-	if errFound != nil {
-		errCode = http.StatusInternalServerError
-		err = errFound
-		return
-	}
-	if user != nil && user.Email == reqData.Email {
-		message := "User with this email already exists! Please use another email."
-		errCode = http.StatusFound
-		err = fmt.Errorf("%s", message)
-		return
-	}
-
-	// Create new user
-	var randomPassword = utils.GenerateRandomPassword(8)
-	user.Email = reqData.Email
-	user.Password = randomPassword
-	err = service.Repository.Create(user)
-	if err != nil {
-		errCode = http.StatusInternalServerError
-		return
-	}
-	password = randomPassword
-
-	return
-}
-
-func (service *AuthServiceImpl) NewUserWithPhoneNumber(reqData *request.NewUserWithPhoneNumberRequest) (password string, errCode int, err error) {
-	// Check if user exists
-	user, errFound := service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
-	if errFound != nil {
-		errCode = http.StatusInternalServerError
-		err = errFound
-		return
-	}
-	if user != nil && user.PhoneNumber == reqData.PhoneNumber {
-		message := "User with this phone number already exists! Please use another phone number."
-		errCode = http.StatusFound
-		err = fmt.Errorf("%s", message)
-		return
-	}
-
-	// Create new user
-	var randomPassword = utils.GenerateRandomPassword(8)
-	user.PhoneNumber = reqData.PhoneNumber
-	user.Password = randomPassword
-	err = service.Repository.Create(user)
-	if err != nil {
-		errCode = http.StatusInternalServerError
-		return
-	}
-	password = randomPassword
-
-	return
-}
-
 func (service *AuthServiceImpl) SignUpWithEmail(reqData *request.SignUpWithEmailRequest) (token string, errCode int, err error) {
 	// Check if user exists
 	user, errFound := service.Repository.FindByEmail(reqData.Email)
@@ -380,48 +322,22 @@ func (service *AuthServiceImpl) ActivateAccount(reqData *request.ActivateAccount
 	return
 }
 
-func (service *AuthServiceImpl) ResetPasswordCode(reqData *request.ResetPasswordCodeRequest) (token string, errCode int, err error) {
-	// Check if the token is valid and extract code + userId
-
-	// Check if code is valid
-
-	// Generate new token
-	token = "EOF"
+func (service *AuthServiceImpl) ResetPasswordEmailInit(reqData *request.ResetPasswordEmailInitRequest) (token string, errCode int, err error) {
 
 	return
 }
 
-func (service *AuthServiceImpl) ResetPasswordInit(reqData *request.ResetPasswordInitRequest) (token string, errCode int, err error) {
-	// Check if user exists
-	var user *model.User
-	var message string
-	if len(reqData.Email) > 0 {
-		user, err = service.Repository.FindByEmail(reqData.Email)
-		message = "No user found with this email! Please enter valid information."
-	} else {
-		user, err = service.Repository.FindByPhoneNumber(reqData.PhoneNumber)
-		message = "No user found with this phone number! Please enter valid information."
-	}
-	if err != nil || user == nil || (user.Email != reqData.Email && user.PhoneNumber != reqData.PhoneNumber) {
-		err = fmt.Errorf("%s", message)
-		return
-	}
+func (service *AuthServiceImpl) ResetPasswordPhoneNumberInit(reqData *request.ResetPasswordPhoneNumberInitRequest) (token string, errCode int, err error) {
 
-	// Generate new token
-	token = "EOF"
+	return
+}
+
+func (service *AuthServiceImpl) ResetPasswordCode(reqData *request.ResetPasswordCodeRequest) (token string, errCode int, err error) {
 
 	return
 }
 
 func (service *AuthServiceImpl) ResetPasswordNewPassword(reqData *request.ResetPasswordNewPasswordRequest) (errCode int, err error) {
-	// Check if the token is valid
-	var userId uint
-	var user model.User
-
-	// Update password
-	user.ID = userId
-	user.Password = reqData.NewPassword
-	service.Repository.Update(&user)
 
 	return
 }
