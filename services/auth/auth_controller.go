@@ -1,4 +1,4 @@
-package controller
+package auth
 
 import (
 	"fmt"
@@ -6,17 +6,16 @@ import (
 
 	"github.com/4kpros/go-api/common/types"
 	"github.com/4kpros/go-api/common/utils"
-	"github.com/4kpros/go-api/features/auth/data/request"
-	"github.com/4kpros/go-api/features/auth/data/response"
-	"github.com/4kpros/go-api/features/auth/service"
+	"github.com/4kpros/go-api/services/auth/data/request"
+	"github.com/4kpros/go-api/services/auth/data/response"
 	"github.com/gin-gonic/gin"
 )
 
 type AuthController struct {
-	Service service.AuthService
+	Service AuthService
 }
 
-func NewAuthController(service service.AuthService) *AuthController {
+func NewAuthController(service AuthService) *AuthController {
 	// --- VERY IMPORTANT ---
 	var _ = &types.ErrorResponse{} // Don't remove this line. It very important for swagger docs generation.
 	// --- VERY IMPORTANT ---

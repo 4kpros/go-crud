@@ -1,12 +1,11 @@
-package router
+package user
 
 import (
 	"github.com/4kpros/go-api/common/router"
-	"github.com/4kpros/go-api/features/user/controller"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupUserEndpoints(routerGroup *gin.RouterGroup, controller *controller.UserController) {
+func SetupEndpoints(routerGroup *gin.RouterGroup, controller *UserController) {
 
 	group := routerGroup.Group("/users")
 	const requireAuth = true

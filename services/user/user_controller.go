@@ -1,22 +1,21 @@
-package controller
+package user
 
 import (
 	"net/http"
 
 	"github.com/4kpros/go-api/common/types"
 	"github.com/4kpros/go-api/common/utils"
-	"github.com/4kpros/go-api/features/user/data/request"
-	"github.com/4kpros/go-api/features/user/data/response"
-	"github.com/4kpros/go-api/features/user/model"
-	"github.com/4kpros/go-api/features/user/service"
+	"github.com/4kpros/go-api/services/user/data/request"
+	"github.com/4kpros/go-api/services/user/data/response"
+	"github.com/4kpros/go-api/services/user/model"
 	"github.com/gin-gonic/gin"
 )
 
 type UserController struct {
-	Service service.UserService
+	Service UserService
 }
 
-func NewUserController(service service.UserService) *UserController {
+func NewUserController(service UserService) *UserController {
 	return &UserController{Service: service}
 }
 

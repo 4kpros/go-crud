@@ -1,4 +1,4 @@
-package service
+package auth
 
 import (
 	"fmt"
@@ -8,16 +8,28 @@ import (
 	"github.com/4kpros/go-api/common/types"
 	"github.com/4kpros/go-api/common/utils"
 	"github.com/4kpros/go-api/config"
-	"github.com/4kpros/go-api/features/auth/data/request"
-	"github.com/4kpros/go-api/features/auth/repository"
-	"github.com/4kpros/go-api/features/user/model"
+	"github.com/4kpros/go-api/services/auth/data/request"
+	"github.com/4kpros/go-api/services/user/model"
 )
 
-type AuthServiceImpl struct {
-	Repository repository.AuthRepository
+type AuthService interface {
+	SignIn(deviceName string, reqData *request.SignInRequest) (validateAccountToken string, accessToken string, accessExpires *time.Time, errCode int, err error)
+	SignInWithProvider(deviceName string, reqData *request.SignInWithProviderRequest) (accessToken string, accessExpires *time.Time, errCode int, err error)
+
+	SignUp(reqData *request.SignUpRequest) (token string, errCode int, err error)
+
+	ActivateAccount(reqData *request.ActivateAccountRequest) (date *time.Time, errCode int, err error)
+
+	ResetPasswordInit(reqData *request.ResetPasswordInitRequest) (token string, errCode int, err error)
+	ResetPasswordCode(reqData *request.ResetPasswordCodeRequest) (token string, errCode int, err error)
+	ResetPasswordNewPassword(reqData *request.ResetPasswordNewPasswordRequest) (errCode int, err error)
 }
 
-func NewAuthServiceImpl(repository repository.AuthRepository) AuthService {
+type AuthServiceImpl struct {
+	Repository AuthRepository
+}
+
+func NewAuthServiceImpl(repository AuthRepository) AuthService {
 	return &AuthServiceImpl{Repository: repository}
 }
 
