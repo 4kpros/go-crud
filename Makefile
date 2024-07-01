@@ -1,8 +1,4 @@
-.PHONY: migrate migrate-run swagger build run watch test
-
-migrate:
-	@go build -C migrate -o ../bin/migrate
-	@./bin/migrate
+.PHONY: swagger build run watch test
 
 swagger:
 	@swag init --parseDependency -g ./cmd/main.go -o ./docs
@@ -14,7 +10,6 @@ run:
 	@./bin/main
 
 serve:
-	@make migrate
 	@make swagger
 	@make build
 	@make run
