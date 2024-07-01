@@ -11,7 +11,7 @@ var Memcache *memcache.Client
 func ConnectToMemcache() (err error) {
 	servers := make([]string, AppEnv.MemcacheServersCount)
 	for i := 0; i < AppEnv.MemcacheServersCount; i++ {
-		servers[i] = fmt.Sprintf("%s%d:%d", AppEnv.MemcacheHostRange, i+1, AppEnv.MemcacheInitialPort+i)
+		servers[i] = fmt.Sprintf("%s.%d:%d", AppEnv.MemcacheHostRange, i+1, AppEnv.MemcacheInitialPort+i)
 	}
 
 	Memcache = memcache.New(servers...)

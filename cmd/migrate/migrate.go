@@ -1,9 +1,9 @@
 package migrate
 
 import (
-	"github.com/4kpros/go-api/features/user"
+	userMigrate "github.com/4kpros/go-api/services/user/migrate"
 )
 
 func Start() {
-	user.SetupMigrations() // User migrations
+	userMigrate.Migrate() // User migrations
 }

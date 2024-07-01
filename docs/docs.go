@@ -46,7 +46,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest"
                         }
                     }
                 ],
@@ -54,7 +54,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse"
                         }
                     },
                     "400": {
@@ -102,7 +102,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest"
                         }
                     }
                 ],
@@ -110,7 +110,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -152,7 +152,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest"
                         }
                     }
                 ],
@@ -160,7 +160,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -202,7 +202,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest"
                         }
                     }
                 ],
@@ -210,7 +210,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -252,7 +252,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest"
                         }
                     }
                 ],
@@ -260,7 +260,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse"
                         }
                     },
                     "400": {
@@ -302,7 +302,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest"
                         }
                     }
                 ],
@@ -310,7 +310,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -358,7 +358,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest"
                         }
                     }
                 ],
@@ -366,7 +366,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -414,7 +414,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest"
                         }
                     }
                 ],
@@ -422,7 +422,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -464,7 +464,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest"
                         }
                     }
                 ],
@@ -472,7 +472,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse"
                         }
                     },
                     "302": {
@@ -508,7 +508,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest"
                         }
                     }
                 ],
@@ -516,7 +516,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse"
                         }
                     },
                     "302": {
@@ -623,7 +623,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest"
                         }
                     }
                 ],
@@ -631,7 +631,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse"
                         }
                     },
                     "302": {
@@ -672,7 +672,7 @@ const docTemplate = `{
                         "name": "payload",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                         }
                     }
                 ],
@@ -680,7 +680,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                         }
                     },
                     "400": {
@@ -734,7 +734,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest"
                         }
                     }
                 ],
@@ -742,7 +742,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse"
                         }
                     },
                     "302": {
@@ -790,7 +790,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     },
                     "400": {
@@ -842,7 +842,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     }
                 ],
@@ -850,7 +850,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     },
                     "400": {
@@ -1000,7 +1000,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1011,7 +1011,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1022,7 +1022,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1030,7 +1030,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest": {
             "type": "object",
             "properties": {
                 "newPassword": {
@@ -1041,7 +1041,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest": {
             "type": "object",
             "properties": {
                 "phoneNumber": {
@@ -1049,7 +1049,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1063,7 +1063,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1077,7 +1077,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest": {
             "type": "object",
             "properties": {
                 "provider": {
@@ -1088,7 +1088,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1099,7 +1099,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1110,7 +1110,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse": {
             "type": "object",
             "properties": {
                 "activatedAt": {
@@ -1118,7 +1118,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -1126,7 +1126,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1134,7 +1134,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.SignInResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.SignInResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -1145,7 +1145,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.SignUpResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.SignUpResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1156,7 +1156,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest": {
+        "github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1167,7 +1167,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "phoneNumber": {
@@ -1178,7 +1178,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse": {
+        "github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1192,7 +1192,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse": {
+        "github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1206,7 +1206,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_model.User": {
+        "github_com_4kpros_go-api_services_user_model.User": {
             "type": "object",
             "properties": {
                 "_": {
@@ -1249,11 +1249,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userInfo": {
-                    "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                    "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_model.UserInfo": {
+        "github_com_4kpros_go-api_services_user_model.UserInfo": {
             "type": "object",
             "properties": {
                 "address": {

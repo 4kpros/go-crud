@@ -38,38 +38,38 @@ definitions:
       pagination:
         $ref: '#/definitions/github_com_4kpros_go-api_common_types.Pagination'
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest:
+  github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest:
     properties:
       code:
         type: integer
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest:
+  github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest:
     properties:
       code:
         type: integer
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest:
+  github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest:
     properties:
       email:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest:
+  github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest:
     properties:
       newPassword:
         type: string
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest:
+  github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest:
     properties:
       phoneNumber:
         type: integer
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest:
+  github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest:
     properties:
       email:
         type: string
@@ -78,7 +78,7 @@ definitions:
       stayConnected:
         type: boolean
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest:
+  github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest:
     properties:
       password:
         type: string
@@ -87,71 +87,71 @@ definitions:
       stayConnected:
         type: boolean
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest:
+  github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest:
     properties:
       provider:
         type: string
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest:
+  github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest:
     properties:
       email:
         type: string
       password:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest:
+  github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest:
     properties:
       password:
         type: string
       phoneNumber:
         type: integer
     type: object
-  github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse:
+  github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse:
     properties:
       activatedAt:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse:
+  github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse:
     properties:
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse:
+  github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse:
     properties:
       message:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_response.SignInResponse:
+  github_com_4kpros_go-api_services_auth_data_response.SignInResponse:
     properties:
       accessToken:
         type: string
       expires:
         type: string
     type: object
-  github_com_4kpros_go-api_features_auth_data_response.SignUpResponse:
+  github_com_4kpros_go-api_services_auth_data_response.SignUpResponse:
     properties:
       message:
         type: string
       token:
         type: string
     type: object
-  github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest:
+  github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest:
     properties:
       email:
         type: string
       role:
         type: string
     type: object
-  github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest:
+  github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest:
     properties:
       phoneNumber:
         type: integer
       role:
         type: string
     type: object
-  github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse:
+  github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse:
     properties:
       email:
         type: string
@@ -160,7 +160,7 @@ definitions:
       role:
         type: string
     type: object
-  github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse:
+  github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse:
     properties:
       password:
         type: string
@@ -169,7 +169,7 @@ definitions:
       role:
         type: string
     type: object
-  github_com_4kpros_go-api_features_user_model.User:
+  github_com_4kpros_go-api_services_user_model.User:
     properties:
       _:
         type: integer
@@ -198,9 +198,9 @@ definitions:
       updatedAt:
         type: string
       userInfo:
-        $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+        $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo'
     type: object
-  github_com_4kpros_go-api_features_user_model.UserInfo:
+  github_com_4kpros_go-api_services_user_model.UserInfo:
     properties:
       address:
         type: string
@@ -250,14 +250,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse'
         "400":
           description: Invalid token!
           schema:
@@ -285,14 +285,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse'
         "400":
           description: Invalid token!
           schema:
@@ -316,14 +316,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse'
         "400":
           description: Invalid email input!
           schema:
@@ -347,14 +347,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse'
         "400":
           description: Invalid phone number input!
           schema:
@@ -378,14 +378,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse'
         "400":
           description: Invalid token or password input!
           schema:
@@ -409,14 +409,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -444,14 +444,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -479,14 +479,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse'
         "400":
           description: Invalid inputs!
           schema:
@@ -510,14 +510,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse'
         "302":
           description: User with this email already exists!
           schema:
@@ -537,14 +537,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse'
         "302":
           description: User with this phone number already exists!
           schema:
@@ -652,7 +652,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.User'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.User'
         "400":
           description: Invalid inputs!
           schema:
@@ -683,14 +683,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.User'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.User'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.User'
         "400":
           description: Invalid inputs!
           schema:
@@ -722,14 +722,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse'
         "302":
           description: User with this email already exists!
           schema:
@@ -752,14 +752,14 @@ paths:
         in: body
         name: payload
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo'
         "400":
           description: Invalid inputs!
           schema:
@@ -791,14 +791,14 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest'
+          $ref: '#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse'
         "302":
           description: User with this phone number already exists!
           schema:

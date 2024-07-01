@@ -38,7 +38,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest"
                         }
                     }
                 ],
@@ -46,7 +46,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse"
                         }
                     },
                     "400": {
@@ -94,7 +94,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest"
                         }
                     }
                 ],
@@ -102,7 +102,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -144,7 +144,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest"
                         }
                     }
                 ],
@@ -152,7 +152,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -194,7 +194,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest"
                         }
                     }
                 ],
@@ -202,7 +202,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse"
                         }
                     },
                     "400": {
@@ -244,7 +244,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest"
                         }
                     }
                 ],
@@ -252,7 +252,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse"
                         }
                     },
                     "400": {
@@ -294,7 +294,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest"
                         }
                     }
                 ],
@@ -302,7 +302,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -350,7 +350,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest"
                         }
                     }
                 ],
@@ -358,7 +358,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -406,7 +406,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest"
                         }
                     }
                 ],
@@ -414,7 +414,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignInResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignInResponse"
                         }
                     },
                     "400": {
@@ -456,7 +456,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest"
                         }
                     }
                 ],
@@ -464,7 +464,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse"
                         }
                     },
                     "302": {
@@ -500,7 +500,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest"
                         }
                     }
                 ],
@@ -508,7 +508,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_auth_data_response.SignUpResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_auth_data_response.SignUpResponse"
                         }
                     },
                     "302": {
@@ -615,7 +615,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest"
                         }
                     }
                 ],
@@ -623,7 +623,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse"
                         }
                     },
                     "302": {
@@ -664,7 +664,7 @@
                         "name": "payload",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                         }
                     }
                 ],
@@ -672,7 +672,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                         }
                     },
                     "400": {
@@ -726,7 +726,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest"
                         }
                     }
                 ],
@@ -734,7 +734,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse"
                         }
                     },
                     "302": {
@@ -782,7 +782,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     },
                     "400": {
@@ -834,7 +834,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     }
                 ],
@@ -842,7 +842,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.User"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.User"
                         }
                     },
                     "400": {
@@ -992,7 +992,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ActivateAccountRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ActivateAccountRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1003,7 +1003,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordCodeRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordCodeRequest": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1014,7 +1014,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordEmailInitRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordEmailInitRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1022,7 +1022,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordNewPasswordRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordNewPasswordRequest": {
             "type": "object",
             "properties": {
                 "newPassword": {
@@ -1033,7 +1033,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.ResetPasswordPhoneNumberInitRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.ResetPasswordPhoneNumberInitRequest": {
             "type": "object",
             "properties": {
                 "phoneNumber": {
@@ -1041,7 +1041,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInEmailRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1055,7 +1055,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1069,7 +1069,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignInWithProviderRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignInWithProviderRequest": {
             "type": "object",
             "properties": {
                 "provider": {
@@ -1080,7 +1080,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignUpEmailRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignUpEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1091,7 +1091,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_request.SignUpPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_auth_data_request.SignUpPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1102,7 +1102,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ActivateAccountResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ActivateAccountResponse": {
             "type": "object",
             "properties": {
                 "activatedAt": {
@@ -1110,7 +1110,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ResetPasswordInitResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ResetPasswordInitResponse": {
             "type": "object",
             "properties": {
                 "token": {
@@ -1118,7 +1118,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.ResetPasswordNewPasswordResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.ResetPasswordNewPasswordResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1126,7 +1126,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.SignInResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.SignInResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -1137,7 +1137,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_auth_data_response.SignUpResponse": {
+        "github_com_4kpros_go-api_services_auth_data_response.SignUpResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -1148,7 +1148,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_request.CreateWithEmailRequest": {
+        "github_com_4kpros_go-api_services_user_data_request.CreateWithEmailRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1159,7 +1159,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_request.CreateWithPhoneNumberRequest": {
+        "github_com_4kpros_go-api_services_user_data_request.CreateWithPhoneNumberRequest": {
             "type": "object",
             "properties": {
                 "phoneNumber": {
@@ -1170,7 +1170,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_response.CreateWithEmailResponse": {
+        "github_com_4kpros_go-api_services_user_data_response.CreateWithEmailResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -1184,7 +1184,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_data_response.CreateWithPhoneNumberResponse": {
+        "github_com_4kpros_go-api_services_user_data_response.CreateWithPhoneNumberResponse": {
             "type": "object",
             "properties": {
                 "password": {
@@ -1198,7 +1198,7 @@
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_model.User": {
+        "github_com_4kpros_go-api_services_user_model.User": {
             "type": "object",
             "properties": {
                 "_": {
@@ -1241,11 +1241,11 @@
                     "type": "string"
                 },
                 "userInfo": {
-                    "$ref": "#/definitions/github_com_4kpros_go-api_features_user_model.UserInfo"
+                    "$ref": "#/definitions/github_com_4kpros_go-api_services_user_model.UserInfo"
                 }
             }
         },
-        "github_com_4kpros_go-api_features_user_model.UserInfo": {
+        "github_com_4kpros_go-api_services_user_model.UserInfo": {
             "type": "object",
             "properties": {
                 "address": {
