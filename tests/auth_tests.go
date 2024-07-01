@@ -7,6 +7,7 @@ import (
 )
 
 func AuthTests(t *testing.T) {
+	// TODO generate database mock
 	repo := auth.NewAuthRepositoryImpl(nil)
 	service := auth.NewAuthServiceImpl(repo)
 	controller := auth.NewAuthController(service)

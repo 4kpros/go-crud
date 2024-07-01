@@ -7,6 +7,7 @@ import (
 )
 
 func UserTests(t *testing.T) {
+	// TODO generate database mock
 	repo := user.NewUserRepositoryImpl(nil)
 	service := user.NewUserServiceImpl(repo)
 	controller := user.NewUserController(service)
