@@ -1,4 +1,9 @@
 definitions:
+  github_com_4kpros_go-api_common_types.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
   github_com_4kpros_go-api_common_types.Filter:
     properties:
       orderBy:
@@ -25,12 +30,7 @@ definitions:
       totalPages:
         type: integer
     type: object
-  github_com_4kpros_go-api_common_types.WebErrorResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse:
+  github_com_4kpros_go-api_common_types.SuccessPaginatedResponse:
     properties:
       data: {}
       filter:
@@ -261,15 +261,15 @@ paths:
         "400":
           description: Invalid token!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: User account is already activated!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Activate new user account
@@ -296,11 +296,11 @@ paths:
         "400":
           description: Invalid token!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Reset password set code
@@ -327,11 +327,11 @@ paths:
         "400":
           description: Invalid email input!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User with email not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Reset password  with email init
@@ -358,11 +358,11 @@ paths:
         "400":
           description: Invalid phone number input!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User with phone number not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Reset password with phone number init
@@ -389,11 +389,11 @@ paths:
         "400":
           description: Invalid token or password input!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Reset password set new password
@@ -420,15 +420,15 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Account not activated!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: Invalid email or password!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Sign in user with email
@@ -455,15 +455,15 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Account not activated!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: Invalid phone number or password!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Sign in user with phone number
@@ -490,11 +490,11 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: Invalid token!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Sign in user with provider
@@ -521,7 +521,7 @@ paths:
         "302":
           description: User with this email already exists!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Sign up user with email
@@ -548,7 +548,7 @@ paths:
         "302":
           description: User with this phone number already exists!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey: []
       summary: Sign up user with phone number
@@ -585,15 +585,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.SuccessPaginatedResponse'
         "401":
           description: Invalid user session!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Not permitted!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Get all users
@@ -615,23 +615,23 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "401":
           description: Invalid user session!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Not permitted!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Update user info
@@ -656,19 +656,19 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "401":
           description: Invalid user session!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Not permitted!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Get user info
@@ -694,19 +694,19 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "401":
           description: Invalid user session!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Not permitted!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Update user
@@ -733,11 +733,11 @@ paths:
         "302":
           description: User with this email already exists!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "400":
           description: Invalid email or role!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Create new user with email - [super-admin]
@@ -763,19 +763,19 @@ paths:
         "400":
           description: Invalid inputs!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "401":
           description: Invalid user session!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "403":
           description: Not permitted!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "404":
           description: User not found!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Update user info
@@ -802,11 +802,11 @@ paths:
         "302":
           description: User with this phone number already exists!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
         "400":
           description: Invalid phone number or role!
           schema:
-            $ref: '#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse'
+            $ref: '#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse'
       security:
       - ApiKey && Bearer: []
       summary: Create new user with phone number - [super-admin]

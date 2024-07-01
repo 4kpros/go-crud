@@ -60,19 +60,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "User account is already activated!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -116,13 +116,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -166,13 +166,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid email input!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User with email not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -216,13 +216,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid phone number input!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User with phone number not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -266,13 +266,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid token or password input!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -316,19 +316,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Account not activated!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid email or password!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -372,19 +372,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Account not activated!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid phone number or password!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -428,13 +428,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Invalid token!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -478,7 +478,7 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this email already exists!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -522,7 +522,7 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this phone number already exists!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -581,19 +581,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.SuccessPaginatedResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -637,13 +637,13 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this email already exists!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid email or role!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -686,25 +686,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -748,13 +748,13 @@ const docTemplate = `{
                     "302": {
                         "description": "User with this phone number already exists!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid phone number or role!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -796,25 +796,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -856,25 +856,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -908,31 +908,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "400": {
                         "description": "Invalid inputs!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "401": {
                         "description": "Invalid user session!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "403": {
                         "description": "Not permitted!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "User not found!",
                         "schema": {
-                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.WebErrorResponse"
+                            "$ref": "#/definitions/github_com_4kpros_go-api_common_types.ErrorResponse"
                         }
                     }
                 }
@@ -940,6 +940,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github_com_4kpros_go-api_common_types.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "github_com_4kpros_go-api_common_types.Filter": {
             "type": "object",
             "properties": {
@@ -980,15 +988,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_4kpros_go-api_common_types.WebErrorResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_4kpros_go-api_common_types.WebSuccessPaginatedResponse": {
+        "github_com_4kpros_go-api_common_types.SuccessPaginatedResponse": {
             "type": "object",
             "properties": {
                 "data": {},
