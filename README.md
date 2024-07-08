@@ -90,7 +90,7 @@ API docs(with swagger) is on
 
 # Next features
 
-- [ ] 🖋️ Auth:
+- [x] Auth:
   - Login (📩Email, 📲Phone number, ☁️Provider['Google', 'Facebook']),
   
   - Register (📩Email, 📲Phone number),
@@ -99,26 +99,9 @@ API docs(with swagger) is on
     
   - Reset password.
 
-- [ ] Users
+- [x] Users
   - Basic CRUD operations
 
-- [ ] Seller
-
-- [ ] Shops
-
-- [ ] Products
-
-- [ ] Cart
-
-- [ ] Payments
-
-- [ ] Delivery
-
-- [ ] Geo-reference
-
-- [ ] Support
-
-- [ ] Advertising
 
 # Contributing
 
