@@ -10,12 +10,6 @@ RUN go mod download && go mod verify
 # Copying all the files
 COPY . .
 
-# Setup and start postgreSQL
-
-# Setup and start Redis
-
-# Setup and start Memcache
-
 # Build
 RUN make build-all
 
