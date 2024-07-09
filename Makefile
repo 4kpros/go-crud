@@ -5,7 +5,7 @@ install:
 
 swagger:
 	@cd cmd/ && \
-	swag init --parseDependency --parseInternal ../docs/ && \
+	swag init --parseDependency ../docs/ && \
 	cd ../
 
 test:
