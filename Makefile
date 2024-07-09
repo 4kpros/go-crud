@@ -1,21 +1,37 @@
-.PHONY: swagger build run watch test
+.PHONY: install swagger test build build-all run docker-pull docker-build docker-test docker-run
+
+install:
+	@go install github.com/swaggo/swag/cmd/swag@latest
 
 swagger:
-	@swag init --parseDependency -g ./cmd/main.go -o ./docs
+	@cd cmd/ && \
+	swag init --parseDependency --parseInternal ../docs/ && \
+	cd ../
+
+test:
+	@cd tests/ && \
+	go test -v ./... && \
+	cd ../
 
 build:
-	@go build -C cmd -o ../bin/main
+	@cd cmd/ && \
+	go build -o ../bin/main && \
+	@cd ../
+
+build-all:
+	@make install && \
+	make swagger && \
+	make test && \
+	make build
 
 run:
 	@./bin/main
 
-serve:
-	@make swagger
-	@make build
-	@make run
+docker-pull:
+	@docker pull golang:1.22
 
-watch:
-	@CompileDaemon -build="make build" -command="make run"
+docker-build:
+	@docker build -f Dockerfile -t go-api:latest .
 
-test:
-	@go test -v ./...
+docker-run:
+	@docker run -p 3100:3100 go-api

@@ -53,7 +53,7 @@ func IsPasswordValid(password string) (bool, string) {
 	isValid := hasMinLen && hasUpper && hasLower && hasNumber && hasSpecial
 
 	if !isValid {
-		missing = fmt.Sprintf("[hasMinLen: %b, hasUpper: %b, hasLower: %b, hasNumber: %b, hasSpecial: %b]", hasMinLen, hasUpper, hasLower, hasMinLen, hasSpecial)
+		missing = fmt.Sprintf("[hasMinLen: %t, hasUpper: %t, hasLower: %t, hasNumber: %t, hasSpecial: %t]", hasMinLen, hasUpper, hasLower, hasMinLen, hasSpecial)
 	}
 
 	return isValid, missing
