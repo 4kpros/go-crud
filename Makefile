@@ -16,13 +16,12 @@ test:
 build:
 	@cd cmd/ && \
 	go build -o ../bin/main && \
-	@cd ../
+	cd ../
 
 build-all:
-	@make install && \
-	make swagger && \
-	make test && \
-	make build
+	@make swagger
+	@make test
+	@make build
 
 run:
 	@./bin/main
