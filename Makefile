@@ -1,26 +1,36 @@
-.PHONY: migrate migrate-run swagger build run watch test
+.PHONY: install swagger test build build-all run docker-pull docker-build docker-test docker-run
 
-migrate:
-	@go build -C migrate -o ../bin/migrate
-	@./bin/migrate
+install:
+	@go install github.com/swaggo/swag/cmd/swag@latest
 
 swagger:
-	@swag init -g ./cmd/main.go -o ./docs
+	@cd cmd/ && \
+	swag init --parseDependency ../docs/ && \
+	cd ../
+
+test:
+	@cd tests/ && \
+	go test -v ./... && \
+	cd ../
 
 build:
-	@go build -C cmd -o ../bin/main
+	@cd cmd/ && \
+	go build -o ../bin/main && \
+	cd ../
+
+build-all:
+	@make swagger
+	@make test
+	@make build
 
 run:
 	@./bin/main
 
-serve:
-	@make migrate
-	@make docs
-	@make build
-	@make run
+docker-pull:
+	@docker pull golang:1.22
 
-watch:
-	@CompileDaemon -build="make build" -command="make run"
+docker-build:
+	@docker build -f Dockerfile -t go-api:latest .
 
-test:
-	@go test -v ./...
+docker-run:
+	@docker run -p 3100:3100 go-api

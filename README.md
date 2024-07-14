@@ -33,7 +33,7 @@ It provides a clean and consistent interface for accessing and managing data, ma
 
 ```Install Postgres, start the server and create a database ```
 
-Others informations such configurations are on```app.env``` and```crypto.env``` file
+Others informations such configurations are on```app.env```
 
 ### 2. Clone the repository
 
@@ -56,11 +56,13 @@ go mod download
 ### 4. Run migrations
 
 ```go
-make build-migrate
+make migrate
 ```
 
+### 3. Generate swagger docs
+
 ```go
-make run-migrate
+make swagger
 ```
 
 ### 5. Run the API
@@ -75,14 +77,20 @@ make run
 
 Let's GOOOOOOO 🚀🚀🚀🚀
 
+If you want the all-in-one command user this one
+
+```go
+make serve
+```
+
 API docs(with swagger) is on 
 ```go
-http://localhost:3000/api/v1/docs
+/api/v1/docs
 ```
 
 # Next features
 
-- [ ] 🖋️ Auth:
+- [x] Auth:
   - Login (📩Email, 📲Phone number, ☁️Provider['Google', 'Facebook']),
   
   - Register (📩Email, 📲Phone number),
@@ -91,24 +99,9 @@ http://localhost:3000/api/v1/docs
     
   - Reset password.
 
-- [ ] Users
-  - Basic CRUD operations for roles `super_admin`   `admin`   `manager`   `manager_assistant`   `driver`   `driver_assistant`   `customer`   `customer_service`
+- [x] Users
+  - Basic CRUD operations
 
-- [ ] Shops
-
-- [ ] Products
-
-- [ ] Cart
-
-- [ ] Delivery
-
-- [ ] Geo-reference
-
-- [ ] Payments
-
-- [ ] Support
-
-- [ ] Advertising
 
 # Contributing
 

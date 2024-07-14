@@ -1,8 +1,8 @@
 package utils
 
 import (
+	"fmt"
 	"net/mail"
-	"strconv"
 	"unicode"
 )
 
@@ -53,7 +53,7 @@ func IsPasswordValid(password string) (bool, string) {
 	isValid := hasMinLen && hasUpper && hasLower && hasNumber && hasSpecial
 
 	if !isValid {
-		missing = "[hasMinLen: " + strconv.FormatBool(hasMinLen) + ", hasUpper: " + strconv.FormatBool(hasUpper) + ", hasLower: " + strconv.FormatBool(hasLower) + ", hasNumber: " + strconv.FormatBool(hasNumber) + ", hasSpecial: " + strconv.FormatBool(hasSpecial) + "]"
+		missing = fmt.Sprintf("[hasMinLen: %t, hasUpper: %t, hasLower: %t, hasNumber: %t, hasSpecial: %t]", hasMinLen, hasUpper, hasLower, hasMinLen, hasSpecial)
 	}
 
 	return isValid, missing

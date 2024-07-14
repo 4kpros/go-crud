@@ -3,6 +3,7 @@ package middleware
 import (
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/4kpros/go-api/common/utils"
@@ -11,7 +12,8 @@ import (
 )
 
 func IsOriginKnown(host string) (trust bool) {
-	if strings.EqualFold(host, "localhost:3100") || strings.EqualFold(host, "127.0.0.1:3100") {
+	hosts := strings.Split(config.AppEnv.AllowedHosts, ",")
+	if slices.Contains(hosts, host) {
 		trust = true
 		return
 	}

@@ -6,11 +6,11 @@ import (
 
 type Env struct {
 	// API config
-	ApiPort         int    `mapstructure:"API_PORT"`
-	ApiKey          string `mapstructure:"API_KEY"`
-	ApiGroup        string `mapstructure:"API_GROUP"`
-	GinMode         string `mapstructure:"GIN_MODE"`
-	AllowedHostsStr string `mapstructure:"ALLOWED_HOSTS"`
+	ApiPort      int    `mapstructure:"API_PORT"`
+	ApiKey       string `mapstructure:"API_KEY"`
+	ApiGroup     string `mapstructure:"API_GROUP"`
+	GinMode      string `mapstructure:"GIN_MODE"`
+	AllowedHosts string `mapstructure:"ALLOWED_HOSTS"`
 
 	// Postgres database
 	PostGresHost     string `mapstructure:"POSTGRES_HOST"`
@@ -22,9 +22,9 @@ type Env struct {
 	PostGresTimeZone string `mapstructure:"POSTGRES_TIME_ZONE"`
 
 	// JWT
-	JwtExpires              int `mapstructure:"JWT_EXPIRES"`
-	JwtExpiresStayConnected int `mapstructure:"JWT_EXPIRES_STAY_CONNECTED"`
-	JwtExpiresOthers        int `mapstructure:"JWT_EXPIRES_OTHERS"`
+	JwtExpiresSignIn              int `mapstructure:"JWT_EXPIRES_SIGN_IN"`
+	JwtExpiresSignInStayConnected int `mapstructure:"JWT_EXPIRES_SIGN_IN_STAY_CONNECTED"`
+	JwtExpiresDefault             int `mapstructure:"JWT_EXPIRES_DEFAULT"`
 
 	// Redis for fast key-value database
 	RedisHost     string `mapstructure:"REDIS_HOST"`

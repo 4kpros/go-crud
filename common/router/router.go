@@ -5,22 +5,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GET(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	router.GET(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
+func GET(ginRouter *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	ginRouter.GET(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
 }
 
-func POST(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	router.POST(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
+func POST(ginRouter *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	ginRouter.POST(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
 }
 
-func PUT(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	router.PUT(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
+func PUT(ginRouter *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	ginRouter.PUT(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
 }
 
-func PATCH(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	router.PATCH(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
+func PATCH(ginRouter *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	ginRouter.PATCH(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
 }
 
-func DELETE(router *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
-	router.DELETE(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
+func DELETE(ginRouter *gin.RouterGroup, endpoint string, handler gin.HandlerFunc, requiredAuth bool) {
+	ginRouter.DELETE(endpoint, middleware.SecureAPIHandler(handler, requiredAuth))
 }
